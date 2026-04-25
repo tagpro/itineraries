@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adventure Archives | My Itineraries</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                        display: ['Playfair Display', 'serif'],
+                    },
+                    colors: {
+                        portal: {
+                            dark: '#0f172a',
+                            card: '#1e293b'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #0f172a;
+            color: #f8fafc;
+            background-image: radial-gradient(circle at top right, #1e293b 0%, #0f172a 100%);
+            min-height: 100vh;
+        }
+        
+        .card-hover {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
+            border-color: #10b981; /* Emerald 500 */
+        }
+    </style>
+</head>
+<body class="font-sans antialiased flex flex-col items-center justify-start p-6 md:p-12">
+    
+    <!-- Header -->
+    <header class="text-center mb-16 max-w-3xl pt-12 md:pt-20">
+        <div class="inline-flex items-center px-4 py-1.5 rounded-full bg-blue-900/30 text-blue-400 text-xs font-bold uppercase tracking-widest mb-6 border border-blue-800 shadow-lg">
+            <span>Travel Portal</span>
+        </div>
+        <h1 class="font-display text-5xl md:text-7xl font-extrabold mb-6 leading-tight tracking-tight text-white drop-shadow-lg">
+            Adventure <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">Archives</span>
+        </h1>
+        <p class="text-xl text-slate-400 font-light max-w-xl mx-auto leading-relaxed">
+            A curated collection of verified travel itineraries, maps, and guides for upcoming and past trips.
+        </p>
+    </header>
+
+    <!-- Itineraries Grid -->
+    <main class="w-full max-w-5xl flex-grow">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            
+            <!-- Tasmania 2026 Card -->
+            <a href="./tassie-2026/index.html" class="card-hover bg-portal-card border border-slate-700 rounded-[2rem] p-8 block group relative overflow-hidden shadow-xl">
+                <!-- Decorative background blob -->
+                <div class="absolute -right-12 -top-12 w-40 h-40 bg-emerald-500/10 rounded-full blur-3xl group-hover:bg-emerald-500/20 transition-all duration-500"></div>
+                
+                <div class="flex justify-between items-start mb-6 relative z-10">
+                    <div class="w-12 h-12 rounded-2xl bg-emerald-900/50 border border-emerald-800 flex items-center justify-center text-2xl shadow-inner">
+                        🌲
+                    </div>
+                    <span class="text-[10px] font-black px-3 py-1.5 bg-slate-800 text-emerald-400 rounded-full border border-slate-700 uppercase tracking-widest">
+                        Sept 12-19
+                    </span>
+                </div>
+                
+                <h2 class="font-display text-2xl font-bold mb-3 text-white group-hover:text-emerald-400 transition-colors relative z-10">
+                    Tasmania Explorer
+                </h2>
+                <p class="text-slate-400 text-sm mb-8 leading-relaxed relative z-10">
+                    An 8-day hub-and-spoke itinerary focused on minimal driving, maximum hiking, and verified trails around Hobart and Coles Bay.
+                </p>
+                
+                <div class="flex items-center text-sm font-bold text-slate-300 group-hover:text-white transition-colors relative z-10">
+                    <span class="uppercase tracking-widest text-[11px]">View Itinerary</span>
+                    <svg class="w-4 h-4 ml-2 group-hover:translate-x-2 transition-transform duration-300 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                    </svg>
+                </div>
+            </a>
+
+            <!-- Placeholder for Future Trips -->
+            <div class="bg-portal-card/30 border border-slate-800 border-dashed rounded-[2rem] p-8 flex flex-col items-center justify-center text-center opacity-60">
+                <div class="w-12 h-12 rounded-2xl bg-slate-800/50 border border-slate-700 flex items-center justify-center text-2xl mb-4 grayscale">
+                    ✈️
+                </div>
+                <h2 class="font-display text-xl font-bold mb-2 text-slate-500">Next Adventure</h2>
+                <p class="text-slate-600 text-sm">Where to next?</p>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-24 text-center pb-8 w-full border-t border-slate-800/50 pt-8">
+        <p class="text-slate-500 text-xs uppercase tracking-widest font-bold">© 2026 • Tagpro Itineraries</p>
+    </footer>
+
+</body>
+</html>

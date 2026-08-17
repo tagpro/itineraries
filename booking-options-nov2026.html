@@ -316,6 +316,71 @@
   td a { color: inherit; text-decoration-color: var(--rule); }
   td a:hover { text-decoration-color: currentColor; }
   tr.pick td a { color: var(--accent); }
+
+  /* ---------- tabs ---------- */
+
+  .tabs {
+    display: flex;
+    gap: 0;
+    border-bottom: 2px solid var(--rule);
+    margin-bottom: -1rem;
+  }
+
+  .tab {
+    appearance: none;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    padding: 0.8rem 1.1rem;
+    font-family: var(--mono);
+    font-size: var(--step-0);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--ink-soft);
+    cursor: pointer;
+    transition: color 120ms ease, border-color 120ms ease;
+  }
+  .tab:hover { color: var(--ink); }
+  .tab[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--accent); }
+
+  [role="tabpanel"] { display: flex; flex-direction: column; gap: clamp(2.5rem, 5vw, 4rem); }
+  [role="tabpanel"][hidden] { display: none; }
+
+  /* ---------- places ---------- */
+
+  .clash {
+    background: var(--signal-bg);
+    border: 1px solid transparent;
+    border-left: 4px solid var(--signal);
+    border-radius: 3px;
+    padding: 1rem 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+  .clash h3 { font-size: var(--step-0); color: var(--signal); letter-spacing: 0; }
+  .clash p { margin: 0; max-width: 72ch; text-wrap: pretty; color: var(--ink); }
+
+  .place-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); border-radius: 3px; overflow: hidden; }
+
+  .place { background: var(--surface); padding: 1rem 1.15rem; display: flex; flex-direction: column; gap: 0.4rem; }
+  .place h4 { margin: 0; font-size: var(--step-0); font-weight: 600; }
+  .place .hours { font-family: var(--mono); font-size: var(--step--1); color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+  .place p { margin: 0; font-size: var(--step--1); color: var(--ink-mid); text-wrap: pretty; }
+  .place .hours.shut { color: var(--alert); }
+
+  .daybar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 0.75rem;
+    align-items: baseline;
+    font-family: var(--mono);
+    font-size: var(--step--1);
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+  }
 </style>
 
 <div class="wrap">
@@ -332,6 +397,13 @@
       <div class="anchor"><dt>Hotel nights</dt><dd>5 booked + 9 optional</dd></div>
     </dl>
   </header>
+
+  <nav class="tabs" role="tablist" aria-label="Sheet sections">
+    <button class="tab" type="button" role="tab" id="tab-book" aria-controls="panel-book" aria-selected="true">Bookings</button>
+    <button class="tab" type="button" role="tab" id="tab-places" aria-controls="panel-places" aria-selected="false" tabindex="-1">Places &amp; Food</button>
+  </nav>
+
+  <div role="tabpanel" id="panel-book" aria-labelledby="tab-book" tabindex="0">
 
   <!-- ================= FINDINGS ================= -->
   <section>
@@ -721,10 +793,336 @@
     </ol>
   </section>
 
+  </div><!-- /panel-book -->
+
+  <div role="tabpanel" id="panel-places" aria-labelledby="tab-places" tabindex="0" hidden>
+
+    <!-- ============ CLASHES ============ -->
+    <section>
+      <div class="sec-head">
+        <h2>Three things that clash with the plan</h2>
+        <p class="sec-note">Opening hours and ferry schedules, checked against the days you're actually there.</p>
+      </div>
+
+      <div class="findings">
+        <div class="clash">
+          <h3>Elephanta can't be an afternoon add-on</h3>
+          <p>The plan lists Elephanta Caves as “optional if time allows” after a morning in Colaba and stops at Haji Ali and Bandra. It doesn't work that way: the <strong>last ferry out of the Gateway leaves at 14:00</strong>, the crossing is about an hour each way, and return ferries stop at 17:00. Elephanta is a morning commitment that eats most of the day — it <em>replaces</em> the Haji Ali and Bandra loop rather than fitting around it. Your Mumbai day is Thursday 5 Nov, so the Monday closure doesn't bite.</p>
+        </div>
+
+        <div class="clash">
+          <h3>MTR is closed on Mondays</h3>
+          <p>You land in Bangalore on Monday 2 Nov, so MTR is out for that evening — it only opens for you on Tuesday 3 Nov, which is where the plan already has it. Worth knowing if the days shuffle. It also shuts at 21:00 and closes between 11:00 and 12:30, so it's a late-breakfast or early-dinner place, not a late one.</p>
+        </div>
+
+        <div class="clash">
+          <h3>The 08:30 flight rules out a second Taaza Thindi</h3>
+          <p>Taaza Thindi opens at <strong>07:00</strong>. With the recommended 08:30 Bangalore → Mumbai departure on 4 Nov you'd need to leave for the airport around 06:30, so that last breakfast is gone. The fix is easy though: Taaza Thindi also runs an <strong>evening session, 16:30–21:30</strong>. You land on 2 Nov at 13:25, so you can go that same evening and stop treating it as a breakfast-only problem.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ BANGALORE ============ -->
+    <section>
+      <div class="sec-head">
+        <h2>Bangalore</h2>
+        <p class="daybar"><span>Mon 2 Nov, from 13:25</span> · <span>Tue 3 Nov, full day</span> · <span>Wed 4 Nov, early start</span></p>
+        <p class="sec-note">Two evenings and one full day. Lalbagh and Bangalore Palace are the two that need daylight; everything else is flexible.</p>
+      </div>
+
+      <h3>Worth the time</h3>
+      <div class="place-grid">
+        <div class="place">
+          <h4>Lalbagh Botanical Garden</h4>
+          <span class="hours">06:00 – 19:00 daily</span>
+          <p>240 acres, a Victorian glass house, and a 3,000-million-year-old rock outcrop. Go early — it's a working park for the city before it's a sight. Nominal entry.</p>
+        </div>
+        <div class="place">
+          <h4>Bangalore Palace</h4>
+          <span class="hours">10:00 – 17:30 daily</span>
+          <p>Tudor revival, built by the Wodeyars. Entry is steep by Indian standards and there's a separate camera fee. The audio guide is genuinely good.</p>
+        </div>
+        <div class="place">
+          <h4>Cubbon Park</h4>
+          <span class="hours">Open access · car-free Sundays</span>
+          <p>Free, central, and the easiest thing to do on your first evening when nobody wants a schedule. The Seshadri Iyer library building is the photo.</p>
+        </div>
+        <div class="place">
+          <h4>ISKCON Temple, Rajajinagar</h4>
+          <span class="hours">07:15 – 20:20, midday break</span>
+          <p>Hilltop complex, very large, very busy at weekends. Free entry. Modest dress; leave shoes and phones at the counters.</p>
+        </div>
+        <div class="place">
+          <h4>Commercial Street &amp; MG Road</h4>
+          <span class="hours">~11:00 – 21:00, most shops</span>
+          <p>Textiles, silver and street shopping on Commercial Street; MG Road is the more polished version. Both are close to the Indiranagar hotels.</p>
+        </div>
+        <div class="place">
+          <h4>Vidhana Soudha</h4>
+          <span class="hours">Exterior only · floodlit weekends</span>
+          <p>The granite seat of the state legislature. No public entry, but it's lit up on Sunday evenings and worth a slow drive past.</p>
+        </div>
+      </div>
+
+      <h3>Where to eat</h3>
+      <div class="place-grid">
+        <div class="place">
+          <h4>Taaza Thindi · Jayanagar 4th Block</h4>
+          <span class="hours">07:00 – 12:30 · 16:30 – 21:30</span>
+          <p>The one to prioritise. Masala dosa, idli-vada, chow chow bath with kesari bath, filter coffee — around ₹80 for two dishes each. Counter service, standing room, cash-friendly. Go early or in the evening; the midday gap is real.</p>
+        </div>
+        <div class="place">
+          <h4>MTR · Lalbagh Road</h4>
+          <span class="hours shut">06:30 – 11:00 · 12:30 – 21:00 · closed Mon</span>
+          <p>Serving since 1924, and where rava idli was invented during wartime rice rationing. Come for the thali or the rava idli. Expect to queue and to be seated with strangers.</p>
+        </div>
+        <div class="place">
+          <h4>Shri Sagar (CTR) · Malleshwaram</h4>
+          <span class="hours">07:00 – 12:30 · 16:00 – 21:00</span>
+          <p>The benne masala dosa — butter-drenched, crisp-edged, and the main argument against a second Taaza Thindi visit. Small, loud, worth it.</p>
+        </div>
+        <div class="place">
+          <h4>Vidyarthi Bhavan · Gandhi Bazaar</h4>
+          <span class="hours">Breakfast &amp; late afternoon</span>
+          <p>Basavanagudi institution since 1943, famous for its own take on the benne dosa. Queues out the door at weekends; a weekday morning is far easier.</p>
+        </div>
+        <div class="place">
+          <h4>Toit · Indiranagar</h4>
+          <span class="hours">~12:00 – late</span>
+          <p>The microbrewery in the plan, and walking distance from the Indiranagar hotels. No reservations, and the wait after 19:00 is serious — go early or eat first.</p>
+        </div>
+        <div class="place">
+          <h4>Truffles · Koramangala</h4>
+          <span class="hours">~11:00 – 23:00</span>
+          <p>Burgers and steaks, the other option in the plan. Long queues, and a 25-minute ride from Indiranagar — the weaker choice unless you're already south.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ MUMBAI ============ -->
+    <section>
+      <div class="sec-head">
+        <h2>Mumbai</h2>
+        <p class="daybar"><span>Wed 4 Nov, from ~11:00</span> · <span>Thu 5 Nov, full day</span> · <span>Fri 6 Nov, departure</span></p>
+        <p class="sec-note">With the morning flight you gain a Mumbai afternoon <em>and</em> the Marine Drive sunset on day one. Then Thursday forks: Elephanta, or the city loop. Not both.</p>
+      </div>
+
+      <h3>Worth the time</h3>
+      <div class="place-grid">
+        <div class="place">
+          <h4>Gateway of India</h4>
+          <span class="hours">Open access</span>
+          <p>Free, always crowded, and the anchor for everything else in Colaba. Also where the Elephanta ferries leave from, so you'll be here regardless.</p>
+        </div>
+        <div class="place">
+          <h4>Elephanta Caves</h4>
+          <span class="hours shut">Ferries 09:00 – 14:00 out · closed Mon</span>
+          <p>7th-century rock-cut Shiva temples on an island an hour offshore. Round-trip ferry runs about ₹260, entry ₹40 for Indian nationals and ₹600 for foreign. Budget the whole morning and then some — last return is 17:00.</p>
+        </div>
+        <div class="place">
+          <h4>Marine Drive</h4>
+          <span class="hours">Best 17:30 – 19:00</span>
+          <p>The sunset walk, and the reason the morning flight out of Bangalore earns its place. Chowpatty is at the northern end for chaat afterwards.</p>
+        </div>
+        <div class="place">
+          <h4>Chhatrapati Shivaji Maharaj Terminus</h4>
+          <span class="hours">Exterior anytime · floodlit at night</span>
+          <p>UNESCO-listed Victorian Gothic, and still a working commuter station. Best photographed from across the road at dusk.</p>
+        </div>
+        <div class="place">
+          <h4>Haji Ali Dargah</h4>
+          <span class="hours">Causeway at low tide only</span>
+          <p>A tomb on an islet reached by a stone causeway that floods at high tide — check the tide before committing to the walk out.</p>
+        </div>
+        <div class="place">
+          <h4>Bandra</h4>
+          <span class="hours">Late afternoon onward</span>
+          <p>Bandstand promenade, Mount Mary Church, and the street-art lanes off Chapel Road. Also where Elco Pani Puri is, so pair the two.</p>
+        </div>
+      </div>
+
+      <h3>Where to eat</h3>
+      <div class="place-grid">
+        <div class="place">
+          <h4>Elco Pani Puri Center · Bandra</h4>
+          <span class="hours">~11:00 – 23:30</span>
+          <p>The pani puri stop from the plan. Sit-down section inside, street counter outside — the counter is the better version and the cheaper one.</p>
+        </div>
+        <div class="place">
+          <h4>Sardar Pav Bhaji · Tardeo</h4>
+          <span class="hours">~12:00 – 01:30</span>
+          <p>The pav bhaji benchmark, and unapologetic about the amount of butter involved. Expect a wait and a token system at peak.</p>
+        </div>
+        <div class="place">
+          <h4>Aaram Vada Pav · near CST</h4>
+          <span class="hours">~07:00 – 22:00</span>
+          <p>The classic vada pav, opposite CST, and about as quick a stop as food gets. Pairs naturally with photographing the terminus.</p>
+        </div>
+        <div class="place">
+          <h4>Bademiya · Colaba</h4>
+          <span class="hours">Evening until very late</span>
+          <p>Seekh kebabs and rolls cooked on the street behind the Taj. A Colaba late-night institution — useful on the night you arrive tired.</p>
+        </div>
+        <div class="place">
+          <h4>Britannia &amp; Co · Ballard Estate</h4>
+          <span class="hours">Lunch only · limited days</span>
+          <p>Parsi, ancient, and famous for berry pulao. Lunch-only and closed some days, so ring ahead rather than turning up hopefully.</p>
+        </div>
+        <div class="place">
+          <h4>Girgaon Chowpatty</h4>
+          <span class="hours">Late afternoon into the night</span>
+          <p>Bhelpuri, sevpuri, and kulfi falooda to finish, right at the end of the Marine Drive walk. This is the plan's chaat dinner.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CHANDIGARH ============ -->
+    <section>
+      <div class="sec-head">
+        <h2>Chandigarh</h2>
+        <p class="daybar"><span>Fri 6 – Sun 15 Nov</span> · <span>nine days, no fixed plan</span></p>
+        <p class="sec-note">The unstructured stretch. Three or four days of city sights, and enough time left over for a real trip into the hills if you want one.</p>
+      </div>
+
+      <h3>In the city</h3>
+      <div class="place-grid">
+        <div class="place">
+          <h4>Rock Garden of Nek Chand</h4>
+          <span class="hours">09:00 – 19:00 · shorter in winter</span>
+          <p>Forty acres built secretly from industrial and household waste over eighteen years. Genuinely strange and the single best thing in Chandigarh. Small entry fee.</p>
+        </div>
+        <div class="place">
+          <h4>Sukhna Lake</h4>
+          <span class="hours">Open access · best at sunrise</span>
+          <p>Man-made lake at the foot of the Shivaliks, with a long promenade. Free, and the default morning walk for the whole city.</p>
+        </div>
+        <div class="place">
+          <h4>Capitol Complex</h4>
+          <span class="hours">Free guided tours · photo ID required</span>
+          <p>Le Corbusier's UNESCO-listed government buildings and the Open Hand monument. Access is by escorted tour only and needs ID — arrange it a day ahead.</p>
+        </div>
+        <div class="place">
+          <h4>Zakir Hussain Rose Garden</h4>
+          <span class="hours">Daylight hours</span>
+          <p>Asia's largest rose garden, 1,600 varieties across 30 acres. November is decent but not peak — the big bloom is February.</p>
+        </div>
+        <div class="place">
+          <h4>Sector 17 Plaza</h4>
+          <span class="hours">Shops ~11:00 – 21:00</span>
+          <p>The pedestrian market at the centre of Le Corbusier's grid, with the fountain and plenty of places to sit. Sindhi Sweets is here.</p>
+        </div>
+        <div class="place">
+          <h4>Government Museum &amp; Art Gallery</h4>
+          <span class="hours">10:00 – 16:30 · closed Mon</span>
+          <p>Gandharan sculpture and Pahari miniatures, in another Corbusier building. Small, quiet, and a good rainy-afternoon option.</p>
+        </div>
+      </div>
+
+      <h3>Day trips, if the nine days start to drag</h3>
+      <div class="place-grid">
+        <div class="place">
+          <h4>Pinjore Gardens</h4>
+          <span class="hours">~30 min by road</span>
+          <p>Seventeenth-century Mughal terraced garden at Kalka. Half a day, easy with parents, and lit up in the evenings.</p>
+        </div>
+        <div class="place">
+          <h4>Kasauli</h4>
+          <span class="hours">~1.5 hrs by road</span>
+          <p>Small colonial hill station in the Shivaliks. Cool November air, pine walks, and doable as a long day trip without an overnight.</p>
+        </div>
+        <div class="place">
+          <h4>Amritsar</h4>
+          <span class="hours">~4 hrs by road or a short flight</span>
+          <p>The Golden Temple and the Wagah border ceremony. Really an overnight rather than a day trip — but you have the days spare for it.</p>
+        </div>
+        <div class="place">
+          <h4>Shimla</h4>
+          <span class="hours">~3.5 hrs by road</span>
+          <p>The Kalka–Shimla toy train is the reason to go, and November is clear and cold. Needs two days to be worth the drive.</p>
+        </div>
+      </div>
+
+      <h3>Where to eat</h3>
+      <div class="place-grid">
+        <div class="place">
+          <h4>Pal Dhaba · Sector 28</h4>
+          <span class="hours">~11:00 – 23:00</span>
+          <p>The butter chicken everyone sends you to. Dhaba in name and prices, considerably busier in practice. Cash still easiest.</p>
+        </div>
+        <div class="place">
+          <h4>Sindhi Sweets · Sector 17</h4>
+          <span class="hours">~08:00 – 22:00</span>
+          <p>Chole bhature, samosas and mithai in the middle of the Sector 17 plaza. The obvious breakfast when you're already shopping.</p>
+        </div>
+        <div class="place">
+          <h4>Garam Dharam · Sector 26</h4>
+          <span class="hours">~12:00 – 23:00</span>
+          <p>Loud, kitsch, Punjabi-dhaba-as-theatre. Better for the group dinner than for the food, which is still perfectly good.</p>
+        </div>
+        <div class="place">
+          <h4>Backpackers Cafe · Sector 9</h4>
+          <span class="hours">~11:00 – 23:30</span>
+          <p>The break from Punjabi food when nine days of it catches up with you. Continental and Asian, and comfortable for a long sit.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ DELHI ============ -->
+    <section>
+      <div class="sec-head">
+        <h2>Delhi, briefly</h2>
+        <p class="daybar"><span>Sun 1 Nov, from ~21:30</span> · <span>one night only</span></p>
+        <p class="sec-note">You land at 20:15 and fly out mid-morning. This is a meal and a bed, not a stop.</p>
+      </div>
+      <div class="place-grid">
+        <div class="place">
+          <h4>Worldmark Aerocity</h4>
+          <span class="hours">Many kitchens until 23:00 or later</span>
+          <p>The restaurant district a few minutes from the Aerocity hotels, and realistically your only option at that hour. Sit-down and quick-service both.</p>
+        </div>
+        <div class="place">
+          <h4>Hotel room service</h4>
+          <span class="hours">24 hrs at the branded hotels</span>
+          <p>After Melbourne–Guangzhou–Delhi, the honest recommendation. Eat, sleep, and save the exploring for Bangalore.</p>
+        </div>
+      </div>
+    </section>
+
+  </div><!-- /panel-places -->
+
   <footer>
     <p>Fares and rates pulled live on 17 August 2026 for the exact dates and party sizes shown, and converted at ₹95.6 to the US dollar. Indian domestic fares move a lot inside the last eight weeks — treat these as the shape of the market rather than the price you'll pay.</p>
     <p>Flight data via Expedia; hotel rates and review scores via Booking.com. Review scores are on a 10-point scale.</p>
     <p><strong>About the links.</strong> Hotel names link straight to that property on Booking.com with your dates, room count and INR pricing already applied — the rate you see should match the table. The per-leg flight buttons open an Expedia search pre-filled with the route, date, passenger count and economy cabin, but they can't deep-link to one specific fare, so match the flight number from the table once the results load. Fares and rates both move, so treat the figures here as the shape of the market rather than a quote.</p>
+    <p><strong>About Places &amp; Food.</strong> Unlike the flights and hotels, this tab is not backed by a live booking feed — Booking.com carries no attractions inventory for these cities, so nothing here was priced or rated by a search tool. The three clashes at the top were verified against published opening hours and ferry schedules; everything else is curated, and opening times at independent restaurants in particular drift. Ring ahead for anything you'd be disappointed to miss.</p>
   </footer>
 
 </div>
+
+<script>
+  (function () {
+    var tabs = Array.prototype.slice.call(document.querySelectorAll('[role="tab"]'));
+
+    function select(tab) {
+      tabs.forEach(function (t) {
+        var selected = t === tab;
+        t.setAttribute('aria-selected', String(selected));
+        t.tabIndex = selected ? 0 : -1;
+        document.getElementById(t.getAttribute('aria-controls')).hidden = !selected;
+      });
+    }
+
+    tabs.forEach(function (tab, i) {
+      tab.addEventListener('click', function () { select(tab); });
+
+      tab.addEventListener('keydown', function (e) {
+        var next = null;
+        if (e.key === 'ArrowRight') next = tabs[(i + 1) % tabs.length];
+        else if (e.key === 'ArrowLeft') next = tabs[(i - 1 + tabs.length) % tabs.length];
+        else if (e.key === 'Home') next = tabs[0];
+        else if (e.key === 'End') next = tabs[tabs.length - 1];
+        if (next) { e.preventDefault(); select(next); next.focus(); }
+      });
+    });
+  })();
+</script>

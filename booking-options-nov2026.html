@@ -1,0 +1,671 @@
+<title>Five Flights, Four Cities</title>
+<style>
+  :root {
+    --ground:      #EDEFF3;
+    --surface:     #FFFFFF;
+    --surface-alt: #F5F7FA;
+    --ink:         #16202E;
+    --ink-mid:     #3D4B60;
+    --ink-soft:    #66748A;
+    --rule:        #D2D8E2;
+    --rule-soft:   #E4E8EE;
+    --accent:      #1B5C72;
+    --accent-bg:   #E2EFF3;
+    --signal:      #96600C;
+    --signal-bg:   #F7EDDA;
+    --alert:       #93242B;
+    --alert-bg:    #F7E3E4;
+
+    --mono: ui-monospace, "SF Mono", SFMono-Regular, "JetBrains Mono", Menlo, Consolas, "Liberation Mono", monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+    --step--1: clamp(0.76rem, 0.74rem + 0.1vw, 0.82rem);
+    --step-0:  clamp(0.94rem, 0.91rem + 0.14vw, 1.02rem);
+    --step-1:  clamp(1.12rem, 1.05rem + 0.3vw, 1.3rem);
+    --step-2:  clamp(1.4rem, 1.26rem + 0.6vw, 1.8rem);
+    --step-3:  clamp(1.9rem, 1.6rem + 1.3vw, 2.9rem);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:      #0E141C;
+      --surface:     #171F2A;
+      --surface-alt: #1D2734;
+      --ink:         #E3E8EF;
+      --ink-mid:     #B4BFCE;
+      --ink-soft:    #8794A7;
+      --rule:        #2B3746;
+      --rule-soft:   #222D3A;
+      --accent:      #6DB6CB;
+      --accent-bg:   #16333D;
+      --signal:      #D8A652;
+      --signal-bg:   #3A2E17;
+      --alert:       #E58A8A;
+      --alert-bg:    #3B1F21;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --ground:      #0E141C;
+    --surface:     #171F2A;
+    --surface-alt: #1D2734;
+    --ink:         #E3E8EF;
+    --ink-mid:     #B4BFCE;
+    --ink-soft:    #8794A7;
+    --rule:        #2B3746;
+    --rule-soft:   #222D3A;
+    --accent:      #6DB6CB;
+    --accent-bg:   #16333D;
+    --signal:      #D8A652;
+    --signal-bg:   #3A2E17;
+    --alert:       #E58A8A;
+    --alert-bg:    #3B1F21;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: var(--step-0);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 61rem;
+    margin: 0 auto;
+    padding: clamp(1.5rem, 4vw, 3.5rem) clamp(1rem, 4vw, 2.5rem) 5rem;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  /* ---------- masthead ---------- */
+
+  .masthead { display: flex; flex-direction: column; gap: 1.5rem; }
+
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: var(--step--1);
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--ink-soft);
+    margin: 0;
+  }
+
+  h1 {
+    font-family: var(--mono);
+    font-size: var(--step-3);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    text-wrap: balance;
+    margin: 0;
+  }
+
+  .standfirst {
+    font-size: var(--step-1);
+    color: var(--ink-mid);
+    max-width: 44ch;
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  .anchors {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .anchor { background: var(--surface); padding: 0.9rem 1.1rem; display: flex; flex-direction: column; gap: 0.25rem; }
+  .anchor dt {
+    font-family: var(--mono);
+    font-size: var(--step--1);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-soft);
+  }
+  .anchor dd { margin: 0; font-family: var(--mono); font-size: var(--step-0); font-variant-numeric: tabular-nums; }
+
+  /* ---------- sections ---------- */
+
+  section { display: flex; flex-direction: column; gap: 1.5rem; }
+
+  .sec-head { display: flex; flex-direction: column; gap: 0.5rem; border-top: 2px solid var(--ink); padding-top: 0.9rem; }
+
+  h2 {
+    font-family: var(--mono);
+    font-size: var(--step-2);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .sec-note { margin: 0; color: var(--ink-mid); max-width: 68ch; text-wrap: pretty; }
+
+  h3 {
+    font-family: var(--mono);
+    font-size: var(--step-1);
+    font-weight: 600;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+
+  /* ---------- findings ---------- */
+
+  .findings { display: flex; flex-direction: column; gap: 1rem; }
+
+  .finding {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-left: 4px solid var(--signal);
+    border-radius: 3px;
+    padding: 1.1rem 1.3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  .finding.is-good { border-left-color: var(--accent); }
+  .finding.is-bad  { border-left-color: var(--alert); }
+
+  .finding h3 { font-size: var(--step-0); text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-soft); }
+  .finding p { margin: 0; max-width: 72ch; text-wrap: pretty; }
+
+  /* ---------- legs ---------- */
+
+  .leg {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .leg-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.4rem 1rem;
+    padding: 1rem 1.3rem;
+    background: var(--surface-alt);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .leg-num {
+    font-family: var(--mono);
+    font-size: var(--step--1);
+    letter-spacing: 0.12em;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+  }
+
+  .leg-route { font-family: var(--mono); font-size: var(--step-1); font-weight: 600; letter-spacing: -0.01em; }
+  .leg-meta { font-size: var(--step--1); color: var(--ink-soft); font-family: var(--mono); }
+  .leg-body { padding: 0 1.3rem 1.3rem; display: flex; flex-direction: column; gap: 1rem; }
+  .leg-body > p { margin: 0; max-width: 72ch; text-wrap: pretty; }
+
+  /* ---------- tables ---------- */
+
+  .scroll { overflow-x: auto; margin: 0 -1.3rem; padding: 0 1.3rem; }
+  .scroll table { min-width: 34rem; }
+
+  table { width: 100%; border-collapse: collapse; font-size: var(--step--1); }
+
+  th {
+    text-align: left;
+    font-family: var(--mono);
+    font-weight: 600;
+    font-size: var(--step--1);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink-soft);
+    padding: 0.85rem 0.7rem 0.5rem 0;
+    border-bottom: 1px solid var(--rule);
+    white-space: nowrap;
+  }
+
+  td {
+    padding: 0.6rem 0.7rem 0.6rem 0;
+    border-bottom: 1px solid var(--rule-soft);
+    vertical-align: top;
+  }
+
+  tbody tr:last-child td { border-bottom: none; }
+
+  td.num, td.code, td.time { font-family: var(--mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  td.code { font-weight: 600; }
+  th.num, td.num { text-align: right; padding-right: 0; }
+  th.num { padding-right: 0; }
+
+  tr.pick td { background: var(--accent-bg); }
+  tr.pick td.code { color: var(--accent); }
+
+  .tag {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 0.15rem 0.45rem;
+    border-radius: 2px;
+    white-space: nowrap;
+    font-weight: 600;
+  }
+  .tag.rec  { background: var(--accent-bg); color: var(--accent); }
+  .tag.warn { background: var(--signal-bg); color: var(--signal); }
+  .tag.no   { background: var(--alert-bg);  color: var(--alert); }
+
+  .subnote { font-size: var(--step--1); color: var(--ink-soft); margin: 0; max-width: 72ch; text-wrap: pretty; }
+
+  /* ---------- alternates ---------- */
+
+  .alts { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); border-radius: 3px; overflow: hidden; }
+  .alt { background: var(--surface); padding: 0.9rem 1.1rem; display: flex; flex-direction: column; gap: 0.35rem; }
+  .alt strong { font-family: var(--mono); font-size: var(--step--1); text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-soft); font-weight: 600; }
+  .alt span { font-size: var(--step--1); color: var(--ink-mid); }
+
+  /* ---------- checklist ---------- */
+
+  ol.checklist { margin: 0; padding-left: 1.4rem; display: flex; flex-direction: column; gap: 0.7rem; }
+  ol.checklist li { padding-left: 0.3rem; max-width: 72ch; text-wrap: pretty; }
+
+  footer {
+    border-top: 1px solid var(--rule);
+    padding-top: 1.2rem;
+    font-size: var(--step--1);
+    color: var(--ink-soft);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  footer p { margin: 0; max-width: 72ch; text-wrap: pretty; }
+
+  a { color: var(--accent); text-underline-offset: 2px; }
+  a:focus-visible, :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+</style>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <p class="eyebrow">Booking worksheet · Sun 1 – Sun 15 Nov 2026 · 4 travellers</p>
+    <h1>Five Flights,<br>Four Cities</h1>
+    <p class="standfirst">Every domestic flight and hotel night you need to book for the India trip, with live fares, real alternates, and the three places the original plan doesn't survive contact with the timetable.</p>
+
+    <dl class="anchors">
+      <div class="anchor"><dt>Arrive Delhi</dt><dd>Sun 1 Nov · 20:15</dd></div>
+      <div class="anchor"><dt>Depart Delhi</dt><dd>Sun 15 Nov · 21:40</dd></div>
+      <div class="anchor"><dt>Flights to book</dt><dd>5 legs · 14 seats</dd></div>
+      <div class="anchor"><dt>Hotel nights</dt><dd>5 booked + 9 optional</dd></div>
+    </dl>
+  </header>
+
+  <!-- ================= FINDINGS ================= -->
+  <section>
+    <div class="sec-head">
+      <h2>Read this first</h2>
+      <p class="sec-note">Four things the live timetables changed. The rest of this sheet already accounts for them.</p>
+    </div>
+
+    <div class="findings">
+
+      <div class="finding is-bad">
+        <h3>The Mumbai afternoon flight doesn't exist</h3>
+        <p>The plan says “Bangalore morning, fly Bangalore → Mumbai afternoon” on Wed 4 Nov. Every non-stop I found into Mumbai's main airport (BOM) is either morning (up to 10:20) or evening (from 19:30) — nothing lands in the afternoon. The one afternoon non-stop goes to <strong>Navi Mumbai (NMI)</strong>, a different airport roughly 90 minutes from Colaba. You have to pick which half of the day to give up. Four ways to play it in Leg 3.</p>
+      </div>
+
+      <div class="finding is-good">
+        <h3>Chandigarh → Bangalore has more non-stops than you thought</h3>
+        <p>The plan lists two IndiGo non-stops and says most other options involve a layover. There are actually <strong>five non-stops</strong>, including an 08:00 departure and two Air India Express services. The two flight times in the plan are also both wrong: 6E 429 arrives 19:40 (not 19:00) and 6E 593 runs 18:50–22:05 (not 19:50–22:20). The 08:00 flight is the one you want — it gets your parents to Bangalore before you.</p>
+      </div>
+
+      <div class="finding is-good">
+        <h3>The Nov 15 connection works — on exactly one flight</h3>
+        <p>Seven non-stops run Chandigarh → Delhi that day. Three land <em>after</em> your 21:40 international departure, and one lands with under three hours to spare. <strong>AI 2454, 15:45–16:55</strong>, is the flight the plan was hoping for: a 4h45m buffer, and Air India domestic uses Terminal 3 — the same terminal your international flight leaves from, so no inter-terminal transfer. Book this one early.</p>
+      </div>
+
+      <div class="finding">
+        <h3>The hotel budget is low by roughly 2–3×</h3>
+        <p>Live rates run well above the estimates in the plan. Mumbai is the worst offender: Marine Plaza was pencilled at ₹8,000–9,500 a night and is quoting <strong>₹23,871</strong>; the President at ₹8,700 is quoting <strong>₹25,644</strong>. Delhi's Aloft was pencilled at ₹8,500 and is quoting <strong>₹17,700</strong>. Good news is that the searches turned up better-value properties at every tier — they're marked below.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= FLIGHTS ================= -->
+  <section>
+    <div class="sec-head">
+      <h2>The five flights</h2>
+      <p class="sec-note">Fares are per person, all-in, economy, as quoted on 17 Aug 2026 and converted at ₹95.6 to the US dollar. Non-stops only unless noted. Indian domestic check-in closes 45–60 minutes before departure — plan to be airside two hours out.</p>
+    </div>
+
+    <!-- LEG 1 -->
+    <article class="leg">
+      <div class="leg-head">
+        <span class="leg-num">Leg 1 · Mon 2 Nov</span>
+        <span class="leg-route">Delhi → Bangalore</span>
+        <span class="leg-meta">2 seats · you + wife · ~2h50m</span>
+      </div>
+      <div class="leg-body">
+        <p>Ten non-stops through the day and barely ₹500 between them, so pick on timing, not price. A late-morning departure gets you in for a relaxed afternoon and lines up almost exactly with your parents' arrival.</p>
+        <div class="scroll">
+          <table>
+            <thead>
+              <tr><th>Flight</th><th>Depart → Arrive</th><th>Duration</th><th class="num">Fare / person</th><th>Note</th></tr>
+            </thead>
+            <tbody>
+              <tr class="pick"><td class="code">6E 173</td><td class="time">10:30 → 13:25</td><td class="time">2h 55m</td><td class="num">₹12,046</td><td><span class="tag rec">Pick</span> Lands 20 min after your parents</td></tr>
+              <tr><td class="code">AI 2485</td><td class="time">10:30 → 13:20</td><td class="time">2h 50m</td><td class="num">₹12,313</td><td>Same slot, changeable fare</td></tr>
+              <tr><td class="code">6E 6188</td><td class="time">13:00 → 15:55</td><td class="time">2h 55m</td><td class="num">₹12,046</td><td>Later start, still a full evening</td></tr>
+              <tr><td class="code">AI 2664</td><td class="time">15:30 → 18:10</td><td class="time">2h 40m</td><td class="num">₹11,912</td><td>Cheapest non-stop</td></tr>
+              <tr><td class="code">6E 6833</td><td class="time">05:30 → 08:25</td><td class="time">2h 55m</td><td class="num">₹12,046</td><td>Full day in Bangalore, brutal after a long-haul</td></tr>
+              <tr><td class="code">6E 6622</td><td class="time">18:00 → 20:55</td><td class="time">2h 55m</td><td class="num">₹12,046</td><td>Latest sensible option</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="subnote">Also running: 6E 820 (03:00), 6E 176 (14:15), AI 2487 (18:30), 6E 6832 (19:00). One-stop fares via Kozhikode or Bhopal are ₹300–800 cheaper for 5½ hours of travel — not worth it.</p>
+      </div>
+    </article>
+
+    <!-- LEG 2 -->
+    <article class="leg">
+      <div class="leg-head">
+        <span class="leg-num">Leg 2 · Mon 2 Nov</span>
+        <span class="leg-route">Chandigarh → Bangalore</span>
+        <span class="leg-meta">2 seats · your parents · ~3h05m</span>
+      </div>
+      <div class="leg-body">
+        <p>This is the leg that saves your parents a Delhi backtrack, and it holds up: five non-stops, cheaper than your Delhi departure, and the morning service gets them settled before you land.</p>
+        <div class="scroll">
+          <table>
+            <thead>
+              <tr><th>Flight</th><th>Depart → Arrive</th><th>Duration</th><th class="num">Fare / person</th><th>Note</th></tr>
+            </thead>
+            <tbody>
+              <tr class="pick"><td class="code">6E 6634</td><td class="time">08:00 → 11:05</td><td class="time">3h 05m</td><td class="num">₹10,898</td><td><span class="tag rec">Pick</span> In before you, easy day</td></tr>
+              <tr><td class="code">IX 9856</td><td class="time">14:05 → 17:15</td><td class="time">3h 10m</td><td class="num">₹10,210</td><td>Cheapest, and changeable</td></tr>
+              <tr><td class="code">6E 429</td><td class="time">16:40 → 19:40</td><td class="time">3h 00m</td><td class="num">₹11,568</td><td>Plan listed this arriving 19:00 — it's 19:40</td></tr>
+              <tr><td class="code">6E 593</td><td class="time">18:50 → 22:05</td><td class="time">3h 15m</td><td class="num">₹12,332</td><td>Plan listed this as 19:50–22:20</td></tr>
+              <tr><td class="code">IX 9606</td><td class="time">19:55 → 23:10</td><td class="time">3h 15m</td><td class="num">₹11,711</td><td>Late arrival, changeable</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="subnote">IX flights are Air India Express, sold under Air India codes. If your parents would rather travel with you the whole way instead, they'd fly Chandigarh → Delhi on 1 Nov and join Leg 1 — but that's two extra sectors and a night's hotel for no gain, since the trip ends in Chandigarh anyway.</p>
+      </div>
+    </article>
+
+    <!-- LEG 3 -->
+    <article class="leg">
+      <div class="leg-head">
+        <span class="leg-num">Leg 3 · Wed 4 Nov</span>
+        <span class="leg-route">Bangalore → Mumbai</span>
+        <span class="leg-meta">4 seats · ~1h50m</span>
+      </div>
+      <div class="leg-body">
+        <p><strong>This is the leg that needs a decision.</strong> There's no afternoon non-stop into Mumbai's main airport, so the plan's “Bangalore morning, Mumbai afternoon” shape doesn't hold. Pick one of four trade-offs.</p>
+        <div class="scroll">
+          <table>
+            <thead>
+              <tr><th>Flight</th><th>Depart → Arrive</th><th>Into</th><th class="num">Fare / person</th><th>What you give up</th></tr>
+            </thead>
+            <tbody>
+              <tr class="pick"><td class="code">6E 5216</td><td class="time">08:30 → 10:20</td><td>BOM</td><td class="num">₹9,847</td><td><span class="tag rec">Pick</span> The second Taaza Thindi breakfast — but you gain a full Mumbai afternoon <em>and</em> the Marine Drive sunset</td></tr>
+              <tr><td class="code">6E 5376</td><td class="time">19:30 → 21:20</td><td>BOM</td><td class="num">₹10,325</td><td><span class="tag warn">Trade</span> The whole Mumbai evening — arrive, eat, sleep</td></tr>
+              <tr><td class="code">6E 580</td><td class="time">16:35 → 18:25</td><td>NMI</td><td class="num">₹8,700</td><td><span class="tag warn">Trade</span> Cheapest fare, but Navi Mumbai is ~90 min from Colaba and the saving vanishes in the cab</td></tr>
+              <tr><td class="code">6E 537 + 6E 5247</td><td class="time">10:00 → 14:25</td><td>BOM</td><td class="num">₹8,222</td><td><span class="tag warn">Trade</span> One stop in Hyderabad, 4h25m door to door — but it <em>is</em> the afternoon arrival the plan wanted</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="subnote">Other non-stops into BOM: 6E 5205 (03:15), 6E 5114 (05:30), 6E 5075 (07:15), 6E 5094 (20:45), 6E 5295 (22:15). Worth re-checking directly with IndiGo closer to the date in case a midday BOM service is added — the search results I pulled showed a clean gap between 10:20 and 19:30.</p>
+      </div>
+    </article>
+
+    <!-- LEG 4 -->
+    <article class="leg">
+      <div class="leg-head">
+        <span class="leg-num">Leg 4 · Fri 6 Nov</span>
+        <span class="leg-route">Mumbai → Chandigarh</span>
+        <span class="leg-meta">4 seats · ~2h10m</span>
+      </div>
+      <div class="leg-body">
+        <p>The most expensive leg of the trip by some margin, and the one where the fare spread actually matters across four tickets. A mid-morning departure keeps the Mumbai morning usable and lands you in Chandigarh for lunch.</p>
+        <div class="scroll">
+          <table>
+            <thead>
+              <tr><th>Flight</th><th>Depart → Arrive</th><th>From</th><th class="num">Fare / person</th><th>Note</th></tr>
+            </thead>
+            <tbody>
+              <tr class="pick"><td class="code">6E 5262</td><td class="time">09:45 → 11:55</td><td>BOM</td><td class="num">₹17,017</td><td><span class="tag rec">Pick</span> Lands in time for lunch with family</td></tr>
+              <tr><td class="code">AI 471</td><td class="time">06:05 → 08:20</td><td>BOM</td><td class="num">₹16,873</td><td>Early start, changeable fare, whole day in Chandigarh</td></tr>
+              <tr><td class="code">6E 6752</td><td class="time">15:55 → 18:10</td><td>BOM</td><td class="num">₹16,252</td><td>Full Mumbai morning if you want one more food stop</td></tr>
+              <tr><td class="code">AI 2783</td><td class="time">16:45 → 19:10</td><td>BOM</td><td class="num">₹16,472</td><td>Changeable fare</td></tr>
+              <tr><td class="code">6E 6204</td><td class="time">20:20 → 22:25</td><td>BOM</td><td class="num">₹16,252</td><td>Late arrival</td></tr>
+              <tr><td class="code">6E 831</td><td class="time">16:50 → 19:00</td><td>NMI</td><td class="num">₹13,671</td><td>₹13,400 cheaper across four tickets — but departs Navi Mumbai</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="subnote">The Navi Mumbai option is the single biggest saving available on the whole trip. It's only worth it if you're willing to build the last Mumbai morning around getting across the city with luggage.</p>
+      </div>
+    </article>
+
+    <!-- LEG 5 -->
+    <article class="leg">
+      <div class="leg-head">
+        <span class="leg-num">Leg 5 · Sun 15 Nov</span>
+        <span class="leg-route">Chandigarh → Delhi</span>
+        <span class="leg-meta">4 seats · ~1h · connects to 21:40 international</span>
+      </div>
+      <div class="leg-body">
+        <p>The one flight on this trip you cannot afford to get wrong. Three of the seven non-stops land after your international flight has already left.</p>
+        <div class="scroll">
+          <table>
+            <thead>
+              <tr><th>Flight</th><th>Depart → Arrive</th><th>Buffer to 21:40</th><th class="num">Fare / person</th><th>Verdict</th></tr>
+            </thead>
+            <tbody>
+              <tr class="pick"><td class="code">AI 2454</td><td class="time">15:45 → 16:55</td><td class="time">4h 45m</td><td class="num">₹11,921</td><td><span class="tag rec">Book this</span> Arrives T3, no terminal change</td></tr>
+              <tr><td class="code">AI 1862</td><td class="time">07:50 → 09:00</td><td class="time">12h 40m</td><td class="num">₹11,921</td><td>Safe but a very long airport day</td></tr>
+              <tr><td class="code">6E 2315</td><td class="time">06:25 → 07:25</td><td class="time">14h 15m</td><td class="num">₹7,552</td><td>Cheapest and safest, if you don't mind the wait</td></tr>
+              <tr><td class="code">6E 5163</td><td class="time">18:00 → 18:55</td><td class="time">2h 45m</td><td class="num">₹7,552</td><td><span class="tag warn">Tight</span> No room for a delay, and likely a T1→T3 transfer</td></tr>
+              <tr><td class="code">AI 2602</td><td class="time">20:15 → 21:25</td><td class="time">—</td><td class="num">—</td><td><span class="tag no">Misses it</span></td></tr>
+              <tr><td class="code">6E 2113</td><td class="time">21:55 → 22:55</td><td class="time">—</td><td class="num">—</td><td><span class="tag no">Misses it</span></td></tr>
+              <tr><td class="code">AI 1879</td><td class="time">22:05 → 23:05</td><td class="time">—</td><td class="num">—</td><td><span class="tag no">Misses it</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="subnote">Book Leg 5 on a separate ticket from your international flight, so confirm the arrival terminal at booking. Air India's Delhi domestic operations run from Terminal 3 alongside international departures, which is why AI 2454 beats the cheaper IndiGo option even at ₹4,369 more per person. If you'd rather not fly it at all, the Chandigarh–Delhi road transfer is 4–5 hours and needs a pre-dawn start on a Sunday — the flight is the better bet.</p>
+      </div>
+    </article>
+  </section>
+
+  <!-- ================= HOTELS ================= -->
+  <section>
+    <div class="sec-head">
+      <h2>The hotels</h2>
+      <p class="sec-note">Rates are live for your exact dates and party. The per-night column is <strong>per room, per night</strong> so the tiers compare honestly; the total column is what you'd actually pay for the whole stay. Everything shown scored 8.0+ with real review volume unless flagged.</p>
+    </div>
+
+    <!-- DELHI -->
+    <article class="leg">
+      <div class="leg-head">
+        <span class="leg-num">Stay 1 · Sun 1 Nov</span>
+        <span class="leg-route">Delhi — Aerocity</span>
+        <span class="leg-meta">1 night · 1 room · 2 people</span>
+      </div>
+      <div class="leg-body">
+        <p>You land at 20:15 after a long-haul and leave again the next morning. This is a bed near the airport, not a stay — the free airport pickup matters more than the brand.</p>
+        <div class="scroll">
+          <table>
+            <thead>
+              <tr><th>Property</th><th>Score</th><th class="num">Reviews</th><th class="num">Per night</th><th>Note</th></tr>
+            </thead>
+            <tbody>
+              <tr class="pick"><td>The Elevate Hotel, T3</td><td class="time">8.4</td><td class="num">1,066</td><td class="num">₹5,579</td><td><span class="tag rec">Pick</span> Free airport pickup, proven at volume</td></tr>
+              <tr><td>Airport NH Skye Suites, T3</td><td class="time">8.5</td><td class="num">339</td><td class="num">₹5,890</td><td>Free pickup, slightly better rated</td></tr>
+              <tr><td>Hotel Seven Star Inn</td><td class="time">9.4</td><td class="num">53</td><td class="num">₹3,118</td><td>Great score, thin review count</td></tr>
+              <tr><td>FairMounts Plaza Inns</td><td class="time">8.7</td><td class="num">271</td><td class="num">₹2,385</td><td>Cheapest with a credible sample</td></tr>
+              <tr><td>Aloft by Marriott Aerocity</td><td class="time">8.5</td><td class="num">3,175</td><td class="num">₹17,700</td><td>The splurge. Plan estimated ₹8,500</td></tr>
+              <tr><td>Andaz Delhi by Hyatt</td><td class="time">8.6</td><td class="num">1,652</td><td class="num">₹21,240</td><td>Plan estimated ₹11,250</td></tr>
+              <tr><td>JW Marriott Aerocity</td><td class="time">8.8</td><td class="num">940</td><td class="num">₹33,040</td><td>Best-rated of the big names</td></tr>
+              <tr><td>Holiday Inn Express T3</td><td class="time">7.0</td><td class="num">1,122</td><td class="num">₹32,672</td><td><span class="tag no">Avoid</span> Luxury price, 7.0 score</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="subnote">The plan listed a “Holiday Inn New Delhi Aerocity, 8.8” at ₹7,700. The property that actually comes up for these dates is Holiday Inn Express at Terminal 3, rated 7.0 and quoting ₹32,672 — comfortably the worst value in the search.</p>
+      </div>
+    </article>
+
+    <!-- BANGALORE -->
+    <article class="leg">
+      <div class="leg-head">
+        <span class="leg-num">Stay 2 · Mon 2 – Wed 4 Nov</span>
+        <span class="leg-route">Bangalore — Indiranagar</span>
+        <span class="leg-meta">2 nights · 2 rooms · 4 people</span>
+      </div>
+      <div class="leg-body">
+        <p>The best-value city of the trip by a distance, and Indiranagar puts you walking distance from Toit and a short ride from Jayanagar for the Taaza Thindi breakfast.</p>
+        <div class="scroll">
+          <table>
+            <thead>
+              <tr><th>Property</th><th>Score</th><th class="num">Reviews</th><th class="num">Per room/night</th><th class="num">Total stay</th></tr>
+            </thead>
+            <tbody>
+              <tr class="pick"><td>Olive Zip Indiranagar Metro <span class="tag rec">Pick</span></td><td class="time">9.0</td><td class="num">439</td><td class="num">₹3,527</td><td class="num">₹14,106</td></tr>
+              <tr><td>Hotel Noble Nook, 100 Ft Road</td><td class="time">8.7</td><td class="num">170</td><td class="num">₹3,402</td><td class="num">₹13,608</td></tr>
+              <tr><td>Thyme the Transit</td><td class="time">8.6</td><td class="num">86</td><td class="num">₹3,392</td><td class="num">₹13,566</td></tr>
+              <tr><td>Sanctum Suites Indiranagar</td><td class="time">8.1</td><td class="num">99</td><td class="num">₹3,990</td><td class="num">₹15,960</td></tr>
+              <tr><td>Tristar Serviced Apartments</td><td class="time">8.2</td><td class="num">132</td><td class="num">₹5,309</td><td class="num">₹21,238</td></tr>
+              <tr><td>Hotel City Centre Residency</td><td class="time">8.1</td><td class="num">28</td><td class="num">₹5,538</td><td class="num">₹22,152</td></tr>
+              <tr><td>Bloom Hotel Indiranagar</td><td class="time">8.3</td><td class="num">267</td><td class="num">₹10,205</td><td class="num">₹40,819</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="subnote">Olive Zip is the standout: a 9.0 across 439 reviews for ₹3,527 a room. Bloom, which the plan pencilled at ₹4,500–6,500, is quoting ₹10,205 and is rated lower — skip it. Note Bloom is also an adults-only property.</p>
+      </div>
+    </article>
+
+    <!-- MUMBAI -->
+    <article class="leg">
+      <div class="leg-head">
+        <span class="leg-num">Stay 3 · Wed 4 – Fri 6 Nov</span>
+        <span class="leg-route">Mumbai — Colaba &amp; Marine Drive</span>
+        <span class="leg-meta">2 nights · 2 rooms · 4 people</span>
+      </div>
+      <div class="leg-body">
+        <p>Where the budget goes to die. Two nights for four people in South Mumbai costs more than five nights across Delhi and Bangalore combined — but the location is the whole point of the Mumbai day, so staying central is worth defending.</p>
+        <div class="scroll">
+          <table>
+            <thead>
+              <tr><th>Property</th><th>Area</th><th>Score</th><th class="num">Per room/night</th><th class="num">Total stay</th></tr>
+            </thead>
+            <tbody>
+              <tr class="pick"><td>Hotel Suba Palace <span class="tag rec">Pick</span></td><td>Colaba, by the Gateway</td><td class="time">8.6</td><td class="num">₹13,828</td><td class="num">₹55,310</td></tr>
+              <tr><td>Residency Hotel Fort</td><td>Fort</td><td class="time">8.7</td><td class="num">₹9,882</td><td class="num">₹39,528</td></tr>
+              <tr><td>Bed and Breakfast at Colaba</td><td>Colaba</td><td class="time">8.1</td><td class="num">₹4,239</td><td class="num">₹16,958</td></tr>
+              <tr><td>Astoria Hotel</td><td>Churchgate</td><td class="time">8.3</td><td class="num">₹16,520</td><td class="num">₹66,080</td></tr>
+              <tr><td>The Ambassador</td><td>Marine Drive</td><td class="time">8.0</td><td class="num">₹17,700</td><td class="num">₹70,800</td></tr>
+              <tr><td>Hotel Marine Plaza</td><td>Marine Drive</td><td class="time">8.2</td><td class="num">₹23,871</td><td class="num">₹95,482</td></tr>
+              <tr><td>President — IHCL SeleQtions</td><td>Cuffe Parade</td><td class="time">8.4</td><td class="num">₹25,644</td><td class="num">₹102,575</td></tr>
+              <tr><td>InterContinental Marine Drive</td><td>Marine Drive</td><td class="time">8.6</td><td class="num">₹28,254</td><td class="num">₹113,016</td></tr>
+              <tr><td>Trident Nariman Point</td><td>Nariman Point</td><td class="time">9.0</td><td class="num">₹29,205</td><td class="num">₹116,820</td></tr>
+              <tr><td>Taj Mahal Tower</td><td>Colaba</td><td class="time">9.3</td><td class="num">₹32,627</td><td class="num">₹130,508</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="subnote">Two calls worth making here. <strong>Residency Hotel Fort</strong> is the value play — 8.7 across 2,458 reviews for ₹9,882 a room, a 15-minute walk from the Gateway, and ₹15,782 cheaper than Suba Palace over the stay. And if you're going to spend, <strong>Trident Nariman Point</strong> (9.0 across 4,127 reviews) is better rated than Marine Plaza, the President, and the InterContinental while sitting in the same price band — it's the better luxury pick than any of the three the plan shortlisted.</p>
+      </div>
+    </article>
+
+    <!-- CHANDIGARH -->
+    <article class="leg">
+      <div class="leg-head">
+        <span class="leg-num">Stay 4 · Fri 6 – Sun 15 Nov</span>
+        <span class="leg-route">Chandigarh</span>
+        <span class="leg-meta">9 nights · only if you're not with family</span>
+      </div>
+      <div class="leg-body">
+        <p>The plan reads as though you're staying with family for this stretch, so this is a fallback rather than a booking. At nine nights, small nightly differences compound hard — the gap between the top and bottom of this table is over ₹2.4 lakh.</p>
+        <div class="scroll">
+          <table>
+            <thead>
+              <tr><th>Property</th><th>Area</th><th>Score</th><th class="num">Per room/night</th><th class="num">Total stay</th></tr>
+            </thead>
+            <tbody>
+              <tr class="pick"><td>Anchorage 42 <span class="tag rec">Pick</span></td><td>Sector 8-A, central</td><td class="time">9.5</td><td class="num">₹8,952</td><td class="num">₹161,145</td></tr>
+              <tr><td>Hotel Woodlark Square</td><td>Zirakpur, outskirts</td><td class="time">9.6</td><td class="num">₹1,605</td><td class="num">₹28,890</td></tr>
+              <tr><td>JB Residency Hotel</td><td>Zirakpur, outskirts</td><td class="time">9.1</td><td class="num">₹1,416</td><td class="num">₹25,490</td></tr>
+              <tr><td>Cosy Cottage</td><td>Sector 48</td><td class="time">8.9</td><td class="num">₹4,708</td><td class="num">₹84,748</td></tr>
+              <tr><td>Hyatt Regency, Elante Mall</td><td>Industrial Area</td><td class="time">8.5</td><td class="num">₹14,367</td><td class="num">₹258,597</td></tr>
+              <tr><td>Hyatt Centric Sector 17</td><td>Sector 17</td><td class="time">8.5</td><td class="num">₹15,190</td><td class="num">₹273,418</td></tr>
+              <tr><td>Taj Chandigarh</td><td>Sector 17</td><td class="time">8.0</td><td class="num">₹15,085</td><td class="num">₹271,527</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="subnote">Anchorage 42 is the pick if you want quality and a central location near Sukhna Lake. The two Zirakpur properties are extraordinary value and score higher, but sit well outside the city — fine if you'll have a car, frustrating if not. Note the Taj scores 8.0 at essentially Hyatt money.</p>
+      </div>
+    </article>
+  </section>
+
+  <!-- ================= BUDGET ================= -->
+  <section>
+    <div class="sec-head">
+      <h2>What it adds up to</h2>
+      <p class="sec-note">Every recommended pick above, totalled. Excludes the Chandigarh stay on the assumption you're with family.</p>
+    </div>
+
+    <div class="scroll">
+      <table>
+        <thead>
+          <tr><th>Item</th><th>Choice</th><th class="num">Seats / rooms</th><th class="num">Total</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Leg 1 · Delhi → Bangalore</td><td class="code">6E 173</td><td class="num">2</td><td class="num">₹24,092</td></tr>
+          <tr><td>Leg 2 · Chandigarh → Bangalore</td><td class="code">6E 6634</td><td class="num">2</td><td class="num">₹21,796</td></tr>
+          <tr><td>Leg 3 · Bangalore → Mumbai</td><td class="code">6E 5216</td><td class="num">4</td><td class="num">₹39,388</td></tr>
+          <tr><td>Leg 4 · Mumbai → Chandigarh</td><td class="code">6E 5262</td><td class="num">4</td><td class="num">₹68,068</td></tr>
+          <tr><td>Leg 5 · Chandigarh → Delhi</td><td class="code">AI 2454</td><td class="num">4</td><td class="num">₹47,684</td></tr>
+          <tr><td>Delhi · 1 night</td><td>The Elevate</td><td class="num">1</td><td class="num">₹5,579</td></tr>
+          <tr><td>Bangalore · 2 nights</td><td>Olive Zip</td><td class="num">2</td><td class="num">₹14,106</td></tr>
+          <tr><td>Mumbai · 2 nights</td><td>Suba Palace</td><td class="num">2</td><td class="num">₹55,310</td></tr>
+          <tr class="pick"><td><strong>Total</strong></td><td>Flights ₹201,028 + hotels ₹74,995</td><td class="num">—</td><td class="num"><strong>₹276,023</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="alts">
+      <div class="alt"><strong>Trim ₹15,782</strong><span>Swap Mumbai to Residency Hotel Fort — rated higher, 15 minutes further from the Gateway.</span></div>
+      <div class="alt"><strong>Trim ₹13,400</strong><span>Fly Leg 4 out of Navi Mumbai on 6E 831, if you'll take the cross-city transfer.</span></div>
+      <div class="alt"><strong>Trim ₹17,476</strong><span>Take 6E 2315 at 06:25 on Leg 5 instead of AI 2454 — cheapest and safest, but a 14-hour airport day.</span></div>
+      <div class="alt"><strong>Add ₹69,000</strong><span>Upgrade Mumbai to Trident Nariman Point, the best-rated option in its price band.</span></div>
+    </div>
+  </section>
+
+  <!-- ================= ACTIONS ================= -->
+  <section>
+    <div class="sec-head">
+      <h2>Book in this order</h2>
+      <p class="sec-note">Two of these are time-sensitive; the rest can wait.</p>
+    </div>
+
+    <ol class="checklist">
+      <li><strong>AI 2454 on 15 Nov, four seats.</strong> The only Chandigarh–Delhi flight that combines a comfortable buffer with a Terminal 3 arrival. Three of the seven non-stops that day are unusable, so this is the scarcest seat on the trip.</li>
+      <li><strong>Decide the Mumbai arrival question</strong> and book Leg 3 to match. Morning departure buys you the Marine Drive sunset; evening departure buys you a second Bangalore breakfast. You can't have both.</li>
+      <li><strong>Leg 4, Mumbai → Chandigarh.</strong> The priciest leg, and the one where booking early pays best across four tickets.</li>
+      <li><strong>Legs 1 and 2</strong> — both have ten and five non-stop options respectively with little price spread, so there's slack here. Just confirm the two arrivals still land within an hour of each other after you book.</li>
+      <li><strong>Mumbai hotel next, then Bangalore, then Delhi.</strong> Mumbai is the scarce, expensive one; the Delhi airport night can be booked a week out without penalty.</li>
+      <li><strong>Re-verify Leg 5's arrival terminal</strong> when you book, since it's a separate ticket from your international flight and a terminal change would eat the buffer.</li>
+    </ol>
+  </section>
+
+  <footer>
+    <p>Fares and rates pulled live on 17 August 2026 for the exact dates and party sizes shown, and converted at ₹95.6 to the US dollar. Indian domestic fares move a lot inside the last eight weeks — treat these as the shape of the market rather than the price you'll pay.</p>
+    <p>Flight data via Expedia; hotel rates and review scores via Booking.com. Review scores are on a 10-point scale.</p>
+  </footer>
+
+</div>

@@ -259,6 +259,9 @@
     font-weight: 600;
   }
   .tag.rec  { background: var(--accent-bg); color: var(--accent); }
+  .tag.set  { background: var(--accent); color: var(--surface); }
+  :root[data-theme="dark"] .tag.set { color: #0E141C; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .tag.set { color: #0E141C; } }
   .tag.warn { background: var(--signal-bg); color: var(--signal); }
   .tag.no   { background: var(--alert-bg);  color: var(--alert); }
 
@@ -452,23 +455,23 @@
         <span class="leg-meta">2 seats · you + wife · ~2h50m</span>
       </div>
       <div class="leg-body">
-        <p>Ten non-stops through the day and barely ₹500 between them, so pick on timing, not price. A late-morning departure gets you in for a relaxed afternoon and lines up almost exactly with your parents' arrival.</p>
+        <p>Sixteen non-stops run this route and there's barely ₹500 between most of them, so this is a timing decision rather than a price one. <strong>6E 826 is chosen.</strong> It lands at 12:15, seventy minutes after your parents get in at 11:05 — a short enough wait that they can sit tight at the airport and you travel into the city together.</p>
         <div class="scroll">
           <table>
             <thead>
               <tr><th>Flight</th><th>Depart → Arrive</th><th>Duration</th><th class="num">Fare / person</th><th>Note</th></tr>
             </thead>
             <tbody>
-              <tr class="pick"><td class="code">6E 173</td><td class="time">10:30 → 13:25</td><td class="time">2h 55m</td><td class="num">₹12,046</td><td><span class="tag rec">Pick</span> Lands 20 min after your parents</td></tr>
-              <tr><td class="code">AI 2485</td><td class="time">10:30 → 13:20</td><td class="time">2h 50m</td><td class="num">₹12,313</td><td>Same slot, changeable fare</td></tr>
+              <tr class="pick"><td class="code">6E 826</td><td class="time">09:15 → 12:15</td><td class="time">3h 00m</td><td class="num">₹12,046</td><td><span class="tag set">Chosen</span> Lands 70 min after your parents</td></tr>
+              <tr><td class="code">6E 173</td><td class="time">10:30 → 13:25</td><td class="time">2h 55m</td><td class="num">₹12,046</td><td>An hour later, same fare</td></tr>
+              <tr><td class="code">AI 2485</td><td class="time">10:30 → 13:20</td><td class="time">2h 50m</td><td class="num">₹12,313</td><td>Changeable fare, if you want the flexibility</td></tr>
               <tr><td class="code">6E 6188</td><td class="time">13:00 → 15:55</td><td class="time">2h 55m</td><td class="num">₹12,046</td><td>Later start, still a full evening</td></tr>
-              <tr><td class="code">AI 2664</td><td class="time">15:30 → 18:10</td><td class="time">2h 40m</td><td class="num">₹11,912</td><td>Cheapest non-stop</td></tr>
+              <tr><td class="code">AI 2664</td><td class="time">15:30 → 18:10</td><td class="time">2h 40m</td><td class="num">₹11,912</td><td>Cheapest non-stop, shortest flight</td></tr>
               <tr><td class="code">6E 6833</td><td class="time">05:30 → 08:25</td><td class="time">2h 55m</td><td class="num">₹12,046</td><td>Full day in Bangalore, brutal after a long-haul</td></tr>
-              <tr><td class="code">6E 6622</td><td class="time">18:00 → 20:55</td><td class="time">2h 55m</td><td class="num">₹12,046</td><td>Latest sensible option</td></tr>
             </tbody>
           </table>
         </div>
-        <p class="subnote">Also running: 6E 820 (03:00), 6E 176 (14:15), AI 2487 (18:30), 6E 6832 (19:00). One-stop fares via Kozhikode or Bhopal are ₹300–800 cheaper for 5½ hours of travel — not worth it.</p>
+        <p class="subnote">Also running non-stop: 6E 820 (03:00), AI 2409 (06:00), 6E 176 (14:15), AI 2813 (18:00), 6E 6622 (18:00), AI 2487 (18:30), 6E 6832 (19:00), 6E 6515 (20:00), 6E 846 (21:30), 6E 6131 (23:00). One-stop fares via Kozhikode or Bhopal are ₹300–800 cheaper for 5½ hours of travel — not worth it. A 09:15 departure means leaving Aerocity around 07:15.</p>
         <a class="book" href="https://www.expedia.com/Flights-Search?trip=oneway&amp;leg1=from:DEL,to:BLR,departure:11/02/2026TANYT&amp;passengers=adults:2&amp;options=cabinclass:economy&amp;mode=search">Search Leg 1 on Expedia</a>
       </div>
     </article>
@@ -507,14 +510,14 @@
         <span class="leg-meta">2 seats · your parents · ~3h05m</span>
       </div>
       <div class="leg-body">
-        <p>Flying direct saves your parents the Delhi backtrack entirely. Five non-stops run this route, all cheaper than your Delhi departure, and the morning service gets them settled before you land.</p>
+        <p>Flying direct saves your parents the Delhi backtrack entirely. Five non-stops run this route, all cheaper than your Delhi departure. <strong>6E 6634 is chosen</strong> — it's the cheapest of the three IndiGo services and lands at 11:05, seventy minutes ahead of you, so they land first and nobody waits long.</p>
         <div class="scroll">
           <table>
             <thead>
               <tr><th>Flight</th><th>Depart → Arrive</th><th>Duration</th><th class="num">Fare / person</th><th>Note</th></tr>
             </thead>
             <tbody>
-              <tr class="pick"><td class="code">6E 6634</td><td class="time">08:00 → 11:05</td><td class="time">3h 05m</td><td class="num">₹10,898</td><td><span class="tag rec">Pick</span> In before you, easy day</td></tr>
+              <tr class="pick"><td class="code">6E 6634</td><td class="time">08:00 → 11:05</td><td class="time">3h 05m</td><td class="num">₹10,898</td><td><span class="tag set">Chosen</span> In 70 min before you, easy day</td></tr>
               <tr><td class="code">IX 9856</td><td class="time">14:05 → 17:15</td><td class="time">3h 10m</td><td class="num">₹10,210</td><td>Cheapest, and changeable</td></tr>
               <tr><td class="code">6E 429</td><td class="time">16:40 → 19:40</td><td class="time">3h 00m</td><td class="num">₹11,568</td><td>Late-afternoon departure</td></tr>
               <tr><td class="code">6E 593</td><td class="time">18:50 → 22:05</td><td class="time">3h 15m</td><td class="num">₹12,332</td><td>Evening, arrives after dinner</td></tr>
@@ -755,8 +758,8 @@
           <tr><th>Item</th><th>Choice</th><th class="num">Seats / rooms</th><th class="num">Total</th></tr>
         </thead>
         <tbody>
-          <tr><td>Leg 1 · Delhi → Bangalore</td><td class="code">6E 173</td><td class="num">2</td><td class="num">₹24,092</td></tr>
-          <tr><td>Leg 2 · Chandigarh → Bangalore</td><td class="code">6E 6634</td><td class="num">2</td><td class="num">₹21,796</td></tr>
+          <tr><td>Leg 1 · Delhi → Bangalore <span class="tag set">Chosen</span></td><td class="code">6E 826</td><td class="num">2</td><td class="num">₹24,092</td></tr>
+          <tr><td>Leg 2 · Chandigarh → Bangalore <span class="tag set">Chosen</span></td><td class="code">6E 6634</td><td class="num">2</td><td class="num">₹21,796</td></tr>
           <tr><td>Leg 3 · Bangalore → Mumbai</td><td class="code">6E 5216</td><td class="num">4</td><td class="num">₹39,388</td></tr>
           <tr><td>Leg 4 · Mumbai → Chandigarh</td><td class="code">6E 5262</td><td class="num">4</td><td class="num">₹68,068</td></tr>
           <tr><td>Leg 5 · Chandigarh → Delhi</td><td class="code">AI 2454</td><td class="num">4</td><td class="num">₹47,684</td></tr>
@@ -780,14 +783,14 @@
   <section>
     <div class="sec-head">
       <h2>Book in this order</h2>
-      <p class="sec-note">Two of these are time-sensitive; the rest can wait.</p>
+      <p class="sec-note">Legs 1 and 2 are settled. Four decisions left, and only two of them are time-sensitive.</p>
     </div>
 
     <ol class="checklist">
       <li><strong>AI 2454 on 15 Nov, four seats.</strong> The only Chandigarh–Delhi flight that combines a comfortable buffer with a Terminal 3 arrival. Three of the seven non-stops that day are unusable, so this is the scarcest seat on the trip.</li>
-      <li><strong>Decide the Mumbai arrival question</strong> and book Leg 3 to match. Morning departure buys you the Marine Drive sunset; evening departure buys you a second Bangalore breakfast. You can't have both.</li>
+      <li><strong>Decide the Mumbai arrival question</strong> and book Leg 3 to match. Morning departure buys you the Marine Drive sunset; evening departure buys you a last Bangalore morning. You can't have both.</li>
       <li><strong>Leg 4, Mumbai → Chandigarh.</strong> The priciest leg, and the one where booking early pays best across four tickets.</li>
-      <li><strong>Legs 1 and 2</strong> — both have ten and five non-stop options respectively with little price spread, so there's slack here. Just confirm the two arrivals still land within an hour of each other after you book.</li>
+      <li><strong>Legs 1 and 2 are decided</strong> — 6E 826 for you and 6E 6634 for your parents, landing 12:15 and 11:05. Book them on separate tickets, since they're separate origins, and just confirm both times when you do.</li>
       <li><strong>Mumbai hotel next, then Bangalore, then Delhi.</strong> Mumbai is the scarce, expensive one; the Delhi airport night can be booked a week out without penalty.</li>
       <li><strong>Re-verify Leg 5's arrival terminal</strong> when you book, since it's a separate ticket from your international flight and a terminal change would eat the buffer.</li>
     </ol>

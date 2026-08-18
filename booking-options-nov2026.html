@@ -26,42 +26,6 @@
     --step-3:  clamp(1.9rem, 1.6rem + 1.3vw, 2.9rem);
   }
 
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-      --ground:      #0E141C;
-      --surface:     #171F2A;
-      --surface-alt: #1D2734;
-      --ink:         #E3E8EF;
-      --ink-mid:     #B4BFCE;
-      --ink-soft:    #8794A7;
-      --rule:        #2B3746;
-      --rule-soft:   #222D3A;
-      --accent:      #6DB6CB;
-      --accent-bg:   #16333D;
-      --signal:      #D8A652;
-      --signal-bg:   #3A2E17;
-      --alert:       #E58A8A;
-      --alert-bg:    #3B1F21;
-    }
-  }
-
-  :root[data-theme="dark"] {
-    --ground:      #0E141C;
-    --surface:     #171F2A;
-    --surface-alt: #1D2734;
-    --ink:         #E3E8EF;
-    --ink-mid:     #B4BFCE;
-    --ink-soft:    #8794A7;
-    --rule:        #2B3746;
-    --rule-soft:   #222D3A;
-    --accent:      #6DB6CB;
-    --accent-bg:   #16333D;
-    --signal:      #D8A652;
-    --signal-bg:   #3A2E17;
-    --alert:       #E58A8A;
-    --alert-bg:    #3B1F21;
-  }
-
   * { box-sizing: border-box; }
 
   body {
@@ -260,8 +224,6 @@
   }
   .tag.rec  { background: var(--accent-bg); color: var(--accent); }
   .tag.set  { background: var(--accent); color: var(--surface); }
-  :root[data-theme="dark"] .tag.set { color: #0E141C; }
-  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .tag.set { color: #0E141C; } }
   .tag.warn { background: var(--signal-bg); color: var(--signal); }
   .tag.no   { background: var(--alert-bg);  color: var(--alert); }
 

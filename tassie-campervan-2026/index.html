@@ -1,0 +1,1518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0f3d2e">
+<title>Tasmania Campervan · 12–16 Sep 2026</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: { sans: ['Outfit','system-ui','sans-serif'], display: ['Playfair Display','Georgia','serif'] },
+      colors: {
+        forest: { 50:'#f0f7f4', 100:'#dbeee5', 700:'#0f5c43', 800:'#0d4835', 900:'#0f3d2e' },
+        sand:   { 50:'#faf9f6', 100:'#f4f1ea', 200:'#e8e3d7' },
+        ember:  { 500:'#d97706', 600:'#b45309' }
+      },
+      boxShadow: { soft: '0 1px 2px rgba(15,61,46,.04), 0 8px 24px -12px rgba(15,61,46,.18)' }
+    }
+  }
+}
+</script>
+
+<style>
+  html { scroll-behavior: smooth; scroll-padding-top: 118px; }
+  body { -webkit-font-smoothing: antialiased; background: #faf9f6; }
+  .no-sb::-webkit-scrollbar { display:none; }
+  .no-sb { -ms-overflow-style:none; scrollbar-width:none; }
+
+  /* nav pills */
+  .navpill { white-space:nowrap; border-radius:9999px; padding:.45rem .9rem; font-size:.8125rem; font-weight:600;
+             color:#4b5563; transition:all .18s ease; border:1px solid transparent; }
+  .navpill:hover { background:#f0f7f4; color:#0f3d2e; }
+  .navpill.on { background:#0f3d2e; color:#fff; }
+
+  /* custom checkbox */
+  .chk { appearance:none; -webkit-appearance:none; width:1.35rem; height:1.35rem; flex:0 0 auto;
+         border:2px solid #cbd5e1; border-radius:.45rem; background:#fff; cursor:pointer; position:relative;
+         transition:all .16s ease; margin-top:.06rem; }
+  .chk:hover { border-color:#0f5c43; }
+  .chk:checked { background:#0f5c43; border-color:#0f5c43; }
+  .chk:checked::after { content:''; position:absolute; left:.42rem; top:.16rem; width:.32rem; height:.66rem;
+                        border:solid #fff; border-width:0 2.5px 2.5px 0; transform:rotate(45deg); }
+  .chk:focus-visible { outline:2px solid #0f5c43; outline-offset:2px; }
+  .chk:checked + .chk-label { color:#94a3b8; text-decoration:line-through; text-decoration-color:#cbd5e1; }
+  .chk-label { transition:color .16s ease; }
+
+  /* badges */
+  .badge { display:inline-flex; align-items:center; gap:.3rem; border-radius:9999px; padding:.2rem .6rem;
+           font-size:.7rem; font-weight:700; letter-spacing:.01em; }
+
+  .maprail { aspect-ratio: 16/9; }
+  @media (max-width: 640px){ .maprail { aspect-ratio: 4/3; } }
+
+  details > summary { list-style:none; cursor:pointer; }
+  details > summary::-webkit-details-marker { display:none; }
+  details[open] .chev { transform: rotate(180deg); }
+  .chev { transition: transform .2s ease; }
+
+  .tl::before { content:''; position:absolute; left:0; top:.55rem; bottom:-.4rem; width:2px;
+                background:linear-gradient(#dbeee5,#f4f1ea); }
+  .tl:last-child::before { display:none; }
+
+  .hidden { display:none !important; }
+
+  input[type=number]::-webkit-outer-spin-button, input[type=number]::-webkit-inner-spin-button { -webkit-appearance:none; margin:0; }
+  input[type=number] { -moz-appearance:textfield; }
+</style>
+</head>
+<body class="font-sans text-slate-800 antialiased">
+
+<!-- ══════════ HEADER ══════════ -->
+<header class="sticky top-0 z-40 bg-sand-50/95 backdrop-blur-xl border-b border-sand-200">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6">
+    <div class="flex items-center justify-between h-14">
+      <div class="flex items-center gap-2.5 min-w-0">
+        <span class="text-xl">🚐</span>
+        <div class="min-w-0">
+          <div class="font-bold text-[15px] leading-tight text-forest-900 truncate">Tassie Campervan</div>
+          <div class="text-[11px] text-slate-500 leading-tight">12–16 Sep 2026 · Jaspreet &amp; Prabhjot</div>
+        </div>
+      </div>
+      <div id="countdown" class="text-right shrink-0">
+        <div id="cd-num" class="font-display text-xl leading-none text-forest-800">—</div>
+        <div class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold">days to go</div>
+      </div>
+    </div>
+    <nav class="flex gap-1.5 overflow-x-auto no-sb pb-2.5 -mx-1 px-1">
+      <a href="#overview"   class="navpill on">Overview</a>
+      <a href="#itinerary"  class="navpill">Itinerary</a>
+      <a href="#hikes"      class="navpill">Hikes</a>
+      <a href="#camps"      class="navpill">Campsites</a>
+      <a href="#planb"      class="navpill">Plan B</a>
+      <a href="#checklists" class="navpill">Checklists</a>
+      <a href="#budget"     class="navpill">Budget</a>
+    </nav>
+  </div>
+</header>
+
+<main class="max-w-5xl mx-auto px-4 sm:px-6 pb-24">
+
+<!-- ══════════ OVERVIEW ══════════ -->
+<section id="overview" class="pt-8">
+
+  <div class="relative overflow-hidden rounded-3xl bg-forest-900 text-white p-6 sm:p-9 shadow-soft">
+    <div class="absolute -right-14 -top-14 w-56 h-56 rounded-full bg-white/5"></div>
+    <div class="absolute -right-4 top-24 w-32 h-32 rounded-full bg-white/5"></div>
+    <div class="relative">
+      <p class="text-[11px] uppercase tracking-[.18em] text-forest-100/70 font-semibold">5 Days · 4 Nights · Campervan</p>
+      <h1 class="font-display text-3xl sm:text-5xl mt-2 leading-[1.05]">Tasmania, end to end</h1>
+      <p class="mt-3 text-forest-100/80 text-sm sm:text-base max-w-xl">
+        Tasman Peninsula sea cliffs → Freycinet granite → Mount Field rainforest &amp; alpine tarns → kunanyi.
+        Roughly <strong class="text-white">640 km</strong> of driving and <strong class="text-white">45 km</strong> on foot.
+      </p>
+      <div class="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <div class="bg-white/10 rounded-2xl p-3"><div class="text-[10px] uppercase tracking-wider text-forest-100/60 font-semibold">Land</div><div class="font-semibold mt-0.5 text-sm">Sat 07:20</div><div class="text-[11px] text-forest-100/70">JQ 701 → HBA</div></div>
+        <div class="bg-white/10 rounded-2xl p-3"><div class="text-[10px] uppercase tracking-wider text-forest-100/60 font-semibold">Van out</div><div class="font-semibold mt-0.5 text-sm">Sat 09:00</div><div class="text-[11px] text-forest-100/70">Apollo Cambridge</div></div>
+        <div class="bg-white/10 rounded-2xl p-3"><div class="text-[10px] uppercase tracking-wider text-forest-100/60 font-semibold">Van back</div><div class="font-semibold mt-0.5 text-sm">Wed 14:30</div><div class="text-[11px] text-amber-200/90">not 3:00 pm — see below</div></div>
+        <div class="bg-white/10 rounded-2xl p-3"><div class="text-[10px] uppercase tracking-wider text-forest-100/60 font-semibold">Vehicle</div><div class="font-semibold mt-0.5 text-sm">Euro Mini</div><div class="text-[11px] text-forest-100/70">5.94 m · diesel</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CRITICAL ALERTS -->
+  <h2 class="font-display text-2xl mt-10 mb-1 text-forest-900">Read this first</h2>
+  <p class="text-sm text-slate-500 mb-4">Four things research turned up that differ from the plan as written.</p>
+
+  <div class="space-y-3">
+
+    <details class="group bg-white rounded-2xl border border-red-200 shadow-soft overflow-hidden" open>
+      <summary class="flex items-start gap-3 p-4 sm:p-5">
+        <span class="badge bg-red-100 text-red-700 mt-0.5">1 · CRITICAL</span>
+        <div class="flex-1 min-w-0">
+          <div class="font-semibold text-[15px] text-slate-900">Lake Dobson Road is “not suitable for campervans” — Tarn Shelf is at risk</div>
+          <div class="text-xs text-slate-500 mt-0.5">Affects Day 4, the biggest hike of the trip</div>
+        </div>
+        <svg class="chev w-4 h-4 text-slate-400 mt-1 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+      </summary>
+      <div class="px-4 sm:px-5 pb-5 -mt-1 text-sm text-slate-600 space-y-2.5 border-t border-red-100 pt-4">
+        <p>Parks Tasmania’s own page says the 16 km gravel Lake Dobson Road is <strong>not suitable for campervans or buses</strong>. Separately, Apollo/DriveNow terms allow unsealed access roads only up to <strong>12 km</strong>, and list Tasmania as “permission required” for unsealed travel — driving it without written sign-off can <strong>void the whole liability cover</strong>, not just cost an excess.</p>
+        <p>On top of that, snow is a live risk: Parks posted a Lake Dobson Road closure dated <strong>12 September 2025</strong> — the exact calendar date of your Day 1 — and Mount Mawson’s ski tows above Tarn Shelf ran in mid-September in both 2024 and 2025.</p>
+        <p class="font-medium text-slate-800">Every alpine walk at Mount Field (Tarn Shelf, Pandani Grove, Lake Nicholls, Mt Field East) starts at the top of that road. If it’s shut, the whole alpine half of the park goes with it.</p>
+        <div class="flex flex-wrap gap-2 pt-1">
+          <a href="tel:+61362881149" class="inline-flex items-center gap-1.5 text-xs font-semibold bg-red-600 text-white px-3 py-2 rounded-xl hover:bg-red-700">☎ Visitor Centre 03 6288 1149</a>
+          <a href="tel:+61362881319" class="inline-flex items-center gap-1.5 text-xs font-semibold bg-white border border-red-200 text-red-700 px-3 py-2 rounded-xl hover:bg-red-50">☎ Road report 03 6288 1319</a>
+          <a href="#planb" class="inline-flex items-center gap-1.5 text-xs font-semibold bg-white border border-slate-200 text-slate-700 px-3 py-2 rounded-xl hover:bg-slate-50">See the three workarounds ↓</a>
+        </div>
+      </div>
+    </details>
+
+    <details class="group bg-white rounded-2xl border border-red-200 shadow-soft overflow-hidden">
+      <summary class="flex items-start gap-3 p-4 sm:p-5">
+        <span class="badge bg-red-100 text-red-700 mt-0.5">2 · CRITICAL</span>
+        <div class="flex-1 min-w-0">
+          <div class="font-semibold text-[15px] text-slate-900">Mount Field campground can’t be pre-booked — it’s first come, first served</div>
+          <div class="text-xs text-slate-500 mt-0.5">Affects Night 3 · only 14 powered sites</div>
+        </div>
+        <svg class="chev w-4 h-4 text-slate-400 mt-1 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+      </summary>
+      <div class="px-4 sm:px-5 pb-5 -mt-1 text-sm text-slate-600 space-y-2.5 border-t border-red-100 pt-4">
+        <p>Parks &amp; Wildlife state plainly: <em>“Bookings are not required. The camp sites are allocated on a first come, first served basis.”</em> Anycamp lists the campground but is <strong>not an authorised booking agent</strong> — its own page says “No online bookings, please contact via phone.”</p>
+        <p><strong>If you hold an Anycamp confirmation, verify it directly on 03 6288 1149.</strong> PWS’s position is that no reservation exists.</p>
+        <p class="font-medium text-slate-800">Mitigation: hold a paid booking at <a class="underline decoration-forest-700/40" href="https://left-of-field-camping-gardens.checkfront.com/reserve/" target="_blank" rel="noopener">Left of Field</a> (5 min away, bookable, free hot showers) as insurance, then try for a $20 powered site at the park on arrival mid-morning — checkout there is 10 am.</p>
+      </div>
+    </details>
+
+    <details class="group bg-white rounded-2xl border border-amber-200 shadow-soft overflow-hidden">
+      <summary class="flex items-start gap-3 p-4 sm:p-5">
+        <span class="badge bg-amber-100 text-amber-800 mt-0.5">3 · HEADS UP</span>
+        <div class="flex-1 min-w-0">
+          <div class="font-semibold text-[15px] text-slate-900">Van must be back by 2:30 pm Wednesday, not 3:00 pm</div>
+          <div class="text-xs text-slate-500 mt-0.5">Affects Day 5 timing</div>
+        </div>
+        <svg class="chev w-4 h-4 text-slate-400 mt-1 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+      </summary>
+      <div class="px-4 sm:px-5 pb-5 -mt-1 text-sm text-slate-600 space-y-2.5 border-t border-amber-100 pt-4">
+        <p>The Apollo Hobart depot (14 Long St, Cambridge) trades <strong>9:00 am – 3:30 pm</strong> and requires vehicles back <strong>at least one hour before closing</strong>. That makes 2:30 pm the real deadline. Day 5 below is built to 2:30 pm with a 30-minute buffer.</p>
+        <p>Worth also confirming at pickup: written permission for unsealed roads (Tasmania is “permission required”), and whether a Parks Pass is already in the van.</p>
+      </div>
+    </details>
+
+    <details class="group bg-white rounded-2xl border border-amber-200 shadow-soft overflow-hidden">
+      <summary class="flex items-start gap-3 p-4 sm:p-5">
+        <span class="badge bg-amber-100 text-amber-800 mt-0.5">4 · HEADS UP</span>
+        <div class="flex-1 min-w-0">
+          <div class="font-semibold text-[15px] text-slate-900">Parks Pass is $98.35, not $89.50 — and Tasmans Arch is closed</div>
+          <div class="text-xs text-slate-500 mt-0.5">Budget + Day 1 backup plan</div>
+        </div>
+        <svg class="chev w-4 h-4 text-slate-400 mt-1 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+      </summary>
+      <div class="px-4 sm:px-5 pb-5 -mt-1 text-sm text-slate-600 space-y-2.5 border-t border-amber-100 pt-4">
+        <p>The current <strong>Holiday Pass (vehicle, up to 2 months) is $98.35</strong>; a daily vehicle pass is $49.15. You enter three parks (Tasman, Freycinet, Mount Field), so the Holiday Pass wins from day two. The Annual is $104.75 — only $6 more if you might return within a year. <strong>kunanyi / Mt Wellington is free</strong> — it isn’t a national park.</p>
+        <p><strong>Tasmans Arch and Devils Kitchen are closed 15 Apr – 29 Sep 2026</strong> for a $1.9 m upgrade, so they’re out for your whole trip. Waterfall Bay is still walkable, but only from the <em>Waterfall Bay Road</em> end — the Devils Kitchen trailhead is shut.</p>
+        <p class="text-slate-500 text-xs">Good news: Tasmanian school holidays are 3–18 October, so your trip is entirely in term time. No holiday crowds or surcharges.</p>
+      </div>
+    </details>
+  </div>
+
+  <!-- LOGISTICS -->
+  <h2 class="font-display text-2xl mt-10 mb-4 text-forest-900">Logistics</h2>
+  <div class="grid sm:grid-cols-2 gap-4">
+    <div class="bg-white rounded-2xl border border-sand-200 p-5 shadow-soft">
+      <div class="flex items-center gap-2 mb-3"><span class="text-lg">🚐</span><h3 class="font-semibold text-slate-900">The van</h3></div>
+      <dl class="text-sm space-y-1.5">
+        <div class="flex justify-between gap-3"><dt class="text-slate-500">Model</dt><dd class="font-medium text-right">Apollo Euro Mini (auto)</dd></div>
+        <div class="flex justify-between gap-3"><dt class="text-slate-500">Dimensions</dt><dd class="font-medium text-right">5.94 × 2.06 × 3.10 m</dd></div>
+        <div class="flex justify-between gap-3"><dt class="text-slate-500">Fuel</dt><dd class="font-medium text-right">Diesel · 80 L</dd></div>
+        <div class="flex justify-between gap-3"><dt class="text-slate-500">Water</dt><dd class="font-medium text-right">110 L fresh / 110 L waste</dd></div>
+        <div class="flex justify-between gap-3"><dt class="text-slate-500">On board</dt><dd class="font-medium text-right">Toilet, shower, gas cooker</dd></div>
+        <div class="flex justify-between gap-3"><dt class="text-slate-500">Heating</dt><dd class="font-medium text-right text-amber-700">240 V mains only</dd></div>
+      </dl>
+      <p class="text-xs text-slate-500 mt-3 pt-3 border-t border-sand-100">Reverse-cycle heating runs only when plugged in — which is why unpowered nights are a real comfort call in a Tasmanian September, not a theoretical one.</p>
+      <a href="https://mail.google.com/mail/?extsrc=sync&client=h&plid=ACUX6DOmMx8t9pb_2B6hBmwcFqzasODDjLi2aOg&mid=1a028bedb4db73f2" target="_blank" rel="noopener" class="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold bg-forest-900 text-white px-3 py-2 rounded-xl hover:bg-forest-800">✉ Booking APXWP2 / BIG457700</a>
+    </div>
+
+    <div class="bg-white rounded-2xl border border-sand-200 p-5 shadow-soft">
+      <div class="flex items-center gap-2 mb-3"><span class="text-lg">📍</span><h3 class="font-semibold text-slate-900">Depot &amp; flight</h3></div>
+      <dl class="text-sm space-y-1.5">
+        <div class="flex justify-between gap-3"><dt class="text-slate-500">Depot</dt><dd class="font-medium text-right">14 Long St, Cambridge 7170</dd></div>
+        <div class="flex justify-between gap-3"><dt class="text-slate-500">Depot hours</dt><dd class="font-medium text-right">9:00 am – 3:30 pm daily</dd></div>
+        <div class="flex justify-between gap-3"><dt class="text-slate-500">Pick-up</dt><dd class="font-medium text-right">Sat 12 Sep, 9:00 am</dd></div>
+        <div class="flex justify-between gap-3"><dt class="text-slate-500">Return</dt><dd class="font-medium text-right text-red-600">Wed 16 Sep, by 2:30 pm</dd></div>
+        <div class="flex justify-between gap-3"><dt class="text-slate-500">Flight in</dt><dd class="font-medium text-right">JQ 701 · 07:20 HBA</dd></div>
+        <div class="flex justify-between gap-3"><dt class="text-slate-500">Phone</dt><dd class="font-medium text-right">1800 827 821</dd></div>
+      </dl>
+      <div class="flex flex-wrap gap-2 mt-4">
+        <a href="https://www.google.com/maps/search/?api=1&query=14+Long+Street+Cambridge+TAS+7170" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 text-xs font-semibold bg-forest-900 text-white px-3 py-2 rounded-xl hover:bg-forest-800">🗺 Depot in Maps</a>
+        <a href="tel:1800827821" class="inline-flex items-center gap-1.5 text-xs font-semibold bg-white border border-sand-200 text-slate-700 px-3 py-2 rounded-xl hover:bg-sand-50">☎ Call Apollo</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- PASS CTA -->
+  <div class="mt-4 bg-gradient-to-br from-forest-800 to-forest-900 rounded-2xl p-5 sm:p-6 text-white shadow-soft">
+    <div class="sm:flex items-center justify-between gap-6">
+      <div>
+        <div class="badge bg-white/15 text-white mb-2">BOOK THIS FIRST</div>
+        <h3 class="font-display text-xl">Tasmania Parks Holiday Pass</h3>
+        <p class="text-sm text-forest-100/80 mt-1 max-w-md">Vehicle pass, valid 2 months, covers Tasman + Freycinet + Mount Field. Print it or save the PDF for the dashboard — rangers do check.</p>
+      </div>
+      <div class="mt-4 sm:mt-0 shrink-0 text-center">
+        <div class="font-display text-3xl">$98.35</div>
+        <div class="text-[11px] text-forest-100/60 uppercase tracking-wider">per vehicle</div>
+        <a href="https://passes.parks.tas.gov.au/" target="_blank" rel="noopener" class="mt-2 inline-flex items-center gap-1.5 text-sm font-semibold bg-white text-forest-900 px-4 py-2.5 rounded-xl hover:bg-forest-50 w-full justify-center">Buy pass →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- WEATHER + DAYLIGHT -->
+  <h2 class="font-display text-2xl mt-10 mb-1 text-forest-900">September conditions</h2>
+  <p class="text-sm text-slate-500 mb-4">Long-term BOM means. Daylight runs ~11 h 45 — it is the binding constraint on every afternoon start.</p>
+  <div class="bg-white rounded-2xl border border-sand-200 shadow-soft overflow-hidden">
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm min-w-[560px]">
+        <thead class="bg-sand-50 text-slate-500 text-xs uppercase tracking-wider">
+          <tr><th class="text-left font-semibold px-4 py-3">Where</th><th class="text-right font-semibold px-3 py-3">Max</th><th class="text-right font-semibold px-3 py-3">Min</th><th class="text-right font-semibold px-3 py-3">Rain</th><th class="text-right font-semibold px-4 py-3">Wet days</th></tr>
+        </thead>
+        <tbody class="divide-y divide-sand-100">
+          <tr class="bg-red-50/40"><td class="px-4 py-3 font-medium">Tasman Peninsula <span class="text-[11px] text-red-600 font-semibold">wettest</span></td><td class="px-3 py-3 text-right">13.1°</td><td class="px-3 py-3 text-right">6.3°</td><td class="px-3 py-3 text-right">105.9 mm</td><td class="px-4 py-3 text-right font-semibold text-red-700">13.4 / 30</td></tr>
+          <tr class="bg-forest-50/40"><td class="px-4 py-3 font-medium">Freycinet (Swansea) <span class="text-[11px] text-forest-700 font-semibold">driest</span></td><td class="px-3 py-3 text-right">16.0°</td><td class="px-3 py-3 text-right">5.8°</td><td class="px-3 py-3 text-right">40.4 mm</td><td class="px-4 py-3 text-right font-semibold text-forest-700">6.2 / 30</td></tr>
+          <tr><td class="px-4 py-3 font-medium">Mt Field valley</td><td class="px-3 py-3 text-right">15.6°</td><td class="px-3 py-3 text-right">4.0°</td><td class="px-3 py-3 text-right">53.6 mm</td><td class="px-4 py-3 text-right">8.3 / 30</td></tr>
+          <tr><td class="px-4 py-3 font-medium">Hobart</td><td class="px-3 py-3 text-right">15.2°</td><td class="px-3 py-3 text-right">6.5°</td><td class="px-3 py-3 text-right">53.0 mm</td><td class="px-4 py-3 text-right">8.6 / 30</td></tr>
+          <tr class="bg-sky-50/50"><td class="px-4 py-3 font-medium">kunanyi pinnacle <span class="text-[11px] text-sky-700 font-semibold">1260 m</span></td><td class="px-3 py-3 text-right font-semibold">4.8°</td><td class="px-3 py-3 text-right font-semibold text-sky-700">−1.1°</td><td class="px-3 py-3 text-right">69.9 mm</td><td class="px-4 py-3 text-right">—</td></tr>
+          <tr class="bg-sky-50/50"><td class="px-4 py-3 font-medium">Tarn Shelf <span class="text-[11px] text-slate-400">est. 1200 m</span></td><td class="px-3 py-3 text-right">~8°</td><td class="px-3 py-3 text-right font-semibold text-sky-700">~−3°</td><td class="px-3 py-3 text-right text-slate-400">—</td><td class="px-4 py-3 text-right">—</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="px-4 py-3 bg-sand-50 border-t border-sand-100 text-xs text-slate-500">
+      Tarn Shelf figures are a lapse-rate estimate, not a measurement — there is no BOM station at Mount Field. Pack for alpine, not spring.
+    </div>
+  </div>
+
+  <div class="mt-4 grid grid-cols-2 sm:grid-cols-5 gap-2.5">
+    <div class="bg-white rounded-xl border border-sand-200 p-3 text-center"><div class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold">Sat 12</div><div class="text-sm font-semibold mt-1">6:17 → 17:57</div></div>
+    <div class="bg-white rounded-xl border border-sand-200 p-3 text-center"><div class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold">Sun 13</div><div class="text-sm font-semibold mt-1">6:15 → 17:58</div></div>
+    <div class="bg-white rounded-xl border border-sand-200 p-3 text-center"><div class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold">Mon 14</div><div class="text-sm font-semibold mt-1">6:13 → 18:00</div></div>
+    <div class="bg-white rounded-xl border border-sand-200 p-3 text-center"><div class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold">Tue 15</div><div class="text-sm font-semibold mt-1">6:11 → 18:01</div></div>
+    <div class="bg-white rounded-xl border border-sand-200 p-3 text-center col-span-2 sm:col-span-1"><div class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold">Wed 16</div><div class="text-sm font-semibold mt-1">6:10 → 18:02</div></div>
+  </div>
+</section>
+
+<!-- ══════════ ITINERARY ══════════ -->
+<section id="itinerary" class="pt-12">
+  <h2 class="font-display text-2xl sm:text-3xl text-forest-900">Day by day</h2>
+  <p class="text-sm text-slate-500 mt-1 mb-4">Times are the plan; the <span class="text-ember-600 font-semibold">amber notes</span> are where research says the plan is tight.</p>
+
+  <div class="flex gap-2 overflow-x-auto no-sb pb-3 -mx-1 px-1 sticky top-[112px] z-30 bg-sand-50/97 backdrop-blur-md pt-1">
+    <button data-day="1" class="daytab on shrink-0 px-4 py-2.5 rounded-2xl text-left border transition-all"><div class="text-[10px] uppercase tracking-wider font-bold opacity-60">Sat 12</div><div class="text-sm font-semibold">Cape Hauy</div></button>
+    <button data-day="2" class="daytab shrink-0 px-4 py-2.5 rounded-2xl text-left border transition-all"><div class="text-[10px] uppercase tracking-wider font-bold opacity-60">Sun 13</div><div class="text-sm font-semibold">Freycinet</div></button>
+    <button data-day="3" class="daytab shrink-0 px-4 py-2.5 rounded-2xl text-left border transition-all"><div class="text-[10px] uppercase tracking-wider font-bold opacity-60">Mon 14</div><div class="text-sm font-semibold">Mt Amos → Mt Field</div></button>
+    <button data-day="4" class="daytab shrink-0 px-4 py-2.5 rounded-2xl text-left border transition-all"><div class="text-[10px] uppercase tracking-wider font-bold opacity-60">Tue 15</div><div class="text-sm font-semibold">Tarn Shelf</div></button>
+    <button data-day="5" class="daytab shrink-0 px-4 py-2.5 rounded-2xl text-left border transition-all"><div class="text-[10px] uppercase tracking-wider font-bold opacity-60">Wed 16</div><div class="text-sm font-semibold">kunanyi &amp; return</div></button>
+  </div>
+
+  <!-- ─── DAY 1 ─── -->
+  <div class="daypanel" data-day="1">
+    <div class="bg-white rounded-3xl border border-sand-200 shadow-soft overflow-hidden">
+      <div class="p-5 sm:p-6 border-b border-sand-100">
+        <div class="flex flex-wrap items-center gap-2 mb-2">
+          <span class="badge bg-forest-100 text-forest-800">DAY 1</span>
+          <span class="badge bg-slate-100 text-slate-600">🚗 ~95 km · 1 h 15</span>
+          <span class="badge bg-slate-100 text-slate-600">🥾 9.4 km</span>
+          <span class="badge bg-red-50 text-red-700">45% chance of rain</span>
+        </div>
+        <h3 class="font-display text-2xl text-forest-900">Hobart Airport → Tasman Peninsula</h3>
+        <p class="text-sm text-slate-500 mt-1">Cambridge · Sorell · Eaglehawk Neck · Fortescue Bay · Port Arthur</p>
+      </div>
+
+      <div class="maprail bg-sand-100">
+        <iframe class="w-full h-full border-0" loading="lazy" title="Day 1 route map"
+          src="https://www.openstreetmap.org/export/embed.html?bbox=147.35%2C-43.22%2C148.10%2C-42.72&layer=mapnik&marker=-43.1352%2C147.9722"></iframe>
+      </div>
+      <div class="px-5 py-2.5 bg-sand-50 border-b border-sand-100 flex flex-wrap gap-2">
+        <a href="https://www.google.com/maps/dir/Apollo+Hobart,+14+Long+St,+Cambridge+TAS/Sorell+TAS/Tessellated+Pavement,+Eaglehawk+Neck+TAS/Fortescue+Bay,+TAS/NRMA+Port+Arthur+Holiday+Park" target="_blank" rel="noopener" class="text-xs font-semibold text-forest-800 bg-white border border-sand-200 px-3 py-1.5 rounded-lg hover:bg-forest-50">🗺 Open full route in Google Maps</a>
+      </div>
+
+      <div class="p-5 sm:p-6 space-y-0">
+        <div class="tl relative pl-6 pb-5">
+          <span class="absolute left-[-4px] top-1.5 w-2.5 h-2.5 rounded-full bg-forest-700 ring-4 ring-forest-100"></span>
+          <div class="text-xs font-bold text-forest-700 tracking-wide">07:20</div>
+          <div class="font-semibold text-[15px] mt-0.5">Land at Hobart Airport</div>
+          <p class="text-sm text-slate-600 mt-0.5">Jetstar JQ 701. Depot opens at 9:00 — it’s a 5-minute transfer, so there’s time for a coffee.</p>
+        </div>
+        <div class="tl relative pl-6 pb-5">
+          <span class="absolute left-[-4px] top-1.5 w-2.5 h-2.5 rounded-full bg-forest-700 ring-4 ring-forest-100"></span>
+          <div class="text-xs font-bold text-forest-700 tracking-wide">09:00</div>
+          <div class="font-semibold text-[15px] mt-0.5">Collect the Euro Mini · Apollo Cambridge</div>
+          <p class="text-sm text-slate-600 mt-0.5">Physical credit card in the primary driver’s name for the bond. Walk the van, photograph existing damage, check the gas bottle level.</p>
+          <div class="mt-2 rounded-xl bg-amber-50 border border-amber-200 p-3 text-[13px] text-amber-900">
+            <strong>Ask at the counter, in writing:</strong> permission for unsealed roads (Tasmania is “permission required”) — you need this for Fortescue Bay Rd today and possibly Lake Dobson Rd on Tuesday. Also ask whether a Parks Pass is already in the van.
+          </div>
+        </div>
+        <div class="tl relative pl-6 pb-5">
+          <span class="absolute left-[-4px] top-1.5 w-2.5 h-2.5 rounded-full bg-forest-700 ring-4 ring-forest-100"></span>
+          <div class="text-xs font-bold text-forest-700 tracking-wide">09:45</div>
+          <div class="font-semibold text-[15px] mt-0.5">Provision at Sorell · <span class="text-ember-600">and fill the diesel here</span></div>
+          <p class="text-sm text-slate-600 mt-0.5">Coles/Woolworths Sorell, 15 min from the depot. Four nights of food, plus drinking water.</p>
+          <div class="mt-2 rounded-xl bg-amber-50 border border-amber-200 p-3 text-[13px] text-amber-900">
+            The Tasman Peninsula has exactly <strong>two fuel outlets</strong> — Murdunna Roadhouse and Port Arthur General Store — both small, limited hours, and priced for it. Fill at Sorell.
+          </div>
+        </div>
+        <div class="tl relative pl-6 pb-5">
+          <span class="absolute left-[-4px] top-1.5 w-2.5 h-2.5 rounded-full bg-forest-700 ring-4 ring-forest-100"></span>
+          <div class="text-xs font-bold text-forest-700 tracking-wide">11:00</div>
+          <div class="font-semibold text-[15px] mt-0.5">Eaglehawk Neck — Tessellated Pavement &amp; Pirates Bay Lookout</div>
+          <p class="text-sm text-slate-600 mt-0.5">Both roadside, 20 minutes total. The Pavement reads best at low tide.</p>
+          <p class="text-[13px] text-slate-500 mt-1.5">✕ Tasmans Arch &amp; Devils Kitchen are closed until 29 Sep — don’t detour.</p>
+        </div>
+        <div class="tl relative pl-6 pb-5">
+          <span class="absolute left-[-4px] top-1.5 w-2.5 h-2.5 rounded-full bg-ember-500 ring-4 ring-amber-100"></span>
+          <div class="text-xs font-bold text-ember-600 tracking-wide">13:00 – 17:00 · MAIN EVENT</div>
+          <div class="font-semibold text-[15px] mt-0.5">Cape Hauy Track</div>
+          <div class="flex flex-wrap gap-1.5 mt-1.5">
+            <span class="badge bg-forest-100 text-forest-800">9.4 km return</span>
+            <span class="badge bg-forest-100 text-forest-800">4 hrs</span>
+            <span class="badge bg-amber-100 text-amber-800">Grade 3</span>
+            <span class="badge bg-slate-100 text-slate-600">~550 m ascent</span>
+          </div>
+          <p class="text-sm text-slate-600 mt-2">Dolerite sea cliffs, the Totem Pole and the Candlestick. Trailhead at Fortescue Bay — the last 12 km is unsealed but Parks rates it 2WD-suitable.</p>
+          <div class="mt-2 rounded-xl bg-amber-50 border border-amber-200 p-3 text-[13px] text-amber-900">
+            <strong>Be walking by 13:30.</strong> Useful light ends about 18:15 and a 4-hour walk from a later start leaves no margin.
+          </div>
+          <a href="https://parks.tas.gov.au/explore-our-parks/tasman-national-park/cape-hauy" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 text-xs font-semibold text-forest-800 bg-forest-50 border border-forest-100 px-3 py-2 rounded-xl hover:bg-forest-100 mt-2.5">Parks Tasmania · Cape Hauy →</a>
+        </div>
+        <div class="tl relative pl-6">
+          <span class="absolute left-[-4px] top-1.5 w-2.5 h-2.5 rounded-full bg-forest-700 ring-4 ring-forest-100"></span>
+          <div class="text-xs font-bold text-forest-700 tracking-wide">18:00</div>
+          <div class="font-semibold text-[15px] mt-0.5">Check in · NRMA Port Arthur Holiday Park</div>
+          <p class="text-sm text-slate-600 mt-0.5">Plug into 240 V, hot shower, dinner in the van. Dump point on site. Office closes 6 pm — call ahead if you’ll be later.</p>
+        </div>
+      </div>
+
+      <details class="border-t border-sand-100 group">
+        <summary class="flex items-center gap-2 px-5 sm:px-6 py-4 hover:bg-sand-50">
+          <span class="text-sm font-semibold text-forest-800">Alternatives for Day 1</span>
+          <span class="badge bg-slate-100 text-slate-500">5 options</span>
+          <svg class="chev w-4 h-4 text-slate-400 ml-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+        </summary>
+        <div class="px-5 sm:px-6 pb-6 space-y-2.5">
+          <div class="rounded-xl border border-sand-200 p-3.5">
+            <div class="flex items-start justify-between gap-3"><div><div class="font-semibold text-sm">Cape Raoul</div><div class="text-xs text-slate-500 mt-0.5">Wilder, emptier, better cliffs than Cape Hauy in many people’s view</div></div><div class="text-right shrink-0"><div class="badge bg-red-100 text-red-700">Grade 4</div></div></div>
+            <div class="flex flex-wrap gap-1.5 mt-2"><span class="badge bg-slate-100 text-slate-600">14 km</span><span class="badge bg-slate-100 text-slate-600">5 hrs</span><span class="badge bg-amber-100 text-amber-800">9 km dirt access</span></div>
+            <a href="https://parks.tas.gov.au/explore-our-parks/tasman-national-park/cape-raoul" target="_blank" rel="noopener" class="text-xs font-semibold text-forest-700 underline decoration-forest-700/30 mt-2 inline-block">Parks page →</a>
+          </div>
+          <div class="rounded-xl border border-sand-200 p-3.5">
+            <div class="font-semibold text-sm">Mount Brown</div><div class="text-xs text-slate-500 mt-0.5">Looks back over Port Arthur and the whole peninsula</div>
+            <div class="flex flex-wrap gap-1.5 mt-2"><span class="badge bg-slate-100 text-slate-600">8 km return</span><span class="badge bg-slate-100 text-slate-600">4 hrs</span><span class="badge bg-amber-100 text-amber-800">Grade 3</span></div>
+          </div>
+          <div class="rounded-xl border border-sand-200 p-3.5">
+            <div class="font-semibold text-sm">Crescent Bay</div><div class="text-xs text-slate-500 mt-0.5">Big dunes and an empty beach; pairs with Remarkable Cave</div>
+            <div class="flex flex-wrap gap-1.5 mt-2"><span class="badge bg-slate-100 text-slate-600">7.5 km return</span><span class="badge bg-slate-100 text-slate-600">4 hrs</span><span class="badge bg-amber-100 text-amber-800">Grade 3</span></div>
+          </div>
+          <div class="rounded-xl border border-sky-200 bg-sky-50/40 p-3.5">
+            <div class="flex items-center gap-2"><span class="badge bg-sky-100 text-sky-800">WET WEATHER</span></div>
+            <div class="font-semibold text-sm mt-1.5">Waterfall Bay</div><div class="text-xs text-slate-500 mt-0.5">Start from <strong>Waterfall Bay Road</strong> only — the Devils Kitchen trailhead is closed until 29 Sep</div>
+            <div class="flex flex-wrap gap-1.5 mt-2"><span class="badge bg-slate-100 text-slate-600">3.4 km return</span><span class="badge bg-slate-100 text-slate-600">1–1.5 hrs</span><span class="badge bg-amber-100 text-amber-800">Grade 3</span></div>
+            <a href="https://parks.tas.gov.au/explore-our-parks/tasman-national-park/waterfall-bay" target="_blank" rel="noopener" class="text-xs font-semibold text-forest-700 underline decoration-forest-700/30 mt-2 inline-block">Parks page →</a>
+          </div>
+          <div class="rounded-xl border border-sky-200 bg-sky-50/40 p-3.5">
+            <div class="flex items-center gap-2"><span class="badge bg-sky-100 text-sky-800">WET WEATHER</span></div>
+            <div class="font-semibold text-sm mt-1.5">Maingon Blowhole + Port Arthur Historic Site</div><div class="text-xs text-slate-500 mt-0.5">The obvious rain day: 3.3 km easy walk plus the convict site, 2 min from camp</div>
+            <div class="flex flex-wrap gap-1.5 mt-2"><span class="badge bg-slate-100 text-slate-600">3.3 km</span><span class="badge bg-slate-100 text-slate-600">1 hr</span><span class="badge bg-forest-100 text-forest-800">Grade 2</span></div>
+          </div>
+          <div class="rounded-xl border border-forest-200 bg-forest-50/50 p-3.5">
+            <div class="font-semibold text-sm">↔ Consider swapping Days 1 and 2</div>
+            <p class="text-xs text-slate-600 mt-1">The Tasman Peninsula averages 13.4 wet days in September against Freycinet’s 6.2. If the forecast is bad here and good on the east coast, giving the harder Grade 4 circuit to the drier region is the smarter trade. It does mean a long drive on arrival day, so only worth it if the forecast is clearly lopsided.</p>
+          </div>
+        </div>
+      </details>
+    </div>
+  </div>
+
+  <!-- ─── DAY 2 ─── -->
+  <div class="daypanel hidden" data-day="2">
+    <div class="bg-white rounded-3xl border border-sand-200 shadow-soft overflow-hidden">
+      <div class="p-5 sm:p-6 border-b border-sand-100">
+        <div class="flex flex-wrap items-center gap-2 mb-2">
+          <span class="badge bg-forest-100 text-forest-800">DAY 2</span>
+          <span class="badge bg-slate-100 text-slate-600">🚗 ~209 km · 3 hrs</span>
+          <span class="badge bg-slate-100 text-slate-600">🥾 11 km</span>
+          <span class="badge bg-forest-100 text-forest-800">driest region</span>
+        </div>
+        <h3 class="font-display text-2xl text-forest-900">Great Eastern Drive → Freycinet</h3>
+        <p class="text-sm text-slate-500 mt-1">Port Arthur · Dunalley · Triabunna · Swansea · Coles Bay</p>
+      </div>
+
+      <div class="maprail bg-sand-100">
+        <iframe class="w-full h-full border-0" loading="lazy" title="Day 2 route map"
+          src="https://www.openstreetmap.org/export/embed.html?bbox=147.55%2C-43.25%2C148.55%2C-42.00&layer=mapnik&marker=-42.1571%2C148.2975"></iframe>
+      </div>
+      <div class="px-5 py-2.5 bg-sand-50 border-b border-sand-100 flex flex-wrap gap-2">
+        <a href="https://www.google.com/maps/dir/Port+Arthur+TAS/Triabunna+TAS/Swansea+TAS/Wineglass+Bay+Car+Park,+Coles+Bay+TAS/BIG4+Iluka+on+Freycinet" target="_blank" rel="noopener" class="text-xs font-semibold text-forest-800 bg-white border border-sand-200 px-3 py-1.5 rounded-lg hover:bg-forest-50">🗺 Open full route in Google Maps</a>
+      </div>
+
+      <div class="p-5 sm:p-6">
+        <div class="rounded-2xl bg-red-50 border border-red-200 p-4 mb-5">
+          <div class="font-semibold text-sm text-red-900">⏱ The plan as written doesn’t fit the daylight</div>
+          <p class="text-[13px] text-red-800/90 mt-1">Parks lists Wineglass–Hazards as <strong>Grade 4, 4–5 hours</strong> (not 4.5 at Grade 3–4). From a 13:30 start you finish at 18:30 — after useful light ends at 18:15. <strong>Leave Port Arthur at 07:30 and walk by 11:30</strong>, or shorten to the Wineglass Bay beach return (6 km).</p>
+        </div>
+
+        <div class="tl relative pl-6 pb-5">
+          <span class="absolute left-[-4px] top-1.5 w-2.5 h-2.5 rounded-full bg-forest-700 ring-4 ring-forest-100"></span>
+          <div class="text-xs font-bold text-forest-700 tracking-wide">07:30 <span class="text-ember-600">(moved earlier)</span></div>
+          <div class="font-semibold text-[15px] mt-0.5">Coffee and go</div>
+          <p class="text-sm text-slate-600 mt-0.5">Port Arthur or Dunalley. The Great Eastern Drive runs the coast via Prosser Bay and Swansea.</p>
+        </div>
+        <div class="tl relative pl-6 pb-5">
+          <span class="absolute left-[-4px] top-1.5 w-2.5 h-2.5 rounded-full bg-forest-700 ring-4 ring-forest-100"></span>
+          <div class="text-xs font-bold text-forest-700 tracking-wide">09:15</div>
+          <div class="font-semibold text-[15px] mt-0.5">Triabunna — dump point &amp; top-up</div>
+          <p class="text-sm text-slate-600 mt-0.5">Free 24-hour blackwater station at the visitor centre. Best mid-route stop on this leg.</p>
+        </div>
+        <div class="tl relative pl-6 pb-5">
+          <span class="absolute left-[-4px] top-1.5 w-2.5 h-2.5 rounded-full bg-forest-700 ring-4 ring-forest-100"></span>
+          <div class="text-xs font-bold text-forest-700 tracking-wide">10:15</div>
+          <div class="font-semibold text-[15px] mt-0.5">Swansea — fuel, then Kate’s Berry Farm or Devil’s Corner</div>
+          <p class="text-sm text-slate-600 mt-0.5">Fuel at Swansea; Coles Bay’s is limited and expensive. Devil’s Corner cellar door has the lookout tower over the Hazards.</p>
+        </div>
+        <div class="tl relative pl-6 pb-5">
+          <span class="absolute left-[-4px] top-1.5 w-2.5 h-2.5 rounded-full bg-ember-500 ring-4 ring-amber-100"></span>
+          <div class="text-xs font-bold text-ember-600 tracking-wide">11:30 – 16:30 · MAIN EVENT</div>
+          <div class="font-semibold text-[15px] mt-0.5">Wineglass Bay &amp; Hazards Beach Circuit</div>
+          <div class="flex flex-wrap gap-1.5 mt-1.5">
+            <span class="badge bg-forest-100 text-forest-800">11 km circuit</span>
+            <span class="badge bg-forest-100 text-forest-800">4–5 hrs</span>
+            <span class="badge bg-red-100 text-red-700">Grade 4</span>
+            <span class="badge bg-slate-100 text-slate-600">~480 m ascent</span>
+          </div>
+          <p class="text-sm text-slate-600 mt-2">Over the saddle, down to the white silica sand of Wineglass, across the isthmus and back along Hazards Beach under the pink granite. No shuttle or parking booking system operates — mid-September parking should be fine.</p>
+          <a href="https://parks.tas.gov.au/explore-our-parks/freycinet-national-park/wineglass-bay-and-hazards-beach" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 text-xs font-semibold text-forest-800 bg-forest-50 border border-forest-100 px-3 py-2 rounded-xl hover:bg-forest-100 mt-2.5">Parks Tasmania · Wineglass &amp; Hazards →</a>
+        </div>
+        <div class="tl relative pl-6 pb-5">
+          <span class="absolute left-[-4px] top-1.5 w-2.5 h-2.5 rounded-full bg-forest-700 ring-4 ring-forest-100"></span>
+          <div class="text-xs font-bold text-forest-700 tracking-wide">17:00</div>
+          <div class="font-semibold text-[15px] mt-0.5">Cape Tourville at golden hour</div>
+          <p class="text-sm text-slate-600 mt-0.5">600 m boardwalk loop, 20 minutes, Grade 1 — and it gives you the Wineglass view for almost no effort. Sunset 17:58.</p>
+        </div>
+        <div class="tl relative pl-6">
+          <span class="absolute left-[-4px] top-1.5 w-2.5 h-2.5 rounded-full bg-forest-700 ring-4 ring-forest-100"></span>
+          <div class="text-xs font-bold text-forest-700 tracking-wide">18:30</div>
+          <div class="font-semibold text-[15px] mt-0.5">Camp — Richardsons Beach or BIG4 Iluka</div>
+          <p class="text-sm text-slate-600 mt-0.5">See Campsites: Richardsons Beach inside the park is <strong>$16 powered</strong> against roughly $50–65 at the BIG4, and it’s closer to the trailhead. Phone booking only.</p>
+        </div>
+      </div>
+
+      <details class="border-t border-sand-100 group">
+        <summary class="flex items-center gap-2 px-5 sm:px-6 py-4 hover:bg-sand-50">
+          <span class="text-sm font-semibold text-forest-800">Alternatives for Day 2</span>
+          <span class="badge bg-slate-100 text-slate-500">5 options</span>
+          <svg class="chev w-4 h-4 text-slate-400 ml-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+        </summary>
+        <div class="px-5 sm:px-6 pb-6 space-y-2.5">
+          <div class="rounded-xl border border-sand-200 p-3.5">
+            <div class="flex items-center gap-2"><span class="badge bg-red-100 text-red-700">HARDER</span></div>
+            <div class="font-semibold text-sm mt-1.5">Add Mount Amos to the circuit</div><div class="text-xs text-slate-500 mt-0.5">Only if the rock is bone dry and you start early enough — see Day 3</div>
+            <div class="flex flex-wrap gap-1.5 mt-2"><span class="badge bg-slate-100 text-slate-600">+3.6 km</span><span class="badge bg-slate-100 text-slate-600">+3 hrs</span><span class="badge bg-red-100 text-red-700">Grade 4</span></div>
+          </div>
+          <div class="rounded-xl border border-forest-200 bg-forest-50/50 p-3.5">
+            <div class="flex items-center gap-2"><span class="badge bg-forest-100 text-forest-800">RECOMMENDED IF LATE</span></div>
+            <div class="font-semibold text-sm mt-1.5">Wineglass Bay beach return</div><div class="text-xs text-slate-500 mt-0.5">Drops the Hazards Beach half — you still stand on the beach, and it fits a 14:00 start</div>
+            <div class="flex flex-wrap gap-1.5 mt-2"><span class="badge bg-slate-100 text-slate-600">6 km</span><span class="badge bg-slate-100 text-slate-600">2.5–3.5 hrs</span><span class="badge bg-amber-100 text-amber-800">Grade 3</span></div>
+          </div>
+          <div class="rounded-xl border border-sand-200 p-3.5">
+            <div class="font-semibold text-sm">Wineglass Bay Lookout only</div><div class="text-xs text-slate-500 mt-0.5">The postcard view and back; leaves the afternoon free</div>
+            <div class="flex flex-wrap gap-1.5 mt-2"><span class="badge bg-slate-100 text-slate-600">2.6 km return</span><span class="badge bg-slate-100 text-slate-600">1–1.5 hrs</span><span class="badge bg-amber-100 text-amber-800">Grade 3</span></div>
+            <a href="https://parks.tas.gov.au/explore-our-parks/freycinet-national-park/wineglass-bay-lookout" target="_blank" rel="noopener" class="text-xs font-semibold text-forest-700 underline decoration-forest-700/30 mt-2 inline-block">Parks page →</a>
+          </div>
+          <div class="rounded-xl border border-sky-200 bg-sky-50/40 p-3.5">
+            <div class="flex items-center gap-2"><span class="badge bg-sky-100 text-sky-800">WET WEATHER</span></div>
+            <div class="font-semibold text-sm mt-1.5">Cape Tourville circuit + Sleepy Bay</div><div class="text-xs text-slate-500 mt-0.5">Boardwalked, 20 min each, big views for no effort — the perfect storm-day substitute</div>
+            <div class="flex flex-wrap gap-1.5 mt-2"><span class="badge bg-slate-100 text-slate-600">600 m + 500 m</span><span class="badge bg-forest-100 text-forest-800">Grade 1–3</span></div>
+            <a href="https://parks.tas.gov.au/explore-our-parks/freycinet-national-park/cape-tourville" target="_blank" rel="noopener" class="text-xs font-semibold text-forest-700 underline decoration-forest-700/30 mt-2 inline-block">Parks page →</a>
+          </div>
+          <div class="rounded-xl border border-sand-200 p-3.5">
+            <div class="font-semibold text-sm">Stay at Swansea instead of Coles Bay</div>
+            <p class="text-xs text-slate-600 mt-1">Swansea Holiday Park has potable water at every site and <strong>heated bathrooms with free showers</strong>, and it cuts ~40 min off Monday’s long drive to Mount Field. Cost: ~50 min each way if you still want Wineglass Bay in the morning.</p>
+          </div>
+        </div>
+      </details>
+    </div>
+  </div>
+
+  <!-- ─── DAY 3 ─── -->
+  <div class="daypanel hidden" data-day="3">
+    <div class="bg-white rounded-3xl border border-sand-200 shadow-soft overflow-hidden">
+      <div class="p-5 sm:p-6 border-b border-sand-100">
+        <div class="flex flex-wrap items-center gap-2 mb-2">
+          <span class="badge bg-forest-100 text-forest-800">DAY 3</span>
+          <span class="badge bg-slate-100 text-slate-600">🚗 ~192 km · 2 h 35</span>
+          <span class="badge bg-slate-100 text-slate-600">🥾 3.6 km + 1.4 km</span>
+          <span class="badge bg-amber-100 text-amber-800">longest transit</span>
+        </div>
+        <h3 class="font-display text-2xl text-forest-900">Freycinet → Derwent Valley</h3>
+        <p class="text-sm text-slate-500 mt-1">Coles Bay · Campbell Town · New Norfolk · Mount Field</p>
+      </div>
+
+      <div class="maprail bg-sand-100">
+        <iframe class="w-full h-full border-0" loading="lazy" title="Day 3 route map"
+          src="https://www.openstreetmap.org/export/embed.html?bbox=146.45%2C-42.95%2C148.55%2C-41.95&layer=mapnik&marker=-42.6817%2C146.7131"></iframe>
+      </div>
+      <div class="px-5 py-2.5 bg-sand-50 border-b border-sand-100 flex flex-wrap gap-2">
+        <a href="https://www.google.com/maps/dir/Coles+Bay+TAS/Campbell+Town+TAS/New+Norfolk+TAS/Mount+Field+National+Park+TAS" target="_blank" rel="noopener" class="text-xs font-semibold text-forest-800 bg-white border border-sand-200 px-3 py-1.5 rounded-lg hover:bg-forest-50">🗺 Open full route in Google Maps</a>
+      </div>
+
+      <div class="p-5 sm:p-6">
+        <div class="rounded-2xl bg-amber-50 border border-amber-200 p-4 mb-5">
+          <div class="font-semibold text-sm text-amber-900">🧗 Move Mount Amos later, not earlier</div>
+          <p class="text-[13px] text-amber-900/90 mt-1">Parks: <em>“The track crosses very steep and slippery rock slabs, which are extremely dangerous when wet.”</em> September minimums at Swansea average <strong>5.8 °C</strong> — cold enough for heavy overnight dew or frost on bare granite that lingers well past 7:30 am. <strong>A dry forecast does not mean dry rock at dawn.</strong> Start 09:30–10:00 once the sun has worked on the slabs, or take the easy option. The descent is the dangerous direction.</p>
+        </div>
+
+        <div class="tl relative pl-6 pb-5">
+          <span class="absolute left-[-4px] top-1.5 w-2.5 h-2.5 rounded-full bg-ember-500 ring-4 ring-amber-100"></span>
+          <div class="text-xs font-bold text-ember-600 tracking-wide">09:30 – 12:30 · PICK ONE</div>
+          <div class="font-semibold text-[15px] mt-0.5">Mount Amos summit <span class="text-slate-400 font-normal">— or —</span> Sleepy Bay &amp; Friendly Beaches</div>
+          <div class="grid sm:grid-cols-2 gap-2.5 mt-2.5">
+            <div class="rounded-xl border border-red-200 bg-red-50/40 p-3">
+              <div class="font-semibold text-sm">Mount Amos</div>
+              <div class="flex flex-wrap gap-1.5 mt-1.5"><span class="badge bg-slate-100 text-slate-600">3.6 km return</span><span class="badge bg-slate-100 text-slate-600">3 hrs</span><span class="badge bg-red-100 text-red-700">Grade 4</span></div>
+              <p class="text-xs text-slate-600 mt-1.5">Granite dome scramble, 360° over Wineglass Bay. Dry rock only.</p>
+              <a href="https://parks.tas.gov.au/explore-our-parks/freycinet-national-park/mount-amos" target="_blank" rel="noopener" class="text-xs font-semibold text-forest-700 underline decoration-forest-700/30 mt-1.5 inline-block">Parks page →</a>
+            </div>
+            <div class="rounded-xl border border-forest-200 bg-forest-50/40 p-3">
+              <div class="font-semibold text-sm">Sleepy Bay + Friendly Beaches</div>
+              <div class="flex flex-wrap gap-1.5 mt-1.5"><span class="badge bg-slate-100 text-slate-600">0.5–5 km</span><span class="badge bg-slate-100 text-slate-600">flexible</span><span class="badge bg-forest-100 text-forest-800">Grade 2–3</span></div>
+              <p class="text-xs text-slate-600 mt-1.5">Coastal stroll, and it gets you on the road earlier — which today is worth something. Friendly Beaches is ~9 km of gravel.</p>
+            </div>
+          </div>
+        </div>
+        <div class="tl relative pl-6 pb-5">
+          <span class="absolute left-[-4px] top-1.5 w-2.5 h-2.5 rounded-full bg-forest-700 ring-4 ring-forest-100"></span>
+          <div class="text-xs font-bold text-forest-700 tracking-wide">13:00</div>
+          <div class="font-semibold text-[15px] mt-0.5">Pack up and drive inland</div>
+          <p class="text-sm text-slate-600 mt-0.5">Via Campbell Town and the Midlands, then down the Derwent Valley. Empty tanks at Coles Bay Community Hall before you go.</p>
+        </div>
+        <div class="tl relative pl-6 pb-5">
+          <span class="absolute left-[-4px] top-1.5 w-2.5 h-2.5 rounded-full bg-forest-700 ring-4 ring-forest-100"></span>
+          <div class="text-xs font-bold text-forest-700 tracking-wide">15:30</div>
+          <div class="font-semibold text-[15px] mt-0.5">New Norfolk — last real supplies &amp; fuel</div>
+          <p class="text-sm text-slate-600 mt-0.5">Bakery, fresh produce, supermarket, dump point and potable water. <strong>Fill the diesel here</strong> — beyond New Norfolk there’s essentially nothing.</p>
+        </div>
+        <div class="tl relative pl-6 pb-5">
+          <span class="absolute left-[-4px] top-1.5 w-2.5 h-2.5 rounded-full bg-forest-700 ring-4 ring-forest-100"></span>
+          <div class="text-xs font-bold text-forest-700 tracking-wide">16:30</div>
+          <div class="font-semibold text-[15px] mt-0.5">Arrive Mount Field — claim a site</div>
+          <p class="text-sm text-slate-600 mt-0.5">Visitor Centre closes at 4 pm in winter. Only 14 powered sites and no bookings — see the alert on the Overview tab. <strong>Ask about Lake Dobson Road while you’re there</strong>, it decides tomorrow.</p>
+        </div>
+        <div class="tl relative pl-6">
+          <span class="absolute left-[-4px] top-1.5 w-2.5 h-2.5 rounded-full bg-forest-700 ring-4 ring-forest-100"></span>
+          <div class="text-xs font-bold text-forest-700 tracking-wide">18:00 – 19:00</div>
+          <div class="font-semibold text-[15px] mt-0.5">Russell Falls at dusk · glow-worms</div>
+          <p class="text-sm text-slate-600 mt-0.5">1.4 km return, sealed and level, right by the campground. Civil twilight ends 18:26 — arrive around 18:00 and let your eyes adjust. Glow-worms are on the banks after dark; bring a torch with a red filter (white light kills the effect).</p>
+          <p class="text-xs text-slate-500 mt-1.5">This is an informal thing walkers do, not a Parks program — no booking, no guide, no fee.</p>
+        </div>
+      </div>
+
+      <details class="border-t border-sand-100 group">
+        <summary class="flex items-center gap-2 px-5 sm:px-6 py-4 hover:bg-sand-50">
+          <span class="text-sm font-semibold text-forest-800">Alternatives for Day 3</span>
+          <span class="badge bg-slate-100 text-slate-500">3 options</span>
+          <svg class="chev w-4 h-4 text-slate-400 ml-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+        </summary>
+        <div class="px-5 sm:px-6 pb-6 space-y-2.5">
+          <div class="rounded-xl border border-sand-200 p-3.5">
+            <div class="font-semibold text-sm">Skip the morning walk, stop in Richmond instead</div>
+            <p class="text-xs text-slate-600 mt-1">If you did Mount Amos on Day 2 or the weather is poor, leave Coles Bay at 08:00 and take the slower route through Richmond — 1823 bridge, bakeries, gaol. Buys you a relaxed arrival at Mount Field and a proper crack at a powered site.</p>
+          </div>
+          <div class="rounded-xl border border-sand-200 p-3.5">
+            <div class="font-semibold text-sm">Camp at Left of Field or New Norfolk instead of the park</div>
+            <p class="text-xs text-slate-600 mt-1">Both are bookable, which removes the first-come gamble. Left of Field is 5 min from Russell Falls with free hot showers and a bar; New Norfolk is council-run at a confirmed $50 powered, 35 min out but with a supermarket at the door.</p>
+          </div>
+          <div class="rounded-xl border border-sand-200 p-3.5">
+            <div class="font-semibold text-sm">Swap Mount Field for the Huon Valley</div>
+            <p class="text-xs text-slate-600 mt-1">Tahune Airwalk + Hastings Caves, camping around Geeveston. Removes the Lake Dobson risk entirely and is a shorter drive from Freycinet’s exit. Trade-off: no alpine anything, and the Airwalk carries its own entry fee on top of the parks pass.</p>
+          </div>
+        </div>
+      </details>
+    </div>
+  </div>
+
+  <!-- ─── DAY 4 ─── -->
+  <div class="daypanel hidden" data-day="4">
+    <div class="bg-white rounded-3xl border border-sand-200 shadow-soft overflow-hidden">
+      <div class="p-5 sm:p-6 border-b border-sand-100">
+        <div class="flex flex-wrap items-center gap-2 mb-2">
+          <span class="badge bg-forest-100 text-forest-800">DAY 4</span>
+          <span class="badge bg-slate-100 text-slate-600">🚗 ~90 km · 1 h 15</span>
+          <span class="badge bg-slate-100 text-slate-600">🥾 up to 18 km</span>
+          <span class="badge bg-red-100 text-red-700">access at risk</span>
+        </div>
+        <h3 class="font-display text-2xl text-forest-900">Mount Field → Hobart base</h3>
+        <p class="text-sm text-slate-500 mt-1">Russell Falls · Tarn Shelf · Richmond · Cambridge</p>
+      </div>
+
+      <div class="maprail bg-sand-100">
+        <iframe class="w-full h-full border-0" loading="lazy" title="Day 4 route map"
+          src="https://www.openstreetmap.org/export/embed.html?bbox=146.50%2C-42.92%2C147.70%2C-42.55&layer=mapnik&marker=-42.6801%2C146.5914"></iframe>
+      </div>
+      <div class="px-5 py-2.5 bg-sand-50 border-b border-sand-100 flex flex-wrap gap-2">
+        <a href="https://www.google.com/maps/dir/Mount+Field+National+Park+TAS/Lake+Dobson+TAS/New+Norfolk+TAS/Richmond+TAS/Cambridge+TAS" target="_blank" rel="noopener" class="text-xs font-semibold text-forest-800 bg-white border border-sand-200 px-3 py-1.5 rounded-lg hover:bg-forest-50">🗺 Open full route in Google Maps</a>
+      </div>
+
+      <div class="p-5 sm:p-6">
+        <div class="rounded-2xl bg-red-50 border border-red-200 p-4 mb-5">
+          <div class="font-semibold text-sm text-red-900">🚫 Do not drive the van up Lake Dobson Road without written permission</div>
+          <p class="text-[13px] text-red-800/90 mt-1">Parks calls it unsuitable for campervans; Apollo’s 12 km unsealed limit rules out a 16 km road; and Tasmania is a “permission required” region. Breaching it can <strong>void your liability cover entirely</strong> plus a $300 fee. Call <a href="tel:+61362881319" class="underline font-semibold">03 6288 1319</a> for the road report first thing, and see Plan B for the three workarounds.</p>
+        </div>
+
+        <div class="tl relative pl-6 pb-5">
+          <span class="absolute left-[-4px] top-1.5 w-2.5 h-2.5 rounded-full bg-forest-700 ring-4 ring-forest-100"></span>
+          <div class="text-xs font-bold text-forest-700 tracking-wide">07:30</div>
+          <div class="font-semibold text-[15px] mt-0.5">Call the road report before you commit</div>
+          <p class="text-sm text-slate-600 mt-0.5">03 6288 1319 (recorded) or the Visitor Centre from 9 am on 03 6288 1149.</p>
+        </div>
+        <div class="tl relative pl-6 pb-5">
+          <span class="absolute left-[-4px] top-1.5 w-2.5 h-2.5 rounded-full bg-forest-700 ring-4 ring-forest-100"></span>
+          <div class="text-xs font-bold text-forest-700 tracking-wide">08:00 – 09:00</div>
+          <div class="font-semibold text-[15px] mt-0.5">Russell · Horseshoe · Tall Trees</div>
+          <div class="flex flex-wrap gap-1.5 mt-1.5"><span class="badge bg-forest-100 text-forest-800">~2.5 km</span><span class="badge bg-forest-100 text-forest-800">1 hr</span><span class="badge bg-forest-100 text-forest-800">easy boardwalk</span></div>
+          <p class="text-sm text-slate-600 mt-2">Giant swamp gums and three waterfalls before breakfast. Note the signposted version is the <strong>6 km Three Falls Circuit</strong> (2–2.5 hrs) which adds Lady Barron Falls — your 2.5 km is the shortcut without it, which is a perfectly good call on a big hiking day.</p>
+          <a href="https://parks.tas.gov.au/explore-our-parks/mount-field-national-park/three-falls-circuit" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 text-xs font-semibold text-forest-800 bg-forest-50 border border-forest-100 px-3 py-2 rounded-xl hover:bg-forest-100 mt-2.5">Parks Tasmania · Three Falls Circuit →</a>
+        </div>
+        <div class="tl relative pl-6 pb-5">
+          <span class="absolute left-[-4px] top-1.5 w-2.5 h-2.5 rounded-full bg-ember-500 ring-4 ring-amber-100"></span>
+          <div class="text-xs font-bold text-ember-600 tracking-wide">09:45 – 15:30 · MAIN EVENT <span class="text-red-600">(if the road is open)</span></div>
+          <div class="font-semibold text-[15px] mt-0.5">Tarn Shelf &amp; Lake Dobson Circuit</div>
+          <div class="flex flex-wrap gap-1.5 mt-1.5">
+            <span class="badge bg-forest-100 text-forest-800">12 km official</span>
+            <span class="badge bg-red-100 text-red-700">5–6 hrs</span>
+            <span class="badge bg-amber-100 text-amber-800">Grade 3</span>
+            <span class="badge bg-slate-100 text-slate-600">~660 m ascent</span>
+            <span class="badge bg-sky-100 text-sky-800">snow likely</span>
+          </div>
+          <p class="text-sm text-slate-600 mt-2">Alpine glacial tarns, pandani groves, sub-alpine moorland. Parks lists 5–6 hours, not 4–5 — GPS tracks come in nearer <strong>15.6 km / 664 m</strong>. <strong>You must be walking by 10:00.</strong></p>
+          <div class="mt-2 rounded-xl bg-sky-50 border border-sky-200 p-3 text-[13px] text-sky-900">
+            The grade assumes snow-free ground. Parks warns the tracks <em>“are difficult to navigate when covered in snow and may be impassable”</em>, and that <em>“deaths have occurred when people have been caught unprepared in cold, wet and windy weather.”</em> Estimated conditions on the shelf: ~8 °C max, ~−3 °C min. Tarns may still be part-frozen.
+          </div>
+          <a href="https://parks.tas.gov.au/explore-our-parks/mount-field-national-park/tarn-shelf" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 text-xs font-semibold text-forest-800 bg-forest-50 border border-forest-100 px-3 py-2 rounded-xl hover:bg-forest-100 mt-2.5">Parks Tasmania · Tarn Shelf →</a>
+        </div>
+        <div class="tl relative pl-6 pb-5">
+          <span class="absolute left-[-4px] top-1.5 w-2.5 h-2.5 rounded-full bg-forest-700 ring-4 ring-forest-100"></span>
+          <div class="text-xs font-bold text-forest-700 tracking-wide">16:15</div>
+          <div class="font-semibold text-[15px] mt-0.5">Richmond — dinner and the 1823 bridge</div>
+          <p class="text-sm text-slate-600 mt-0.5">Oldest stone bridge in Australia, and Richmond Caravan Park has a free dump point if you want it done tonight.</p>
+        </div>
+        <div class="tl relative pl-6">
+          <span class="absolute left-[-4px] top-1.5 w-2.5 h-2.5 rounded-full bg-forest-700 ring-4 ring-forest-100"></span>
+          <div class="text-xs font-bold text-forest-700 tracking-wide">18:30</div>
+          <div class="font-semibold text-[15px] mt-0.5">Camp near the depot</div>
+          <p class="text-sm text-slate-600 mt-0.5">Barilla or BIG4 Hobart Airport, both ~4 min from Apollo. Do the dump and water fill tonight so tomorrow morning is only fuel and a sweep.</p>
+        </div>
+      </div>
+
+      <details class="border-t border-sand-100 group" open>
+        <summary class="flex items-center gap-2 px-5 sm:px-6 py-4 hover:bg-sand-50">
+          <span class="text-sm font-semibold text-forest-800">Alternatives for Day 4</span>
+          <span class="badge bg-red-100 text-red-700">read these</span>
+          <svg class="chev w-4 h-4 text-slate-400 ml-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+        </summary>
+        <div class="px-5 sm:px-6 pb-6 space-y-2.5">
+          <div class="rounded-xl border border-forest-200 bg-forest-50/50 p-3.5">
+            <div class="flex items-center gap-2"><span class="badge bg-forest-100 text-forest-800">TRUE FALLBACK</span></div>
+            <div class="font-semibold text-sm mt-1.5">Three Falls Circuit — the only real walk that doesn’t need Lake Dobson Road</div>
+            <div class="flex flex-wrap gap-1.5 mt-2"><span class="badge bg-slate-100 text-slate-600">6 km</span><span class="badge bg-slate-100 text-slate-600">2–2.5 hrs</span><span class="badge bg-amber-100 text-amber-800">Grade 3</span></div>
+            <p class="text-xs text-slate-600 mt-1.5">Russell, Horseshoe, Lady Barron and Tall Trees in one loop, and it’s arguably better in rain. It absorbs your planned morning walk though — so if the road’s shut you have a 2.5-hour day and should add something: Richmond, Mount Nelson, or push on to kunanyi a day early.</p>
+          </div>
+          <div class="rounded-xl border border-sand-200 p-3.5">
+            <div class="flex items-center gap-2"><span class="badge bg-red-100 text-red-700">HARDER</span><span class="badge bg-amber-100 text-amber-800">needs Lake Dobson Rd</span></div>
+            <div class="font-semibold text-sm mt-1.5">Mount Field East via Lake Nicholls</div>
+            <div class="flex flex-wrap gap-1.5 mt-2"><span class="badge bg-slate-100 text-slate-600">10 km</span><span class="badge bg-slate-100 text-slate-600">4–5 hrs</span><span class="badge bg-red-100 text-red-700">Grade 4</span></div>
+          </div>
+          <div class="rounded-xl border border-sand-200 p-3.5">
+            <div class="flex items-center gap-2"><span class="badge bg-slate-100 text-slate-600">SHORTER ALPINE</span><span class="badge bg-amber-100 text-amber-800">needs Lake Dobson Rd</span></div>
+            <div class="font-semibold text-sm mt-1.5">Tarn Shelf out-and-back via the ski fields</div>
+            <div class="flex flex-wrap gap-1.5 mt-2"><span class="badge bg-slate-100 text-slate-600">~6 km</span><span class="badge bg-slate-100 text-slate-600">3 hrs</span><span class="badge bg-amber-100 text-amber-800">Grade 3</span></div>
+            <p class="text-xs text-slate-600 mt-1.5">Gets you onto the shelf and back without committing to the full circuit — the sensible choice if there’s snow underfoot or you started late.</p>
+          </div>
+          <div class="rounded-xl border border-sand-200 p-3.5">
+            <div class="flex items-center gap-2"><span class="badge bg-forest-100 text-forest-800">EASY ALPINE</span><span class="badge bg-amber-100 text-amber-800">needs Lake Dobson Rd</span></div>
+            <div class="font-semibold text-sm mt-1.5">Pandani Grove, Lake Dobson</div>
+            <div class="flex flex-wrap gap-1.5 mt-2"><span class="badge bg-slate-100 text-slate-600">1.5 km</span><span class="badge bg-slate-100 text-slate-600">30–40 min</span><span class="badge bg-forest-100 text-forest-800">Grade 2</span></div>
+            <a href="https://parks.tas.gov.au/explore-our-parks/mount-field-national-park/pandani-grove" target="_blank" rel="noopener" class="text-xs font-semibold text-forest-700 underline decoration-forest-700/30 mt-1.5 inline-block">Parks page →</a>
+          </div>
+        </div>
+      </details>
+    </div>
+  </div>
+
+  <!-- ─── DAY 5 ─── -->
+  <div class="daypanel hidden" data-day="5">
+    <div class="bg-white rounded-3xl border border-sand-200 shadow-soft overflow-hidden">
+      <div class="p-5 sm:p-6 border-b border-sand-100">
+        <div class="flex flex-wrap items-center gap-2 mb-2">
+          <span class="badge bg-forest-100 text-forest-800">DAY 5</span>
+          <span class="badge bg-slate-100 text-slate-600">🚗 ~50 km</span>
+          <span class="badge bg-slate-100 text-slate-600">🥾 7.4 km</span>
+          <span class="badge bg-red-100 text-red-700">van back 14:30</span>
+        </div>
+        <h3 class="font-display text-2xl text-forest-900">kunanyi / Mt Wellington → depot</h3>
+        <p class="text-sm text-slate-500 mt-1">The Springs · Salamanca · Cambridge</p>
+      </div>
+
+      <div class="maprail bg-sand-100">
+        <iframe class="w-full h-full border-0" loading="lazy" title="Day 5 route map"
+          src="https://www.openstreetmap.org/export/embed.html?bbox=147.10%2C-43.02%2C147.62%2C-42.75&layer=mapnik&marker=-42.9131%2C147.2441"></iframe>
+      </div>
+      <div class="px-5 py-2.5 bg-sand-50 border-b border-sand-100 flex flex-wrap gap-2">
+        <a href="https://www.google.com/maps/dir/Cambridge+TAS/The+Springs,+kunanyi+Mount+Wellington+TAS/Salamanca+Place+Hobart+TAS/Apollo+Hobart,+14+Long+St,+Cambridge+TAS" target="_blank" rel="noopener" class="text-xs font-semibold text-forest-800 bg-white border border-sand-200 px-3 py-1.5 rounded-lg hover:bg-forest-50">🗺 Open full route in Google Maps</a>
+        <a href="https://www.hobartcity.com.au/Things-To-Do/Kunanyi-Mt-Wellington/Pinnacle-Road-status" target="_blank" rel="noopener" class="text-xs font-semibold text-white bg-forest-900 px-3 py-1.5 rounded-lg hover:bg-forest-800">🚦 Pinnacle Road live status</a>
+      </div>
+
+      <div class="p-5 sm:p-6">
+        <div class="rounded-2xl bg-forest-50 border border-forest-200 p-4 mb-5">
+          <div class="font-semibold text-sm text-forest-900">✓ Good news on the road closure risk</div>
+          <p class="text-[13px] text-forest-800/90 mt-1">Pinnacle Road closes often in September for snow and ice — but the City of Hobart closes it <strong>in stages</strong>, and the standard partial closure is “open to The Springs while we clear higher up.” <strong>The Springs is your trailhead</strong>, so the common closure scenario still lets you walk. Only a full closure at Fern Tree stops you. Chains and 4WD don’t help — both are prohibited during closures — but walking up past a closed gate is allowed.</p>
+        </div>
+
+        <div class="tl relative pl-6 pb-5">
+          <span class="absolute left-[-4px] top-1.5 w-2.5 h-2.5 rounded-full bg-ember-500 ring-4 ring-amber-100"></span>
+          <div class="text-xs font-bold text-ember-600 tracking-wide">08:00 – 11:00 · MAIN EVENT</div>
+          <div class="font-semibold text-[15px] mt-0.5">Organ Pipes Track from The Springs</div>
+          <div class="flex flex-wrap gap-1.5 mt-1.5">
+            <span class="badge bg-forest-100 text-forest-800">7.4 km return</span>
+            <span class="badge bg-amber-100 text-amber-800">3 hrs official</span>
+            <span class="badge bg-amber-100 text-amber-800">Grade 3</span>
+            <span class="badge bg-slate-100 text-slate-600">400 m over 1.8 km</span>
+          </div>
+          <p class="text-sm text-slate-600 mt-2">Under the dolerite columns with Hobart and Storm Bay below. Parks says 3 hours, not 2.5 — it’s a genuine 400 m climb. <strong>kunanyi is free</strong>; it isn’t a national park, so no pass needed.</p>
+          <a href="https://parks.tas.gov.au/things-to-do/60-great-short-walks/organ-pipes" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 text-xs font-semibold text-forest-800 bg-forest-50 border border-forest-100 px-3 py-2 rounded-xl hover:bg-forest-100 mt-2.5">Parks Tasmania · Organ Pipes →</a>
+        </div>
+        <div class="tl relative pl-6 pb-5">
+          <span class="absolute left-[-4px] top-1.5 w-2.5 h-2.5 rounded-full bg-forest-700 ring-4 ring-forest-100"></span>
+          <div class="text-xs font-bold text-forest-700 tracking-wide">11:45</div>
+          <div class="font-semibold text-[15px] mt-0.5">Lunch at Salamanca / Battery Point</div>
+          <p class="text-sm text-slate-600 mt-0.5">Parking a 5.94 m van in Salamanca is the awkward part — the Salamanca Square car park has height limits. Consider street parking on Castray Esplanade instead.</p>
+        </div>
+        <div class="tl relative pl-6 pb-5">
+          <span class="absolute left-[-4px] top-1.5 w-2.5 h-2.5 rounded-full bg-red-500 ring-4 ring-red-100"></span>
+          <div class="text-xs font-bold text-red-600 tracking-wide">13:00 – 14:15 · RETURN PREP</div>
+          <div class="font-semibold text-[15px] mt-0.5">Empty, sweep, refuel</div>
+          <ul class="text-sm text-slate-600 mt-1.5 space-y-1 list-disc pl-4">
+            <li>Grey water + toilet cassette at the BIG4 Hobart Airport dump point (potable water there too) or free at Sorell’s Pembroke Park</li>
+            <li>Rubbish out, interior swept, bedding folded</li>
+            <li>Diesel to full at Cambridge or the airport service station — keep the receipt</li>
+            <li>Photograph the van inside and out before handing over</li>
+          </ul>
+        </div>
+        <div class="tl relative pl-6">
+          <span class="absolute left-[-4px] top-1.5 w-2.5 h-2.5 rounded-full bg-red-500 ring-4 ring-red-100"></span>
+          <div class="text-xs font-bold text-red-600 tracking-wide">14:30 · HARD DEADLINE</div>
+          <div class="font-semibold text-[15px] mt-0.5">Drop off at 14 Long St, Cambridge</div>
+          <p class="text-sm text-slate-600 mt-0.5">Depot closes 15:30 and requires the van back an hour before. Aim for 14:00 to have a buffer.</p>
+        </div>
+      </div>
+
+      <details class="border-t border-sand-100 group">
+        <summary class="flex items-center gap-2 px-5 sm:px-6 py-4 hover:bg-sand-50">
+          <span class="text-sm font-semibold text-forest-800">Alternatives for Day 5</span>
+          <span class="badge bg-slate-100 text-slate-500">4 options</span>
+          <svg class="chev w-4 h-4 text-slate-400 ml-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+        </summary>
+        <div class="px-5 sm:px-6 pb-6 space-y-2.5">
+          <div class="rounded-xl border border-sand-200 p-3.5">
+            <div class="font-semibold text-sm">Organ Pipes Circuit (fuller loop)</div><div class="text-xs text-slate-500 mt-0.5">Adds Sphinx Rock, the old huts and The Chalet</div>
+            <div class="flex flex-wrap gap-1.5 mt-2"><span class="badge bg-slate-100 text-slate-600">9.2 km</span><span class="badge bg-slate-100 text-slate-600">half day</span></div>
+            <a href="https://www.greaterhobarttrails.com.au/tracks/organ-pipes-circuit" target="_blank" rel="noopener" class="text-xs font-semibold text-forest-700 underline decoration-forest-700/30 mt-2 inline-block">Greater Hobart Trails →</a>
+            <p class="text-xs text-amber-700 mt-1.5">Tight against a 14:30 return. Only if you start by 07:30.</p>
+          </div>
+          <div class="rounded-xl border border-sand-200 p-3.5">
+            <div class="flex items-center gap-2"><span class="badge bg-red-100 text-red-700">HARDER</span></div>
+            <div class="font-semibold text-sm mt-1.5">The Springs → Pinnacle via Zig Zag Track</div>
+            <div class="flex flex-wrap gap-1.5 mt-2"><span class="badge bg-slate-100 text-slate-600">3.4 km one way</span><span class="badge bg-slate-100 text-slate-600">half day</span></div>
+            <p class="text-xs text-red-700 mt-1.5">Avoid if there’s ice — the upper section is highly exposed with falling-rock risk from the Organ Pipes.</p>
+          </div>
+          <div class="rounded-xl border border-sand-200 p-3.5">
+            <div class="flex items-center gap-2"><span class="badge bg-red-100 text-red-700">HARDER</span></div>
+            <div class="font-semibold text-sm mt-1.5">Wellington Falls via Milles Track</div>
+            <div class="flex flex-wrap gap-1.5 mt-2"><span class="badge bg-slate-100 text-slate-600">12.2 km return</span><span class="badge bg-slate-100 text-slate-600">5 hrs</span><span class="badge bg-red-100 text-red-700">Grade 4</span></div>
+            <p class="text-xs text-red-700 mt-1.5">Doesn’t fit a 14:30 return. Listed for completeness.</p>
+          </div>
+          <div class="rounded-xl border border-sky-200 bg-sky-50/40 p-3.5">
+            <div class="flex items-center gap-2"><span class="badge bg-sky-100 text-sky-800">ALL-WEATHER FALLBACK</span></div>
+            <div class="font-semibold text-sm mt-1.5">Mount Nelson Signal Station</div><div class="text-xs text-slate-500 mt-0.5">Sealed road, panoramic Derwent views, café and brasserie on site. No pass, no closure risk.</div>
+            <a href="https://parks.tas.gov.au/explore-our-parks/mount-nelson-signal-station" target="_blank" rel="noopener" class="text-xs font-semibold text-forest-700 underline decoration-forest-700/30 mt-2 inline-block">Parks page →</a>
+          </div>
+        </div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ HIKES ══════════ -->
+<section id="hikes" class="pt-12">
+  <h2 class="font-display text-2xl sm:text-3xl text-forest-900">Hikes</h2>
+  <p class="text-sm text-slate-500 mt-1 mb-4">Distances, times and grades below are Parks Tasmania’s official figures — several differ from the original plan. Elevation gains are third-party estimates; Parks publishes them only for Organ Pipes.</p>
+
+  <div class="bg-white rounded-2xl border border-sand-200 shadow-soft overflow-hidden mb-4">
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm min-w-[680px]">
+        <thead class="bg-sand-50 text-slate-500 text-xs uppercase tracking-wider">
+          <tr>
+            <th class="text-left font-semibold px-4 py-3">Walk</th>
+            <th class="text-right font-semibold px-3 py-3">Distance</th>
+            <th class="text-right font-semibold px-3 py-3">Time</th>
+            <th class="text-center font-semibold px-3 py-3">Grade</th>
+            <th class="text-right font-semibold px-3 py-3">Ascent</th>
+            <th class="text-left font-semibold px-4 py-3">Note</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-sand-100">
+          <tr><td class="px-4 py-3"><a href="https://parks.tas.gov.au/explore-our-parks/tasman-national-park/cape-hauy" target="_blank" rel="noopener" class="font-medium text-forest-800 hover:underline">Cape Hauy</a><div class="text-xs text-slate-400">Day 1</div></td><td class="px-3 py-3 text-right">9.4 km</td><td class="px-3 py-3 text-right">4 hrs</td><td class="px-3 py-3 text-center"><span class="badge bg-amber-100 text-amber-800">3</span></td><td class="px-3 py-3 text-right text-slate-500">~550 m</td><td class="px-4 py-3 text-xs text-slate-500">As planned. 12 km gravel access.</td></tr>
+          <tr class="bg-amber-50/40"><td class="px-4 py-3"><a href="https://parks.tas.gov.au/explore-our-parks/freycinet-national-park/wineglass-bay-and-hazards-beach" target="_blank" rel="noopener" class="font-medium text-forest-800 hover:underline">Wineglass &amp; Hazards</a><div class="text-xs text-slate-400">Day 2</div></td><td class="px-3 py-3 text-right">11 km</td><td class="px-3 py-3 text-right font-semibold">4–5 hrs</td><td class="px-3 py-3 text-center"><span class="badge bg-red-100 text-red-700">4</span></td><td class="px-3 py-3 text-right text-slate-500">~480 m</td><td class="px-4 py-3 text-xs text-amber-800">Grade 4, not 3–4. Needs a morning start.</td></tr>
+          <tr class="bg-amber-50/40"><td class="px-4 py-3"><a href="https://parks.tas.gov.au/explore-our-parks/freycinet-national-park/mount-amos" target="_blank" rel="noopener" class="font-medium text-forest-800 hover:underline">Mount Amos</a><div class="text-xs text-slate-400">Day 3</div></td><td class="px-3 py-3 text-right font-semibold">3.6 km</td><td class="px-3 py-3 text-right">3 hrs</td><td class="px-3 py-3 text-center"><span class="badge bg-red-100 text-red-700">4</span></td><td class="px-3 py-3 text-right text-slate-500">~410 m</td><td class="px-4 py-3 text-xs text-amber-800">3.6 km not 4. Dry rock only.</td></tr>
+          <tr><td class="px-4 py-3"><a href="https://parks.tas.gov.au/explore-our-parks/mount-field-national-park/three-falls-circuit" target="_blank" rel="noopener" class="font-medium text-forest-800 hover:underline">Three Falls Circuit</a><div class="text-xs text-slate-400">Day 4 AM</div></td><td class="px-3 py-3 text-right">6 km</td><td class="px-3 py-3 text-right">2–2.5 hrs</td><td class="px-3 py-3 text-center"><span class="badge bg-amber-100 text-amber-800">3</span></td><td class="px-3 py-3 text-right text-slate-400">—</td><td class="px-4 py-3 text-xs text-slate-500">Your 2.5 km version skips Lady Barron.</td></tr>
+          <tr class="bg-red-50/40"><td class="px-4 py-3"><a href="https://parks.tas.gov.au/explore-our-parks/mount-field-national-park/tarn-shelf" target="_blank" rel="noopener" class="font-medium text-forest-800 hover:underline">Tarn Shelf circuit</a><div class="text-xs text-slate-400">Day 4</div></td><td class="px-3 py-3 text-right">12 km <span class="text-xs text-slate-400">(GPS 15.6)</span></td><td class="px-3 py-3 text-right font-semibold">5–6 hrs</td><td class="px-3 py-3 text-center"><span class="badge bg-amber-100 text-amber-800">3</span></td><td class="px-3 py-3 text-right text-slate-500">~660 m</td><td class="px-4 py-3 text-xs text-red-700">Access at risk. Grade assumes no snow.</td></tr>
+          <tr class="bg-amber-50/40"><td class="px-4 py-3"><a href="https://parks.tas.gov.au/things-to-do/60-great-short-walks/organ-pipes" target="_blank" rel="noopener" class="font-medium text-forest-800 hover:underline">Organ Pipes</a><div class="text-xs text-slate-400">Day 5</div></td><td class="px-3 py-3 text-right">7.4 km</td><td class="px-3 py-3 text-right font-semibold">3 hrs</td><td class="px-3 py-3 text-center"><span class="badge bg-amber-100 text-amber-800">3</span></td><td class="px-3 py-3 text-right font-medium">400 m</td><td class="px-4 py-3 text-xs text-amber-800">3 hrs official, not 2.5. Free — no pass.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="grid sm:grid-cols-3 gap-3">
+    <div class="bg-white rounded-2xl border border-sand-200 p-4 shadow-soft">
+      <div class="text-xs uppercase tracking-wider text-slate-400 font-bold">Total on foot</div>
+      <div class="font-display text-3xl text-forest-800 mt-1">~45 km</div>
+      <div class="text-xs text-slate-500 mt-0.5">across 5 days, if everything runs</div>
+    </div>
+    <div class="bg-white rounded-2xl border border-sand-200 p-4 shadow-soft">
+      <div class="text-xs uppercase tracking-wider text-slate-400 font-bold">Hardest day</div>
+      <div class="font-display text-3xl text-forest-800 mt-1">Day 4</div>
+      <div class="text-xs text-slate-500 mt-0.5">up to 18 km incl. the morning falls loop</div>
+    </div>
+    <div class="bg-white rounded-2xl border border-sand-200 p-4 shadow-soft">
+      <div class="text-xs uppercase tracking-wider text-slate-400 font-bold">Bookings needed</div>
+      <div class="font-display text-3xl text-forest-800 mt-1">None</div>
+      <div class="text-xs text-slate-500 mt-0.5">Cape Hauy from Fortescue Bay is a free day walk, separate from Three Capes</div>
+    </div>
+  </div>
+
+  <div class="mt-4 bg-white rounded-2xl border border-sand-200 p-5 shadow-soft">
+    <h3 class="font-semibold text-slate-900 mb-2">Grade scale, so the badges mean something</h3>
+    <div class="grid sm:grid-cols-2 gap-x-6 gap-y-2 text-sm text-slate-600">
+      <div class="flex gap-2.5"><span class="badge bg-forest-100 text-forest-800 shrink-0">1–2</span><span>Boardwalk or gentle path. No experience needed.</span></div>
+      <div class="flex gap-2.5"><span class="badge bg-amber-100 text-amber-800 shrink-0">3</span><span>Formed track, some steep sections and steps. Boots.</span></div>
+      <div class="flex gap-2.5"><span class="badge bg-red-100 text-red-700 shrink-0">4</span><span>Rough, steep, sometimes unmarked. Navigation and fitness required.</span></div>
+      <div class="flex gap-2.5"><span class="badge bg-sky-100 text-sky-800 shrink-0">snow</span><span>Alpine ground where the published grade assumes snow-free conditions.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ CAMPSITES ══════════ -->
+<section id="camps" class="pt-12">
+  <h2 class="font-display text-2xl sm:text-3xl text-forest-900">Campsites &amp; bookings</h2>
+  <p class="text-sm text-slate-500 mt-1 mb-2">Baseline plan plus researched alternatives for every night. <strong class="text-forest-800">Green prices are officially published and confirmed.</strong> Everything else is an estimate — Australian holiday parks hide site rates behind dated booking widgets, so ring to confirm.</p>
+
+  <div class="rounded-2xl bg-forest-50 border border-forest-200 p-4 my-4">
+    <div class="font-semibold text-sm text-forest-900">💡 Two switches save roughly $120</div>
+    <p class="text-[13px] text-forest-800/90 mt-1">Swapping BIG4 Iluka → <strong>Richardsons Beach ($16 powered, inside the park, closer to the trailhead)</strong> and BIG4 Hobart Airport → <strong>Sorell RV Stop ($10, free dump + potable water)</strong> takes four nights plus the pass from roughly $290–330 down to about $185–195. The trade-off on Sorell is no mains heating on your last night.</p>
+  </div>
+
+  <!-- NIGHT 1 -->
+  <div class="bg-white rounded-3xl border border-sand-200 shadow-soft overflow-hidden mb-4">
+    <div class="p-5 border-b border-sand-100 bg-sand-50/60">
+      <div class="flex items-center gap-2"><span class="badge bg-forest-900 text-white">NIGHT 1</span><span class="text-sm text-slate-500">Sat 12 Sep · Tasman Peninsula</span></div>
+    </div>
+    <div class="p-5">
+      <div class="rounded-2xl border-2 border-forest-700 p-4">
+        <div class="flex items-start justify-between gap-3">
+          <div><div class="badge bg-forest-100 text-forest-800 mb-1.5">BASELINE · VERIFIED</div><div class="font-semibold text-[15px]">NRMA Port Arthur Holiday Park</div><div class="text-xs text-slate-500 mt-0.5">Lot 1 Garden Point Rd, Port Arthur · 35–40 min to the Fortescue Bay turn-off</div></div>
+          <div class="text-right shrink-0"><div class="font-display text-xl text-forest-800">~$45–55</div><div class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold">est. powered</div></div>
+        </div>
+        <p class="text-sm text-slate-600 mt-2">Dump point on site, hot showers, laundry, camp kitchen, wood-fired pizza oven, kiosk, free WiFi. Confirmed trading through winter. Office 8 am–6 pm. <strong>NRMA members get 10% off.</strong></p>
+        <div class="flex flex-wrap gap-2 mt-3">
+          <a href="https://www.nrmaparksandresorts.com.au/port-arthur/book-now/" target="_blank" rel="noopener" class="text-xs font-semibold bg-forest-900 text-white px-3 py-2 rounded-xl hover:bg-forest-800">Book direct →</a>
+          <a href="tel:1800607057" class="text-xs font-semibold bg-white border border-sand-200 text-slate-700 px-3 py-2 rounded-xl hover:bg-sand-50">☎ 1800 607 057</a>
+        </div>
+      </div>
+      <div class="mt-3 space-y-2.5">
+        <div class="rounded-xl border border-sand-200 p-3.5">
+          <div class="flex items-start justify-between gap-3"><div><div class="badge bg-slate-100 text-slate-600 mb-1">ALTERNATIVE</div><div class="font-semibold text-sm">White Beach Tourist Park</div><div class="text-xs text-slate-500 mt-0.5">Beachfront, dump point, quieter and consistently cheaper than the NRMA park</div></div><div class="text-right shrink-0"><div class="font-semibold text-slate-700">phone</div><div class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold">for a rate</div></div></div>
+          <p class="text-xs text-amber-700 mt-1.5">⚠ Winter hours 9 am–5 pm and you must pre-book and pay before closing to hold a site. No pets.</p>
+          <div class="flex flex-wrap gap-2 mt-2.5"><a href="https://whitebeachtouristpark.com.au/" target="_blank" rel="noopener" class="text-xs font-semibold bg-white border border-sand-200 text-slate-700 px-3 py-1.5 rounded-lg hover:bg-sand-50">Website →</a><a href="tel:+61362502142" class="text-xs font-semibold bg-white border border-sand-200 text-slate-700 px-3 py-1.5 rounded-lg hover:bg-sand-50">☎ 03 6250 2142</a></div>
+        </div>
+        <div class="rounded-xl border border-forest-200 bg-forest-50/40 p-3.5">
+          <div class="flex items-start justify-between gap-3"><div><div class="badge bg-forest-100 text-forest-800 mb-1">BUDGET · AT THE TRAILHEAD</div><div class="font-semibold text-sm">Fortescue Bay Campground (Tasman NP)</div><div class="text-xs text-slate-500 mt-0.5">You camp <em>at</em> the Cape Hauy trailhead. Hot showers, toilets, tank water.</div></div><div class="text-right shrink-0"><div class="font-display text-xl text-forest-700">$13</div><div class="text-[10px] uppercase tracking-wider text-forest-600 font-semibold">confirmed</div></div></div>
+          <p class="text-xs text-red-700 mt-1.5">⚠ <strong>Unpowered only</strong> — no mains heating in a Tasmanian September. First come, first served from 1 May–30 Sep (no bookings). 12 km unsealed access — check your Apollo terms.</p>
+          <a href="https://parks.tas.gov.au/explore-our-parks/tasman-national-park/fortescue-bay-camping" target="_blank" rel="noopener" class="text-xs font-semibold bg-white border border-forest-200 text-forest-800 px-3 py-1.5 rounded-lg hover:bg-forest-50 mt-2.5 inline-block">Parks page →</a>
+        </div>
+        <div class="rounded-xl border border-sand-200 p-3.5">
+          <div class="flex items-start justify-between gap-3"><div><div class="badge bg-slate-100 text-slate-600 mb-1">CHEAPEST</div><div class="font-semibold text-sm">Tasman Ex-Services Club (RSL), Nubeena</div><div class="text-xs text-slate-500 mt-0.5">Self-contained vehicles only, 48-hour limit, no power. Club bar/meals Wed–Sat.</div></div><div class="text-right shrink-0"><div class="font-semibold text-slate-400 text-sm">unconfirmed</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NIGHT 2 -->
+  <div class="bg-white rounded-3xl border border-sand-200 shadow-soft overflow-hidden mb-4">
+    <div class="p-5 border-b border-sand-100 bg-sand-50/60">
+      <div class="flex items-center gap-2"><span class="badge bg-forest-900 text-white">NIGHT 2</span><span class="text-sm text-slate-500">Sun 13 Sep · Freycinet</span></div>
+    </div>
+    <div class="p-5">
+      <div class="rounded-2xl border-2 border-ember-500 bg-amber-50/30 p-4">
+        <div class="flex items-start justify-between gap-3">
+          <div><div class="badge bg-amber-100 text-amber-800 mb-1.5">⭐ BEST SWAP OF THE TRIP</div><div class="font-semibold text-[15px]">Richardsons Beach, Freycinet NP — powered</div><div class="text-xs text-slate-500 mt-0.5">Beachfront <em>inside</em> the national park, 2 min from the Wineglass Bay trailhead</div></div>
+          <div class="text-right shrink-0"><div class="font-display text-2xl text-forest-700">$16</div><div class="text-[10px] uppercase tracking-wider text-forest-600 font-semibold">confirmed</div></div>
+        </div>
+        <p class="text-sm text-slate-600 mt-2">18 powered sites for the whole park. Amenities block with $2-coin hot showers, flush toilets, potable water and grey-water disposal at the powered sites. Roughly a quarter of the BIG4 price.</p>
+        <div class="mt-2 rounded-xl bg-white border border-amber-200 p-3 text-[13px] text-amber-900">
+          <strong>Two catches.</strong> Bookings are required year-round but there is <strong>no online system</strong> — phone (03) 6256 7004 or email Freycinet@parks.tas.gov.au, full payment at booking. And sites are rated for “small 6 m campervans” with ~7 × 4 m pads: your Euro Mini is <strong>5.94 m — it fits, but only just.</strong> Declare the exact length when you call.
+        </div>
+        <div class="flex flex-wrap gap-2 mt-3">
+          <a href="tel:+61362567004" class="text-xs font-semibold bg-ember-600 text-white px-3 py-2 rounded-xl hover:bg-ember-500">☎ Book: 03 6256 7004</a>
+          <a href="mailto:Freycinet@parks.tas.gov.au" class="text-xs font-semibold bg-white border border-sand-200 text-slate-700 px-3 py-2 rounded-xl hover:bg-sand-50">✉ Email</a>
+          <a href="https://parks.tas.gov.au/explore-our-parks/freycinet-national-park/richardsons-beach-honeymoon-bay-and-ranger-creek-camping" target="_blank" rel="noopener" class="text-xs font-semibold bg-white border border-sand-200 text-slate-700 px-3 py-2 rounded-xl hover:bg-sand-50">Parks page →</a>
+        </div>
+      </div>
+      <div class="mt-3 space-y-2.5">
+        <div class="rounded-xl border border-sand-200 p-3.5">
+          <div class="flex items-start justify-between gap-3"><div><div class="badge bg-slate-100 text-slate-600 mb-1">BASELINE · FALLBACK</div><div class="font-semibold text-sm">BIG4 Iluka on Freycinet</div><div class="text-xs text-slate-500 mt-0.5">Camp kitchens, café, pizzeria, tavern, store. 10 min to the Wineglass car park.</div></div><div class="text-right shrink-0"><div class="font-display text-lg text-slate-700">~$50–65</div><div class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold">estimate</div></div></div>
+          <p class="text-xs text-amber-700 mt-1.5">⚠ “A minimum stay may apply” — unspecified. September opening not explicitly confirmed; ring first. No dump point mentioned — use the Coles Bay Community Hall point.</p>
+          <div class="flex flex-wrap gap-2 mt-2.5"><a href="https://www.big4.com.au/caravan-parks/tas/freycinet-east-coast/iluka-on-freycinet-holiday-park" target="_blank" rel="noopener" class="text-xs font-semibold bg-white border border-sand-200 text-slate-700 px-3 py-1.5 rounded-lg hover:bg-sand-50">Book →</a><a href="tel:+61362570115" class="text-xs font-semibold bg-white border border-sand-200 text-slate-700 px-3 py-1.5 rounded-lg hover:bg-sand-50">☎ 03 6257 0115</a></div>
+        </div>
+        <div class="rounded-xl border border-sand-200 p-3.5">
+          <div class="flex items-start justify-between gap-3"><div><div class="badge bg-slate-100 text-slate-600 mb-1">SHORTENS MONDAY</div><div class="font-semibold text-sm">Swansea Holiday Park</div><div class="text-xs text-slate-500 mt-0.5">Potable water at every site, heated bathrooms with free showers, beachfront. Cuts ~40 min off Monday’s drive.</div></div><div class="text-right shrink-0"><div class="font-semibold text-slate-400 text-sm">not published</div></div></div>
+          <div class="flex flex-wrap gap-2 mt-2.5"><a href="https://bookings8.rmscloud.com/Search/Index/15888/1/" target="_blank" rel="noopener" class="text-xs font-semibold bg-white border border-sand-200 text-slate-700 px-3 py-1.5 rounded-lg hover:bg-sand-50">Book →</a><a href="tel:+61362578148" class="text-xs font-semibold bg-white border border-sand-200 text-slate-700 px-3 py-1.5 rounded-lg hover:bg-sand-50">☎ 03 6257 8148</a></div>
+        </div>
+        <div class="rounded-xl border border-sand-200 p-3.5">
+          <div class="flex items-start justify-between gap-3"><div><div class="badge bg-forest-100 text-forest-800 mb-1">FREE</div><div class="font-semibold text-sm">River and Rocks (Swan River)</div><div class="text-xs text-slate-500 mt-0.5">7.5 km north of Coles Bay, then 800 m dirt. Pit toilet, BBQs. ~20 min to the Wineglass car park.</div></div><div class="text-right shrink-0"><div class="font-display text-xl text-forest-700">$0</div></div></div>
+          <p class="text-xs text-red-700 mt-1.5">⚠ No power, no shower, no drinking water. Soft sand — larger vehicles can bog.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NIGHT 3 -->
+  <div class="bg-white rounded-3xl border border-sand-200 shadow-soft overflow-hidden mb-4">
+    <div class="p-5 border-b border-sand-100 bg-sand-50/60">
+      <div class="flex items-center gap-2"><span class="badge bg-forest-900 text-white">NIGHT 3</span><span class="text-sm text-slate-500">Mon 14 Sep · Mount Field</span></div>
+    </div>
+    <div class="p-5">
+      <div class="rounded-2xl border-2 border-red-300 bg-red-50/30 p-4">
+        <div class="flex items-start justify-between gap-3">
+          <div><div class="badge bg-red-100 text-red-700 mb-1.5">BASELINE · NO BOOKINGS TAKEN</div><div class="font-semibold text-[15px]">Mount Field National Park Campground</div><div class="text-xs text-slate-500 mt-0.5">90 Lake Dobson Rd · beside Russell Falls</div></div>
+          <div class="text-right shrink-0"><div class="font-display text-2xl text-forest-700">$20</div><div class="text-[10px] uppercase tracking-wider text-forest-600 font-semibold">confirmed powered</div></div>
+        </div>
+        <p class="text-sm text-slate-600 mt-2">14 powered sites. Token hot showers, washing machines, dryers, communal cooking shelter, free electric BBQs. Riverside rainforest, and Russell Falls is a 10-minute walk.</p>
+        <div class="mt-2 rounded-xl bg-white border border-red-200 p-3 text-[13px] text-red-900">
+          <strong>Parks &amp; Wildlife take no bookings.</strong> Anycamp lists the campground but isn’t an authorised agent — its own page says “no online bookings.” If you hold an Anycamp confirmation, <strong>verify it on 03 6288 1149</strong>. Checkout is 10 am, so arrive mid-morning to claim a powered site.
+        </div>
+        <div class="flex flex-wrap gap-2 mt-3">
+          <a href="tel:+61362881149" class="text-xs font-semibold bg-red-600 text-white px-3 py-2 rounded-xl hover:bg-red-700">☎ Verify: 03 6288 1149</a>
+          <a href="https://parks.tas.gov.au/explore-our-parks/mount-field-national-park/mount-field-camping" target="_blank" rel="noopener" class="text-xs font-semibold bg-white border border-sand-200 text-slate-700 px-3 py-2 rounded-xl hover:bg-sand-50">Parks page →</a>
+          <a href="https://www.anycamp.com.au/campsite/mount-field-national-park-campground" target="_blank" rel="noopener" class="text-xs font-semibold bg-white border border-sand-200 text-slate-500 px-3 py-2 rounded-xl hover:bg-sand-50">Anycamp listing →</a>
+        </div>
+      </div>
+      <div class="mt-3 space-y-2.5">
+        <div class="rounded-xl border-2 border-forest-600 bg-forest-50/40 p-3.5">
+          <div class="flex items-start justify-between gap-3"><div><div class="badge bg-forest-100 text-forest-800 mb-1">⭐ BOOK THIS AS INSURANCE</div><div class="font-semibold text-sm">Left of Field Camping Gardens</div><div class="text-xs text-slate-500 mt-0.5">2440 Gordon River Rd, National Park · <strong>5 minutes from Russell Falls</strong></div></div><div class="text-right shrink-0"><div class="font-semibold text-slate-700 text-sm">~$37–45</div><div class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold">benchmark</div></div></div>
+          <p class="text-sm text-slate-600 mt-1.5">Powered sites, <strong>free hot showers</strong>, camp kitchen, outdoor bush bath, dump point, licensed bar, riverside with platypus. Crucially — <strong>you can actually reserve it.</strong></p>
+          <div class="flex flex-wrap gap-2 mt-2.5"><a href="https://left-of-field-camping-gardens.checkfront.com/reserve/" target="_blank" rel="noopener" class="text-xs font-semibold bg-forest-800 text-white px-3 py-2 rounded-xl hover:bg-forest-700">Reserve →</a><a href="tel:+61418114945" class="text-xs font-semibold bg-white border border-sand-200 text-slate-700 px-3 py-2 rounded-xl hover:bg-sand-50">☎ 0418 114 945</a></div>
+        </div>
+        <div class="rounded-xl border border-sand-200 p-3.5">
+          <div class="flex items-start justify-between gap-3"><div><div class="badge bg-slate-100 text-slate-600 mb-1">COUNCIL-RUN · BOOKABLE</div><div class="font-semibold text-sm">New Norfolk Caravan Park</div><div class="text-xs text-slate-500 mt-0.5">54 powered sites, riverfront, dump point, potable water, 5 min walk to shops. ~35 min to Mt Field.</div></div><div class="text-right shrink-0"><div class="font-display text-xl text-forest-700">$50</div><div class="text-[10px] uppercase tracking-wider text-forest-600 font-semibold">confirmed</div></div></div>
+          <p class="text-xs text-amber-700 mt-1.5">⚠ Directories still advertise this park “from ~$10/night” — years out of date. The council’s 2026/27 register says $50 powered, $40 unpowered.</p>
+          <div class="flex flex-wrap gap-2 mt-2.5"><a href="https://www.derwentvalley.tas.gov.au/services/venues-and-facilities/parks-and-recreation/caravanpark" target="_blank" rel="noopener" class="text-xs font-semibold bg-white border border-sand-200 text-slate-700 px-3 py-1.5 rounded-lg hover:bg-sand-50">Council page →</a><a href="tel:+61455612812" class="text-xs font-semibold bg-white border border-sand-200 text-slate-700 px-3 py-1.5 rounded-lg hover:bg-sand-50">☎ 0455 612 812</a></div>
+        </div>
+        <div class="rounded-xl border border-sand-200 p-3.5">
+          <div class="flex items-start justify-between gap-3"><div><div class="badge bg-slate-100 text-slate-600 mb-1">EMERGENCY ONLY</div><div class="font-semibold text-sm">Bushy Park Camping Ground</div><div class="text-xs text-slate-500 mt-0.5">451 Gordon River Rd. Basic. Price, current status and powered availability all unverified — ring ahead.</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NIGHT 4 -->
+  <div class="bg-white rounded-3xl border border-sand-200 shadow-soft overflow-hidden mb-4">
+    <div class="p-5 border-b border-sand-100 bg-sand-50/60">
+      <div class="flex items-center gap-2"><span class="badge bg-forest-900 text-white">NIGHT 4</span><span class="text-sm text-slate-500">Tue 15 Sep · Cambridge / Hobart</span></div>
+    </div>
+    <div class="p-5">
+      <div class="rounded-2xl border-2 border-forest-700 p-4">
+        <div class="flex items-start justify-between gap-3">
+          <div><div class="badge bg-forest-100 text-forest-800 mb-1.5">BASELINE · BEST LOGISTICS</div><div class="font-semibold text-[15px]">BIG4 Hobart Airport Tourist Park</div><div class="text-xs text-slate-500 mt-0.5">2 Flight St, Cambridge · <strong>3–5 min to the Apollo depot</strong></div></div>
+          <div class="text-right shrink-0"><div class="font-display text-xl text-slate-700">~$45</div><div class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold">indicative</div></div>
+        </div>
+        <p class="text-sm text-slate-600 mt-2">Concrete slab, power, water tap, free WiFi. Max vehicle length 8 m — you’re fine at 5.94. <strong>Dump point with potable water at the point</strong>, rated the best in the area — ideal for emptying and refilling the night before handover.</p>
+        <a href="https://www.big4.com.au/caravan-parks/tas/hobart-surrounds/hobart-airport-tourist-park" target="_blank" rel="noopener" class="text-xs font-semibold bg-forest-900 text-white px-3 py-2 rounded-xl hover:bg-forest-800 mt-3 inline-block">Book →</a>
+      </div>
+      <div class="mt-3 space-y-2.5">
+        <div class="rounded-xl border-2 border-forest-600 bg-forest-50/40 p-3.5">
+          <div class="flex items-start justify-between gap-3"><div><div class="badge bg-forest-100 text-forest-800 mb-1">⭐ CLOSEST + LIKELY CHEAPER</div><div class="font-semibold text-sm">Barilla Holiday Park</div><div class="text-xs text-slate-500 mt-0.5">75 Richmond Rd, Cambridge · <strong>~4 min to the depot</strong>. Dump point, showers, laundry, BBQ. Newer and less crowded than the BIG4.</div></div><div class="text-right shrink-0"><div class="font-semibold text-slate-700 text-sm">~$37–45</div><div class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold">benchmark</div></div></div>
+          <a href="https://www.barilla.com.au/accommodation/caravan-accommodation/" target="_blank" rel="noopener" class="text-xs font-semibold bg-forest-800 text-white px-3 py-2 rounded-xl hover:bg-forest-700 mt-2.5 inline-block">Website →</a>
+        </div>
+        <div class="rounded-xl border-2 border-ember-500 bg-amber-50/30 p-3.5">
+          <div class="flex items-start justify-between gap-3"><div><div class="badge bg-amber-100 text-amber-800 mb-1">⭐ CHEAPEST · DOES THE DUMP FOR YOU</div><div class="font-semibold text-sm">Sorell Council RV Stop, Pembroke Park</div><div class="text-xs text-slate-500 mt-0.5">Montague St, Sorell · 15–20 min to the depot</div></div><div class="text-right shrink-0"><div class="font-display text-2xl text-forest-700">$10</div><div class="text-[10px] uppercase tracking-wider text-forest-600 font-semibold">confirmed</div></div></div>
+          <p class="text-sm text-slate-600 mt-1.5">Self-contained vehicles only, max 5 nights. <strong>Free blackwater dump point and potable water on site</strong> — exactly the two things you need the night before handover. BBQ, covered picnic tables, room for big rigs.</p>
+          <p class="text-xs text-amber-700 mt-1.5">⚠ Unpowered (no mains heating) and no toilets on site. Permit from Sorell Council 8:00–4:45 weekdays, or correct cash in an envelope into the on-site box — display the permit on the dashboard.</p>
+        </div>
+        <div class="rounded-xl border border-sand-200 p-3.5">
+          <div class="flex items-start justify-between gap-3"><div><div class="badge bg-slate-100 text-slate-600 mb-1">IF YOU WANT A HOBART DINNER</div><div class="font-semibold text-sm">Discovery Parks – Mornington Hobart</div><div class="text-xs text-slate-500 mt-0.5">346 Cambridge Rd · ~10 min to the CBD, ~10–12 min back to Cambridge. Dump point unconfirmed.</div></div></div>
+          <div class="flex flex-wrap gap-2 mt-2.5"><a href="https://www.discoveryholidayparks.com.au/caravan-parks/tasmania/hobart-and-south/mornington-hobart" target="_blank" rel="noopener" class="text-xs font-semibold bg-white border border-sand-200 text-slate-700 px-3 py-1.5 rounded-lg hover:bg-sand-50">Book →</a><a href="tel:+61362447070" class="text-xs font-semibold bg-white border border-sand-200 text-slate-700 px-3 py-1.5 rounded-lg hover:bg-sand-50">☎ 03 6244 7070</a></div>
+        </div>
+        <div class="rounded-xl border border-sand-200 p-3.5">
+          <div class="flex items-start justify-between gap-3"><div><div class="badge bg-slate-100 text-slate-600 mb-1">BUDGET · WRONG SIDE OF TOWN</div><div class="font-semibold text-sm">Hobart Showground Motorhome Park</div><div class="text-xs text-slate-500 mt-0.5">Glenorchy. Purpose-built for motorhomes, blackwater dump, potable water. ~30 min from Cambridge through Hobart traffic — only worth it if the saving is real.</div></div></div>
+          <a href="https://www.hobartshowground.com.au/motorhomepark" target="_blank" rel="noopener" class="text-xs font-semibold bg-white border border-sand-200 text-slate-700 px-3 py-1.5 rounded-lg hover:bg-sand-50 mt-2.5 inline-block">Website →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DUMP POINTS -->
+  <div class="bg-white rounded-2xl border border-sand-200 shadow-soft overflow-hidden">
+    <div class="p-5 border-b border-sand-100"><h3 class="font-semibold text-slate-900">Dump points, water &amp; fuel on the route</h3><p class="text-xs text-slate-500 mt-0.5">Triabunna is the best mid-route stop on the long Day 2 leg.</p></div>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm min-w-[520px]">
+        <thead class="bg-sand-50 text-slate-500 text-xs uppercase tracking-wider"><tr><th class="text-left font-semibold px-4 py-3">Where</th><th class="text-left font-semibold px-3 py-3">Point</th><th class="text-left font-semibold px-3 py-3">Cost</th><th class="text-center font-semibold px-4 py-3">Water</th></tr></thead>
+        <tbody class="divide-y divide-sand-100">
+          <tr><td class="px-4 py-2.5 font-medium">Sorell</td><td class="px-3 py-2.5 text-slate-600">Pembroke Park, Montague St</td><td class="px-3 py-2.5 text-forest-700 font-medium">Free, 24 h</td><td class="px-4 py-2.5 text-center">✓</td></tr>
+          <tr><td class="px-4 py-2.5 font-medium">Nubeena</td><td class="px-3 py-2.5 text-slate-600">Public dump point</td><td class="px-3 py-2.5 text-forest-700 font-medium">Free, 24 h</td><td class="px-4 py-2.5 text-center text-slate-300">—</td></tr>
+          <tr><td class="px-4 py-2.5 font-medium">Port Arthur</td><td class="px-3 py-2.5 text-slate-600">NRMA Holiday Park</td><td class="px-3 py-2.5 text-slate-500">Guests</td><td class="px-4 py-2.5 text-center">✓</td></tr>
+          <tr class="bg-forest-50/40"><td class="px-4 py-2.5 font-medium">Triabunna</td><td class="px-3 py-2.5 text-slate-600">Visitor Centre blackwater station</td><td class="px-3 py-2.5 text-forest-700 font-medium">Free, 24 h</td><td class="px-4 py-2.5 text-center text-slate-300">—</td></tr>
+          <tr><td class="px-4 py-2.5 font-medium">Swansea</td><td class="px-3 py-2.5 text-slate-600">Duck Park</td><td class="px-3 py-2.5 text-forest-700 font-medium">Free, 24 h</td><td class="px-4 py-2.5 text-center">✓</td></tr>
+          <tr><td class="px-4 py-2.5 font-medium">Coles Bay</td><td class="px-3 py-2.5 text-slate-600">Community Hall</td><td class="px-3 py-2.5 text-forest-700 font-medium">Free, 24 h</td><td class="px-4 py-2.5 text-center text-slate-300">—</td></tr>
+          <tr><td class="px-4 py-2.5 font-medium">New Norfolk</td><td class="px-3 py-2.5 text-slate-600">Public dump point / caravan park</td><td class="px-3 py-2.5 text-forest-700 font-medium">Free / guests</td><td class="px-4 py-2.5 text-center">✓</td></tr>
+          <tr><td class="px-4 py-2.5 font-medium">Richmond</td><td class="px-3 py-2.5 text-slate-600">Richmond Caravan &amp; Cabin Park</td><td class="px-3 py-2.5 text-forest-700 font-medium">Free</td><td class="px-4 py-2.5 text-center">✓</td></tr>
+          <tr class="bg-forest-50/40"><td class="px-4 py-2.5 font-medium">Cambridge</td><td class="px-3 py-2.5 text-slate-600">BIG4 Hobart Airport / Barilla</td><td class="px-3 py-2.5 text-slate-500">Guests</td><td class="px-4 py-2.5 text-center">✓</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="px-4 py-3.5 bg-sand-50 border-t border-sand-100 text-xs text-slate-600 space-y-1">
+      <p><strong class="text-slate-800">Diesel:</strong> fill at <strong>Sorell</strong> before the peninsula (only two small outlets down there), at <strong>Swansea</strong> not Coles Bay, and at <strong>New Norfolk</strong> before Mount Field — beyond it there’s essentially nothing.</p>
+      <p><strong class="text-slate-800">LPG:</strong> on a 5-day trip you shouldn’t need to touch the bottle. If it looks low at pickup, ask Apollo to swap it there rather than hunting for Swap’n’Go on the road.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ PLAN B ══════════ -->
+<section id="planb" class="pt-12">
+  <h2 class="font-display text-2xl sm:text-3xl text-forest-900">Plan B</h2>
+  <p class="text-sm text-slate-500 mt-1 mb-4">Three things can break this trip: Lake Dobson Road, wet granite, and Pinnacle Road. Here’s what to do about each.</p>
+
+  <div class="bg-white rounded-3xl border border-sand-200 shadow-soft overflow-hidden mb-4">
+    <div class="p-5 border-b border-sand-100 bg-red-50/40">
+      <div class="badge bg-red-100 text-red-700 mb-1.5">RISK 1</div>
+      <h3 class="font-semibold text-[17px] text-slate-900">Getting to Tarn Shelf without breaking the rental agreement</h3>
+      <p class="text-sm text-slate-500 mt-1">Ranked best to worst. Sort this before you leave, not on the morning.</p>
+    </div>
+    <div class="p-5 space-y-2.5">
+      <div class="rounded-xl border border-forest-200 bg-forest-50/40 p-4">
+        <div class="flex items-start gap-3"><span class="font-display text-2xl text-forest-700 leading-none">1</span><div class="flex-1">
+          <div class="font-semibold text-sm">Get written permission from Apollo at pickup</div>
+          <p class="text-xs text-slate-600 mt-1">The only legitimate way to drive it yourself. Ask at the Cambridge counter on Saturday morning and get it in writing on the agreement. Still subject to snow closure on the day.</p>
+          <p class="text-xs text-slate-500 mt-1">Cost: $0 · Certainty: medium</p>
+        </div></div>
+      </div>
+      <div class="rounded-xl border border-sand-200 p-4">
+        <div class="flex items-start gap-3"><span class="font-display text-2xl text-slate-400 leading-none">2</span><div class="flex-1">
+          <div class="font-semibold text-sm">Tasmanian Wilderness Experiences shuttle to Lake Dobson</div>
+          <p class="text-xs text-slate-600 mt-1">Leave the van at the visitor centre. From $95 pp; Hobart departure 7:30 am, Lake Dobson 9:30 am — which fits a Tarn Shelf start, but only just.</p>
+          <p class="text-xs text-amber-700 mt-1">⚠ On-demand with a <strong>minimum of 4 fares</strong> — as a pair you’d pay ~$380 total unless others book onto it. Book well ahead.</p>
+          <a href="https://taswildexperiences.com.au/transport/mount-field" target="_blank" rel="noopener" class="text-xs font-semibold bg-white border border-sand-200 text-slate-700 px-3 py-1.5 rounded-lg hover:bg-sand-50 mt-2 inline-block">Shuttle details →</a>
+        </div></div>
+      </div>
+      <div class="rounded-xl border border-sand-200 p-4">
+        <div class="flex items-start gap-3"><span class="font-display text-2xl text-slate-400 leading-none">3</span><div class="flex-1">
+          <div class="font-semibold text-sm">Hire a small car for the day</div>
+          <p class="text-xs text-slate-600 mt-1">Cheaper than the shuttle for two people and it solves the vehicle-suitability problem outright. Pick up in New Norfolk or Hobart on the Monday. Still needs the road open.</p>
+        </div></div>
+      </div>
+      <div class="rounded-xl border border-sand-200 p-4">
+        <div class="flex items-start gap-3"><span class="font-display text-2xl text-slate-400 leading-none">4</span><div class="flex-1">
+          <div class="font-semibold text-sm">Drop Tarn Shelf, do the Three Falls Circuit and go to kunanyi early</div>
+          <p class="text-xs text-slate-600 mt-1">Zero risk and genuinely lovely, but it’s a 2.5-hour day. Fill the afternoon with Richmond, Mount Nelson, or bring the Organ Pipes forward and use Wednesday morning for Salamanca at a walking pace.</p>
+        </div></div>
+      </div>
+      <p class="text-xs text-slate-500 pt-1">There is <strong>no lower-altitude substitute</strong> — Pandani Grove, Lake Nicholls and every other sub-alpine walk also start from the top of Lake Dobson Road. If it’s shut, the whole alpine half of Mount Field goes with it.</p>
+    </div>
+  </div>
+
+  <div class="grid sm:grid-cols-2 gap-4">
+    <div class="bg-white rounded-3xl border border-sand-200 shadow-soft overflow-hidden">
+      <div class="p-5 border-b border-sand-100 bg-amber-50/40">
+        <div class="badge bg-amber-100 text-amber-800 mb-1.5">RISK 2</div>
+        <h3 class="font-semibold text-[15px] text-slate-900">Mount Amos on wet or dewy granite</h3>
+      </div>
+      <div class="p-5 text-sm text-slate-600 space-y-2">
+        <p>Not formally gated — it’s your call, which is exactly why it catches people out. The slabs lose grip with the slightest moisture and the <strong>descent is the dangerous direction</strong>.</p>
+        <p class="font-medium text-slate-800">Decision rule: if the rock isn’t dry to the touch at the first slab, turn round. Start 09:30–10:00, not 07:30, so the sun has had time on it.</p>
+        <p>Substitutes that still make a good morning: Wineglass Bay Lookout (2.6 km), Cape Tourville (600 m boardwalk), Sleepy Bay (500 m), Friendly Beaches.</p>
+      </div>
+    </div>
+    <div class="bg-white rounded-3xl border border-sand-200 shadow-soft overflow-hidden">
+      <div class="p-5 border-b border-sand-100 bg-sky-50/40">
+        <div class="badge bg-sky-100 text-sky-800 mb-1.5">RISK 3</div>
+        <h3 class="font-semibold text-[15px] text-slate-900">Pinnacle Road closed on Wednesday</h3>
+      </div>
+      <div class="p-5 text-sm text-slate-600 space-y-2">
+        <p>Mostly a non-event for you: the standard partial closure is “open to The Springs,” and The Springs is your trailhead. Only a full closure at Fern Tree stops you.</p>
+        <p>If it is fully closed: <strong>Mount Nelson Signal Station</strong> (sealed road, big views, café) or the Cascades / Fern Tree area walks. Then a longer Salamanca morning before handover.</p>
+        <a href="https://www.hobartcity.com.au/Things-To-Do/Kunanyi-Mt-Wellington/Pinnacle-Road-status" target="_blank" rel="noopener" class="text-xs font-semibold bg-forest-900 text-white px-3 py-2 rounded-xl hover:bg-forest-800 inline-block mt-1">🚦 Check live status →</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-4 bg-forest-900 rounded-2xl p-5 text-white">
+    <h3 class="font-semibold text-[15px] mb-3">Numbers worth having in your phone before you go</h3>
+    <div class="grid sm:grid-cols-2 gap-2">
+      <a href="tel:+61362881149" class="flex items-center justify-between bg-white/10 rounded-xl px-4 py-3 hover:bg-white/15"><span class="text-sm">Mt Field Visitor Centre</span><span class="font-semibold text-sm">03 6288 1149</span></a>
+      <a href="tel:+61362881319" class="flex items-center justify-between bg-white/10 rounded-xl px-4 py-3 hover:bg-white/15"><span class="text-sm">NPWS road report</span><span class="font-semibold text-sm">03 6288 1319</span></a>
+      <a href="tel:+61362567000" class="flex items-center justify-between bg-white/10 rounded-xl px-4 py-3 hover:bg-white/15"><span class="text-sm">Freycinet Field Centre</span><span class="font-semibold text-sm">03 6256 7000</span></a>
+      <a href="tel:+61362567004" class="flex items-center justify-between bg-white/10 rounded-xl px-4 py-3 hover:bg-white/15"><span class="text-sm">Richardsons Beach camping</span><span class="font-semibold text-sm">03 6256 7004</span></a>
+      <a href="tel:1800827821" class="flex items-center justify-between bg-white/10 rounded-xl px-4 py-3 hover:bg-white/15"><span class="text-sm">Apollo</span><span class="font-semibold text-sm">1800 827 821</span></a>
+      <a href="tel:000" class="flex items-center justify-between bg-red-500/25 rounded-xl px-4 py-3 hover:bg-red-500/35"><span class="text-sm">Emergency</span><span class="font-semibold text-sm">000</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ CHECKLISTS ══════════ -->
+<section id="checklists" class="pt-12">
+  <div class="flex items-end justify-between gap-4 flex-wrap">
+    <div>
+      <h2 class="font-display text-2xl sm:text-3xl text-forest-900">Checklists</h2>
+      <p class="text-sm text-slate-500 mt-1">Ticks save in this browser and survive a refresh.</p>
+    </div>
+    <button id="reset-checks" class="text-xs font-semibold text-slate-500 border border-sand-200 bg-white px-3 py-2 rounded-xl hover:bg-sand-50 hover:text-red-600">Reset all</button>
+  </div>
+
+  <div class="mt-4 space-y-4">
+
+    <div class="bg-white rounded-3xl border border-sand-200 shadow-soft overflow-hidden" data-list="pretrip">
+      <div class="p-5 border-b border-sand-100">
+        <div class="flex items-center justify-between gap-3">
+          <div><h3 class="font-semibold text-[17px] text-slate-900">Before you fly</h3><p class="text-xs text-slate-500 mt-0.5">Do these now — three of them need a phone call</p></div>
+          <div class="text-right shrink-0"><div class="text-sm font-bold text-forest-800 progress-text">0/12</div></div>
+        </div>
+        <div class="mt-3 h-1.5 bg-sand-100 rounded-full overflow-hidden"><div class="progress-bar h-full bg-forest-700 rounded-full transition-all duration-300" style="width:0%"></div></div>
+      </div>
+      <div class="p-5 space-y-3">
+        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="p1"><span class="chk-label text-sm">Buy the <a href="https://passes.parks.tas.gov.au/" target="_blank" rel="noopener" class="text-forest-700 font-medium underline decoration-forest-700/30">Tasmania Holiday Parks Pass</a> ($98.35) — save the PDF and print a copy for the dashboard</span></label>
+        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="p2"><span class="chk-label text-sm"><strong>Phone Richardsons Beach on 03 6256 7004</strong> to book a powered site — no online system, only 18 sites, declare 5.94 m length</span></label>
+        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="p3"><span class="chk-label text-sm"><strong>Phone Mount Field on 03 6288 1149</strong> to verify whether any Anycamp booking actually exists — PWS say they take none</span></label>
+        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="p4"><span class="chk-label text-sm">Book <a href="https://left-of-field-camping-gardens.checkfront.com/reserve/" target="_blank" rel="noopener" class="text-forest-700 font-medium underline decoration-forest-700/30">Left of Field</a> as Night 3 insurance (check its cancellation terms first)</span></label>
+        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="p5"><span class="chk-label text-sm">Book Night 1 (NRMA Port Arthur or White Beach) and Night 4 (Barilla or BIG4 Hobart Airport)</span></label>
+        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="p6"><span class="chk-label text-sm">Decide the Lake Dobson approach — Apollo permission, shuttle, day car, or drop Tarn Shelf</span></label>
+        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="p7"><span class="chk-label text-sm">Complete Apollo online check-in (21 days prior — that’s <strong>22 August</strong>)</span></label>
+        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="p8"><span class="chk-label text-sm">Primary driver packs a <strong>physical credit card</strong> matching the licence name, for the bond</span></label>
+        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="p9"><span class="chk-label text-sm">Download offline maps — Google Maps Tasmania region + WikiCamps</span></label>
+        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="p10"><span class="chk-label text-sm">Save the phone numbers above; east-coast and Mt Field reception is patchy</span></label>
+        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="p11"><span class="chk-label text-sm">Pack for alpine, not spring — sub-zero minimums at 1,200 m on both Tarn Shelf and kunanyi</span></label>
+        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="p12"><span class="chk-label text-sm">Screenshot this page’s Plan B section in case you’re out of signal</span></label>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-3xl border border-sand-200 shadow-soft overflow-hidden" data-list="pickup">
+      <div class="p-5 border-b border-sand-100">
+        <div class="flex items-center justify-between gap-3">
+          <div><h3 class="font-semibold text-[17px] text-slate-900">At the depot, Saturday 9 am</h3><p class="text-xs text-slate-500 mt-0.5">Ten minutes here saves a lot later</p></div>
+          <div class="text-right shrink-0"><div class="text-sm font-bold text-forest-800 progress-text">0/7</div></div>
+        </div>
+        <div class="mt-3 h-1.5 bg-sand-100 rounded-full overflow-hidden"><div class="progress-bar h-full bg-forest-700 rounded-full transition-all duration-300" style="width:0%"></div></div>
+      </div>
+      <div class="p-5 space-y-3">
+        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="d1"><span class="chk-label text-sm"><strong>Ask for written unsealed-road permission</strong> — Fortescue Bay (12 km) today, possibly Lake Dobson (16 km) Tuesday</span></label>
+        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="d2"><span class="chk-label text-sm">Ask whether a Parks Pass is already in the van before you use yours</span></label>
+        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="d3"><span class="chk-label text-sm">Photograph every panel, the roof line and the interior before leaving</span></label>
+        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="d4"><span class="chk-label text-sm">Check the gas bottle level — ask for a swap now if it’s low</span></label>
+        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="d5"><span class="chk-label text-sm">Confirm fresh water tank is full and the toilet cassette is empty and charged</span></label>
+        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="d6"><span class="chk-label text-sm">Locate: 240 V lead, water hose, spare wheel, jack, and the heater controls</span></label>
+        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="d7"><span class="chk-label text-sm">Note the return deadline on the agreement — <strong>2:30 pm Wed</strong>, not 3:00</span></label>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-3xl border border-sand-200 shadow-soft overflow-hidden" data-list="daily">
+      <div class="p-5 border-b border-sand-100">
+        <div class="flex items-center justify-between gap-3">
+          <div><h3 class="font-semibold text-[17px] text-slate-900">Every morning before you drive</h3><p class="text-xs text-slate-500 mt-0.5">Reset this each day with the button below</p></div>
+          <div class="text-right shrink-0"><div class="text-sm font-bold text-forest-800 progress-text">0/8</div></div>
+        </div>
+        <div class="mt-3 h-1.5 bg-sand-100 rounded-full overflow-hidden"><div class="progress-bar h-full bg-forest-700 rounded-full transition-all duration-300" style="width:0%"></div></div>
+      </div>
+      <div class="p-5 space-y-3">
+        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="c1"><span class="chk-label text-sm">Disconnect and stow the 240 V lead and the fresh water hose</span></label>
+        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="c2"><span class="chk-label text-sm">Turn the LPG cylinder valve off securely</span></label>
+        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="c3"><span class="chk-label text-sm">Latch all kitchen cupboards, the fridge, and the sliding windows</span></label>
+        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="c4"><span class="chk-label text-sm">Check the toilet cassette level; empty at the campsite dump point if needed</span></label>
+        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="c5"><span class="chk-label text-sm">Secure loose hiking gear, boots and bottles in the living area</span></label>
+        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="c6"><span class="chk-label text-sm">Roof vents and skylight closed and latched</span></label>
+        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="c7"><span class="chk-label text-sm">Walk a full circle around the van before pulling out</span></label>
+        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="c8"><span class="chk-label text-sm">Check today’s fuel plan — Sorell, Swansea or New Norfolk</span></label>
+        <button data-reset="daily" class="text-xs font-semibold text-slate-500 border border-sand-200 px-3 py-2 rounded-xl hover:bg-sand-50 hover:text-forest-700 mt-1">↻ Reset for tomorrow</button>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-3xl border border-sand-200 shadow-soft overflow-hidden" data-list="daypack">
+      <div class="p-5 border-b border-sand-100">
+        <div class="flex items-center justify-between gap-3">
+          <div><h3 class="font-semibold text-[17px] text-slate-900">Hiking day pack</h3><p class="text-xs text-slate-500 mt-0.5">Built for cold, wet granite and alpine ground</p></div>
+          <div class="text-right shrink-0"><div class="text-sm font-bold text-forest-800 progress-text">0/10</div></div>
+        </div>
+        <div class="mt-3 h-1.5 bg-sand-100 rounded-full overflow-hidden"><div class="progress-bar h-full bg-forest-700 rounded-full transition-all duration-300" style="width:0%"></div></div>
+      </div>
+      <div class="p-5 space-y-3">
+        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="h1"><span class="chk-label text-sm">2 L water each, plus electrolyte tablets</span></label>
+        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="h2"><span class="chk-label text-sm">Layers: thermal base, fleece, windproof/waterproof shell — <strong>not optional above 1,000 m</strong></span></label>
+        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="h3"><span class="chk-label text-sm">Beanie and gloves for Tarn Shelf and kunanyi</span></label>
+        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="h4"><span class="chk-label text-sm">Boots with real grip — wet granite on Mt Amos, alpine rock at Mt Field</span></label>
+        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="h5"><span class="chk-label text-sm">Packed lunch, nuts and high-energy snacks</span></label>
+        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="h6"><span class="chk-label text-sm">First aid kit and blister tape</span></label>
+        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="h7"><span class="chk-label text-sm">Headlamp — plus a red filter for the Russell Falls glow-worms</span></label>
+        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="h8"><span class="chk-label text-sm">Parks pass proof, offline map downloaded, phone charged</span></label>
+        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="h9"><span class="chk-label text-sm">Sunscreen and sunglasses — snow glare is real at Tarn Shelf</span></label>
+        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="h10"><span class="chk-label text-sm">Tell someone your route and expected finish time on the long days</span></label>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ BUDGET ══════════ -->
+<section id="budget" class="pt-12">
+  <h2 class="font-display text-2xl sm:text-3xl text-forest-900">Budget tracker</h2>
+  <p class="text-sm text-slate-500 mt-1 mb-4">All figures in AUD for two people. Edit any number — the totals recalculate and save in this browser. Pre-filled with the researched estimates; confirmed prices are marked.</p>
+
+  <div class="grid lg:grid-cols-3 gap-4">
+    <div class="lg:col-span-2 space-y-4">
+
+      <div class="bg-white rounded-2xl border border-sand-200 shadow-soft overflow-hidden">
+        <div class="px-5 py-3.5 border-b border-sand-100 bg-sand-50/60 flex items-center justify-between">
+          <h3 class="font-semibold text-sm text-slate-900">Fixed costs</h3>
+          <span class="text-sm font-bold text-forest-800" data-subtotal="fixed">$0</span>
+        </div>
+        <div class="divide-y divide-sand-100">
+          <div class="flex items-center gap-3 px-5 py-3">
+            <div class="flex-1 min-w-0"><div class="text-sm font-medium">Campervan hire</div><div class="text-xs text-slate-500">Already booked · DriveNow APXWP2 — put your actual figure in</div></div>
+            <div class="flex items-center gap-1 shrink-0"><span class="text-slate-400 text-sm">$</span><input type="number" class="bg-sand-50 border border-sand-200 rounded-lg px-2 py-1.5 w-24 text-right text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-forest-700/30" data-b="van" data-group="fixed" value="850"></div>
+          </div>
+          <div class="flex items-center gap-3 px-5 py-3">
+            <div class="flex-1 min-w-0"><div class="text-sm font-medium">Parks Holiday Pass <span class="badge bg-forest-100 text-forest-800 ml-1">confirmed</span></div><div class="text-xs text-slate-500">Per vehicle, 2 months, covers all three parks</div></div>
+            <div class="flex items-center gap-1 shrink-0"><span class="text-slate-400 text-sm">$</span><input type="number" step="0.05" class="bg-sand-50 border border-sand-200 rounded-lg px-2 py-1.5 w-24 text-right text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-forest-700/30" data-b="pass" data-group="fixed" value="98.35"></div>
+          </div>
+          <div class="flex items-center gap-3 px-5 py-3">
+            <div class="flex-1 min-w-0"><div class="text-sm font-medium">Diesel</div><div class="text-xs text-slate-500">~640 km · 80 L tank · roughly two to three fills</div></div>
+            <div class="flex items-center gap-1 shrink-0"><span class="text-slate-400 text-sm">$</span><input type="number" class="bg-sand-50 border border-sand-200 rounded-lg px-2 py-1.5 w-24 text-right text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-forest-700/30" data-b="fuel" data-group="fixed" value="180"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-2xl border border-sand-200 shadow-soft overflow-hidden">
+        <div class="px-5 py-3.5 border-b border-sand-100 bg-sand-50/60 flex items-center justify-between">
+          <h3 class="font-semibold text-sm text-slate-900">Camping — 4 nights</h3>
+          <div class="flex items-center gap-2">
+            <button id="cheap-mode" class="text-[11px] font-semibold bg-forest-800 text-white px-2.5 py-1 rounded-lg hover:bg-forest-700">Use budget picks</button>
+            <span class="text-sm font-bold text-forest-800" data-subtotal="camp">$0</span>
+          </div>
+        </div>
+        <div class="divide-y divide-sand-100">
+          <div class="flex items-center gap-3 px-5 py-3">
+            <div class="flex-1 min-w-0"><div class="text-sm font-medium">Night 1 · NRMA Port Arthur</div><div class="text-xs text-slate-500">Budget pick: Fortescue Bay $13 (unpowered)</div></div>
+            <div class="flex items-center gap-1 shrink-0"><span class="text-slate-400 text-sm">$</span><input type="number" class="bg-sand-50 border border-sand-200 rounded-lg px-2 py-1.5 w-24 text-right text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-forest-700/30" data-b="n1" data-group="camp" data-cheap="13" value="50"></div>
+          </div>
+          <div class="flex items-center gap-3 px-5 py-3">
+            <div class="flex-1 min-w-0"><div class="text-sm font-medium">Night 2 · Richardsons Beach <span class="badge bg-forest-100 text-forest-800 ml-1">confirmed</span></div><div class="text-xs text-slate-500">BIG4 Iluka instead would be ~$55</div></div>
+            <div class="flex items-center gap-1 shrink-0"><span class="text-slate-400 text-sm">$</span><input type="number" class="bg-sand-50 border border-sand-200 rounded-lg px-2 py-1.5 w-24 text-right text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-forest-700/30" data-b="n2" data-group="camp" data-cheap="16" value="16"></div>
+          </div>
+          <div class="flex items-center gap-3 px-5 py-3">
+            <div class="flex-1 min-w-0"><div class="text-sm font-medium">Night 3 · Mount Field powered <span class="badge bg-forest-100 text-forest-800 ml-1">confirmed</span></div><div class="text-xs text-slate-500">Left of Field backup would be ~$40</div></div>
+            <div class="flex items-center gap-1 shrink-0"><span class="text-slate-400 text-sm">$</span><input type="number" class="bg-sand-50 border border-sand-200 rounded-lg px-2 py-1.5 w-24 text-right text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-forest-700/30" data-b="n3" data-group="camp" data-cheap="20" value="20"></div>
+          </div>
+          <div class="flex items-center gap-3 px-5 py-3">
+            <div class="flex-1 min-w-0"><div class="text-sm font-medium">Night 4 · Barilla / BIG4 Cambridge</div><div class="text-xs text-slate-500">Budget pick: Sorell RV Stop $10 (unpowered)</div></div>
+            <div class="flex items-center gap-1 shrink-0"><span class="text-slate-400 text-sm">$</span><input type="number" class="bg-sand-50 border border-sand-200 rounded-lg px-2 py-1.5 w-24 text-right text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-forest-700/30" data-b="n4" data-group="camp" data-cheap="10" value="42"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-2xl border border-sand-200 shadow-soft overflow-hidden">
+        <div class="px-5 py-3.5 border-b border-sand-100 bg-sand-50/60 flex items-center justify-between">
+          <h3 class="font-semibold text-sm text-slate-900">Food &amp; extras</h3>
+          <span class="text-sm font-bold text-forest-800" data-subtotal="food">$0</span>
+        </div>
+        <div class="divide-y divide-sand-100">
+          <div class="flex items-center gap-3 px-5 py-3">
+            <div class="flex-1 min-w-0"><div class="text-sm font-medium">Groceries at Sorell</div><div class="text-xs text-slate-500">Most meals cooked in the van</div></div>
+            <div class="flex items-center gap-1 shrink-0"><span class="text-slate-400 text-sm">$</span><input type="number" class="bg-sand-50 border border-sand-200 rounded-lg px-2 py-1.5 w-24 text-right text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-forest-700/30" data-b="groc" data-group="food" value="160"></div>
+          </div>
+          <div class="flex items-center gap-3 px-5 py-3">
+            <div class="flex-1 min-w-0"><div class="text-sm font-medium">Meals out &amp; coffee</div><div class="text-xs text-slate-500">Devil’s Corner, Richmond, Salamanca</div></div>
+            <div class="flex items-center gap-1 shrink-0"><span class="text-slate-400 text-sm">$</span><input type="number" class="bg-sand-50 border border-sand-200 rounded-lg px-2 py-1.5 w-24 text-right text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-forest-700/30" data-b="eat" data-group="food" value="220"></div>
+          </div>
+          <div class="flex items-center gap-3 px-5 py-3">
+            <div class="flex-1 min-w-0"><div class="text-sm font-medium">Port Arthur Historic Site <span class="text-slate-400">(optional)</span></div><div class="text-xs text-slate-500">Not covered by the parks pass</div></div>
+            <div class="flex items-center gap-1 shrink-0"><span class="text-slate-400 text-sm">$</span><input type="number" class="bg-sand-50 border border-sand-200 rounded-lg px-2 py-1.5 w-24 text-right text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-forest-700/30" data-b="pahs" data-group="food" value="0"></div>
+          </div>
+          <div class="flex items-center gap-3 px-5 py-3">
+            <div class="flex-1 min-w-0"><div class="text-sm font-medium">Lake Dobson contingency <span class="text-slate-400">(optional)</span></div><div class="text-xs text-slate-500">Shuttle ~$380 for two, or a day car hire ~$90</div></div>
+            <div class="flex items-center gap-1 shrink-0"><span class="text-slate-400 text-sm">$</span><input type="number" class="bg-sand-50 border border-sand-200 rounded-lg px-2 py-1.5 w-24 text-right text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-forest-700/30" data-b="dobson" data-group="food" value="0"></div>
+          </div>
+          <div class="flex items-center gap-3 px-5 py-3">
+            <div class="flex-1 min-w-0"><div class="text-sm font-medium">Buffer</div><div class="text-xs text-slate-500">Laundry, showers, coin toll for the token showers, odds and ends</div></div>
+            <div class="flex items-center gap-1 shrink-0"><span class="text-slate-400 text-sm">$</span><input type="number" class="bg-sand-50 border border-sand-200 rounded-lg px-2 py-1.5 w-24 text-right text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-forest-700/30" data-b="buf" data-group="food" value="100"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lg:col-span-1">
+      <div class="bg-forest-900 rounded-3xl p-6 text-white shadow-soft lg:sticky lg:top-[132px]">
+        <div class="text-[11px] uppercase tracking-[.16em] text-forest-100/60 font-semibold">Trip total</div>
+        <div class="font-display text-5xl mt-1" id="grand-total">$0</div>
+        <div class="text-sm text-forest-100/70 mt-1" id="per-person">— per person</div>
+        <div class="mt-5 space-y-2.5 text-sm">
+          <div class="flex justify-between"><span class="text-forest-100/70">Fixed</span><span class="font-semibold" data-summary="fixed">$0</span></div>
+          <div class="flex justify-between"><span class="text-forest-100/70">Camping</span><span class="font-semibold" data-summary="camp">$0</span></div>
+          <div class="flex justify-between"><span class="text-forest-100/70">Food &amp; extras</span><span class="font-semibold" data-summary="food">$0</span></div>
+        </div>
+        <div class="mt-5 pt-4 border-t border-white/15 space-y-2 text-sm">
+          <div class="flex justify-between"><span class="text-forest-100/70">Per day</span><span class="font-semibold" id="per-day">$0</span></div>
+          <div class="flex justify-between"><span class="text-forest-100/70">Excl. van hire</span><span class="font-semibold" id="ex-van">$0</span></div>
+        </div>
+        <button id="reset-budget" class="mt-5 w-full text-xs font-semibold bg-white/10 hover:bg-white/20 px-3 py-2.5 rounded-xl">Reset to defaults</button>
+        <p class="text-[11px] text-forest-100/50 mt-3 leading-relaxed">Flights aren’t included. Camping estimates are marked confirmed where an official price exists; the rest are benchmarks from comparable parks — ring to confirm.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ FOOTER ══════════ -->
+<footer class="pt-12">
+  <div class="bg-white rounded-3xl border border-sand-200 p-6 shadow-soft">
+    <h3 class="font-semibold text-slate-900 mb-2">What couldn’t be confirmed</h3>
+    <p class="text-sm text-slate-600 mb-3">So you don’t act on a number that was invented rather than found:</p>
+    <ul class="text-sm text-slate-600 space-y-1.5 list-disc pl-4">
+      <li>September 2026 powered-site rates for NRMA Port Arthur, BIG4 Iluka, White Beach, Swansea, BIG4 Hobart Airport, Discovery Mornington, Barilla, Left of Field and Hobart Showground — all hidden behind dated booking widgets. Every figure for these is a benchmark or an aggregator “from” price.</li>
+      <li>Whether BIG4 Iluka trades in September — nothing suggests a closure, but there’s no explicit confirmation. Ring them.</li>
+      <li>Official elevation gain for any walk except Organ Pipes — Parks Tasmania doesn’t publish it. Third-party figures are indicative.</li>
+      <li>Pinnacle Road closure frequency — no published statistics exist.</li>
+      <li>Whether Apollo specifically names Lake Dobson Road. They don’t; the restriction follows from their 12 km unsealed rule plus Tasmania’s “permission required” status. Confirm at the branch.</li>
+      <li>Snow probability for a specific date — nobody publishes that. “More likely than not” is a judgement from ski-season records and the kunanyi pinnacle temperature series.</li>
+    </ul>
+    <p class="text-xs text-slate-400 mt-5 pt-4 border-t border-sand-100">Built for Jaspreet &amp; Prabhjot · researched against Parks Tasmania, BOM, Apollo/DriveNow terms and council fee registers, August 2026. Verify prices and road status before you travel.</p>
+  </div>
+</footer>
+
+</main>
+
+<script>
+(function(){
+  'use strict';
+  var NS = 'tassie-camper-2026:';
+  function get(k){ try { return localStorage.getItem(NS+k); } catch(e){ return null; } }
+  function set(k,v){ try { localStorage.setItem(NS+k,v); } catch(e){} }
+  function del(k){ try { localStorage.removeItem(NS+k); } catch(e){} }
+
+  /* ── countdown ── */
+  var start = new Date('2026-09-12T09:00:00+10:00');
+  var days = Math.ceil((start - new Date()) / 86400000);
+  var cd = document.getElementById('cd-num');
+  var lbl = document.querySelector('#countdown div:last-child');
+  if (days > 1) { cd.textContent = days; }
+  else if (days === 1) { cd.textContent = '1'; }
+  else if (days > -5) { cd.textContent = '🚐'; lbl.textContent = 'on the road'; }
+  else { cd.textContent = '✓'; lbl.textContent = 'trip done'; }
+
+  /* ── day tabs ── */
+  var tabs = document.querySelectorAll('.daytab');
+  var panels = document.querySelectorAll('.daypanel');
+  function paint(){
+    tabs.forEach(function(t){
+      var on = t.classList.contains('on');
+      t.className = 'daytab' + (on?' on':'') + ' shrink-0 px-4 py-2.5 rounded-2xl text-left border transition-all ' +
+        (on ? 'bg-forest-900 text-white border-forest-900 shadow-soft' : 'bg-white text-slate-600 border-sand-200 hover:border-forest-700/40');
+    });
+  }
+  tabs.forEach(function(t){
+    t.addEventListener('click', function(){
+      tabs.forEach(function(x){ x.classList.remove('on'); });
+      t.classList.add('on');
+      panels.forEach(function(p){ p.classList.toggle('hidden', p.dataset.day !== t.dataset.day); });
+      paint();
+    });
+  });
+  paint();
+
+  /* ── nav pill highlight ── */
+  var pills = document.querySelectorAll('.navpill');
+  var sections = Array.prototype.map.call(pills, function(p){ return document.querySelector(p.getAttribute('href')); });
+  function onScroll(){
+    var y = window.scrollY + 160, idx = 0;
+    sections.forEach(function(s,i){ if (s && s.offsetTop <= y) idx = i; });
+    pills.forEach(function(p,i){ p.classList.toggle('on', i === idx); });
+  }
+  window.addEventListener('scroll', onScroll, { passive:true });
+  onScroll();
+
+  /* ── checklists ── */
+  function updateList(card){
+    var boxes = card.querySelectorAll('.chk');
+    var done = card.querySelectorAll('.chk:checked').length;
+    var pct = boxes.length ? Math.round(done/boxes.length*100) : 0;
+    var txt = card.querySelector('.progress-text');
+    var bar = card.querySelector('.progress-bar');
+    if (txt) txt.textContent = done + '/' + boxes.length;
+    if (bar) { bar.style.width = pct + '%'; bar.classList.toggle('bg-forest-700', pct < 100); bar.classList.toggle('bg-ember-500', pct === 100); }
+  }
+  document.querySelectorAll('[data-list]').forEach(function(card){
+    card.querySelectorAll('.chk').forEach(function(box){
+      if (get('chk:'+box.dataset.k) === '1') box.checked = true;
+      box.addEventListener('change', function(){
+        if (box.checked) set('chk:'+box.dataset.k,'1'); else del('chk:'+box.dataset.k);
+        updateList(card);
+      });
+    });
+    updateList(card);
+  });
+  document.querySelectorAll('[data-reset]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var card = document.querySelector('[data-list="'+btn.dataset.reset+'"]');
+      card.querySelectorAll('.chk').forEach(function(b){ b.checked = false; del('chk:'+b.dataset.k); });
+      updateList(card);
+    });
+  });
+  document.getElementById('reset-checks').addEventListener('click', function(){
+    if (!confirm('Clear every tick on this page?')) return;
+    document.querySelectorAll('[data-list]').forEach(function(card){
+      card.querySelectorAll('.chk').forEach(function(b){ b.checked = false; del('chk:'+b.dataset.k); });
+      updateList(card);
+    });
+  });
+
+  /* ── budget ── */
+  var inputs = document.querySelectorAll('[data-b]');
+  var defaults = {};
+  inputs.forEach(function(i){ defaults[i.dataset.b] = i.value; });
+  var fmt = function(n){ return '$' + Math.round(n).toLocaleString('en-AU'); };
+
+  function recalc(){
+    var groups = { fixed:0, camp:0, food:0 };
+    inputs.forEach(function(i){
+      var v = parseFloat(i.value);
+      if (isNaN(v)) v = 0;
+      groups[i.dataset.group] += v;
+    });
+    var total = groups.fixed + groups.camp + groups.food;
+    Object.keys(groups).forEach(function(g){
+      document.querySelector('[data-subtotal="'+g+'"]').textContent = fmt(groups[g]);
+      document.querySelector('[data-summary="'+g+'"]').textContent = fmt(groups[g]);
+    });
+    document.getElementById('grand-total').textContent = fmt(total);
+    document.getElementById('per-person').textContent = fmt(total/2) + ' per person';
+    document.getElementById('per-day').textContent = fmt(total/5);
+    var van = parseFloat(document.querySelector('[data-b="van"]').value) || 0;
+    document.getElementById('ex-van').textContent = fmt(total - van);
+  }
+  inputs.forEach(function(i){
+    var saved = get('bud:'+i.dataset.b);
+    if (saved !== null) i.value = saved;
+    i.addEventListener('input', function(){ set('bud:'+i.dataset.b, i.value); recalc(); });
+  });
+  recalc();
+
+  document.getElementById('cheap-mode').addEventListener('click', function(){
+    document.querySelectorAll('[data-cheap]').forEach(function(i){
+      i.value = i.dataset.cheap;
+      set('bud:'+i.dataset.b, i.value);
+    });
+    recalc();
+  });
+  document.getElementById('reset-budget').addEventListener('click', function(){
+    inputs.forEach(function(i){ i.value = defaults[i.dataset.b]; del('bud:'+i.dataset.b); });
+    recalc();
+  });
+})();
+</script>
+</body>
+</html>

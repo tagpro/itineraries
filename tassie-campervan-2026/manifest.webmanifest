@@ -1,0 +1,23 @@
+{
+  "name": "Tassie Campervan · 12–16 Sep 2026",
+  "short_name": "Tassie Van",
+  "description": "Inland up, coast back. Five days on Tasmania's east coast — route, walks, camps and checklists, all offline.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#faf9f6",
+  "theme_color": "#0f3d2e",
+  "lang": "en-AU",
+  "categories": ["travel", "navigation", "lifestyle"],
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Today's plan", "short_name": "Itinerary", "url": "./#itinerary" },
+    { "name": "Checklists",   "short_name": "Checklists", "url": "./#checklists" },
+    { "name": "Camps & bookings", "short_name": "Camps", "url": "./#camps" }
+  ]
+}

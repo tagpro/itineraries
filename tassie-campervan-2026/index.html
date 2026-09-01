@@ -6,26 +6,20 @@
 <meta name="theme-color" content="#0f3d2e">
 <title>Tasmania Campervan · Inland up, coast back · 12–16 Sep 2026</title>
 
-<script src="https://cdn.tailwindcss.com"></script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+<meta name="description" content="Inland up, coast back — five days on Tasmania&#39;s east coast. Route, walks, camps and checklists, all offline.">
 
-<script>
-tailwind.config = {
-  theme: {
-    extend: {
-      fontFamily: { sans: ['Outfit','system-ui','sans-serif'], display: ['Playfair Display','Georgia','serif'] },
-      colors: {
-        forest: { 50:'#f0f7f4', 100:'#dbeee5', 700:'#0f5c43', 800:'#0d4835', 900:'#0f3d2e' },
-        sand:   { 50:'#faf9f6', 100:'#f4f1ea', 200:'#e8e3d7' },
-        ember:  { 500:'#d97706', 600:'#b45309' }
-      },
-      boxShadow: { soft: '0 1px 2px rgba(15,61,46,.04), 0 8px 24px -12px rgba(15,61,46,.18)' }
-    }
-  }
-}
-</script>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Tassie Van">
+<meta name="mobile-web-app-capable" content="yes">
+
+<!-- One stylesheet, no CDN: Tailwind is pre-compiled and both fonts are
+     served from this folder, so the page renders with no network at all. -->
+<link rel="preload" href="fonts/outfit.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="app.css">
 
 <style>
   html { scroll-behavior: smooth; scroll-padding-top: 118px; }
@@ -84,9 +78,13 @@ tailwind.config = {
           <div class="text-[11px] text-slate-500 leading-tight">12–16 Sep 2026 · Jaspreet &amp; Prabhjot</div>
         </div>
       </div>
-      <div id="countdown" class="text-right shrink-0">
-        <div id="cd-num" class="font-display text-xl leading-none text-forest-800">—</div>
-        <div class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold">days to go</div>
+      <div class="flex items-center gap-2.5 shrink-0">
+        <span id="net-pill" class="hidden badge bg-amber-100 text-amber-800">offline · cached</span>
+        <button id="install-btn" class="hidden text-xs font-semibold bg-forest-900 text-white px-3 py-1.5 rounded-xl hover:bg-forest-800">Install</button>
+        <div id="countdown" class="text-right">
+          <div id="cd-num" class="font-display text-xl leading-none text-forest-800">—</div>
+          <div class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold">days to go</div>
+        </div>
       </div>
     </div>
     <nav class="flex gap-1.5 overflow-x-auto no-sb pb-2.5 -mx-1 px-1">
@@ -1156,7 +1154,7 @@ tailwind.config = {
 
 <section id="checklists" class="pt-12">
   <div class="flex items-end justify-between gap-3 mb-4">
-    <div><h2 class="font-display text-2xl sm:text-3xl text-forest-900">Checklists</h2><p class="text-sm text-slate-500 mt-1">Ticks save on this device and survive a refresh.</p></div>
+    <div><h2 class="font-display text-2xl sm:text-3xl text-forest-900">Checklists</h2><p class="text-sm text-slate-500 mt-1">Yours to edit. Add your own items, delete them, tick them off — everything is stored on this device and works with no signal.</p></div>
     <button id="reset-checks" class="text-xs font-semibold bg-white border border-sand-200 text-slate-600 px-3 py-2 rounded-xl hover:bg-sand-50 shrink-0">Clear all</button>
   </div>
 
@@ -1177,8 +1175,18 @@ tailwind.config = {
         <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="b7"><span class="chk-label text-sm">Decide on the Callington Mill tour — it uses your whole Oatlands stop</span></label>
         <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="b8"><span class="chk-label text-sm">Download offline Google Maps for the east coast and Midlands</span></label>
         <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="b9"><span class="chk-label text-sm">Pack windproof shell, beanie, gloves, boots, poles, <strong>$1 and $2 coins</strong></span></label>
+        <div class="custom-mount space-y-3"></div>
       </div>
-      <div class="px-5 pb-4"><button data-reset="before" class="text-xs text-slate-400 hover:text-slate-600">Reset this list</button></div>
+      <div class="px-5 pb-4 pt-1 border-t border-sand-100">
+        <form class="add-form flex gap-2" data-add="before">
+          <input type="text" class="add-input flex-1 min-w-0 bg-sand-50 border border-sand-200 rounded-xl px-3 py-2 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-forest-700/30" placeholder="Add your own…" maxlength="120" autocomplete="off">
+          <button type="submit" class="text-xs font-semibold bg-forest-900 text-white px-3 py-2 rounded-xl hover:bg-forest-800 shrink-0">Add</button>
+        </form>
+        <div class="flex items-center justify-between gap-3 mt-2.5">
+          <button data-reset="before" class="text-xs text-slate-400 hover:text-slate-600">Clear ticks</button>
+          <span class="text-[11px] text-slate-400 custom-count" data-count="before"></span>
+        </div>
+      </div>
     </div>
 
     <div class="bg-white rounded-2xl border border-sand-200 shadow-soft overflow-hidden" data-list="depot">
@@ -1195,8 +1203,18 @@ tailwind.config = {
         <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="d5"><span class="chk-label text-sm">Get the unsealed-road rule in writing; confirm the $7,500 bond release timing</span></label>
         <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="d6"><span class="chk-label text-sm">Note the height — 3.10 m — for service-station canopies</span></label>
         <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="d7"><span class="chk-label text-sm">Save Apollo Assist 1300 798 212 to your phone</span></label>
+        <div class="custom-mount space-y-3"></div>
       </div>
-      <div class="px-5 pb-4"><button data-reset="depot" class="text-xs text-slate-400 hover:text-slate-600">Reset this list</button></div>
+      <div class="px-5 pb-4 pt-1 border-t border-sand-100">
+        <form class="add-form flex gap-2" data-add="depot">
+          <input type="text" class="add-input flex-1 min-w-0 bg-sand-50 border border-sand-200 rounded-xl px-3 py-2 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-forest-700/30" placeholder="Add your own…" maxlength="120" autocomplete="off">
+          <button type="submit" class="text-xs font-semibold bg-forest-900 text-white px-3 py-2 rounded-xl hover:bg-forest-800 shrink-0">Add</button>
+        </form>
+        <div class="flex items-center justify-between gap-3 mt-2.5">
+          <button data-reset="depot" class="text-xs text-slate-400 hover:text-slate-600">Clear ticks</button>
+          <span class="text-[11px] text-slate-400 custom-count" data-count="depot"></span>
+        </div>
+      </div>
     </div>
 
     <div class="bg-white rounded-2xl border border-sand-200 shadow-soft overflow-hidden" data-list="sunday">
@@ -1212,8 +1230,18 @@ tailwind.config = {
         <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="s4"><span class="chk-label text-sm">Shop at SUPA IGA, 33 Cecilia St — for two days, not one</span></label>
         <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="s5"><span class="chk-label text-sm">Break Yoke Creek by 10:45 — it's 2½ hours</span></label>
         <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="s6"><span class="chk-label text-sm"><strong>Leave St Helens by 15:00</strong> — Iluka reception shuts at 17:00</span></label>
+        <div class="custom-mount space-y-3"></div>
       </div>
-      <div class="px-5 pb-4"><button data-reset="sunday" class="text-xs text-slate-400 hover:text-slate-600">Reset this list</button></div>
+      <div class="px-5 pb-4 pt-1 border-t border-sand-100">
+        <form class="add-form flex gap-2" data-add="sunday">
+          <input type="text" class="add-input flex-1 min-w-0 bg-sand-50 border border-sand-200 rounded-xl px-3 py-2 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-forest-700/30" placeholder="Add your own…" maxlength="120" autocomplete="off">
+          <button type="submit" class="text-xs font-semibold bg-forest-900 text-white px-3 py-2 rounded-xl hover:bg-forest-800 shrink-0">Add</button>
+        </form>
+        <div class="flex items-center justify-between gap-3 mt-2.5">
+          <button data-reset="sunday" class="text-xs text-slate-400 hover:text-slate-600">Clear ticks</button>
+          <span class="text-[11px] text-slate-400 custom-count" data-count="sunday"></span>
+        </div>
+      </div>
     </div>
 
     <div class="bg-white rounded-2xl border border-sand-200 shadow-soft overflow-hidden" data-list="daily">
@@ -1229,8 +1257,18 @@ tailwind.config = {
         <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="m4"><span class="chk-label text-sm">Today's route checked — no gravel on any turn-off</span></label>
         <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="m5"><span class="chk-label text-sm">Forecast checked, especially wind</span></label>
         <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="m6"><span class="chk-label text-sm">Water and lunch in the day pack, not the van</span></label>
+        <div class="custom-mount space-y-3"></div>
       </div>
-      <div class="px-5 pb-4"><button data-reset="daily" class="text-xs text-slate-400 hover:text-slate-600">Reset this list</button></div>
+      <div class="px-5 pb-4 pt-1 border-t border-sand-100">
+        <form class="add-form flex gap-2" data-add="daily">
+          <input type="text" class="add-input flex-1 min-w-0 bg-sand-50 border border-sand-200 rounded-xl px-3 py-2 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-forest-700/30" placeholder="Add your own…" maxlength="120" autocomplete="off">
+          <button type="submit" class="text-xs font-semibold bg-forest-900 text-white px-3 py-2 rounded-xl hover:bg-forest-800 shrink-0">Add</button>
+        </form>
+        <div class="flex items-center justify-between gap-3 mt-2.5">
+          <button data-reset="daily" class="text-xs text-slate-400 hover:text-slate-600">Clear ticks</button>
+          <span class="text-[11px] text-slate-400 custom-count" data-count="daily"></span>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -1360,7 +1398,9 @@ tailwind.config = {
   window.addEventListener('scroll', onScroll, { passive:true });
   onScroll();
 
-  /* ── checklists ── */
+  /* ── checklists ─────────────────────────────────────────────────
+     Ticks and your own items both live in localStorage, so the lists
+     are yours to edit and they work with no network at all. */
   function updateList(card){
     var boxes = card.querySelectorAll('.chk');
     var done = card.querySelectorAll('.chk:checked').length;
@@ -1369,30 +1409,96 @@ tailwind.config = {
     var bar = card.querySelector('.progress-bar');
     if (txt) txt.textContent = done + '/' + boxes.length;
     if (bar) { bar.style.width = pct + '%'; bar.classList.toggle('bg-forest-700', pct < 100); bar.classList.toggle('bg-ember-500', pct === 100); }
+    var tally = card.querySelector('.custom-count');
+    if (tally) {
+      var mine = card.querySelectorAll('.custom-mount .chk').length;
+      tally.textContent = mine ? (mine + (mine === 1 ? ' item you added' : ' items you added')) : '';
+    }
   }
-  document.querySelectorAll('[data-list]').forEach(function(card){
-    card.querySelectorAll('.chk').forEach(function(box){
-      if (get('chk:'+box.dataset.k) === '1') box.checked = true;
-      box.addEventListener('change', function(){
-        if (box.checked) set('chk:'+box.dataset.k,'1'); else del('chk:'+box.dataset.k);
-        updateList(card);
-      });
+
+  function readItems(list){
+    try { var v = JSON.parse(get('items:'+list) || '[]'); return Array.isArray(v) ? v : []; }
+    catch(e){ return []; }
+  }
+  function writeItems(list, arr){ set('items:'+list, JSON.stringify(arr)); }
+
+  function bindBox(card, box){
+    if (get('chk:'+box.dataset.k) === '1') box.checked = true;
+    box.addEventListener('change', function(){
+      if (box.checked) set('chk:'+box.dataset.k,'1'); else del('chk:'+box.dataset.k);
+      updateList(card);
     });
+  }
+
+  function customRow(card, list, item){
+    var row = document.createElement('div');
+    row.className = 'flex gap-3 items-start group';
+    var label = document.createElement('label');
+    label.className = 'flex gap-3 items-start cursor-pointer flex-1 min-w-0';
+    var box = document.createElement('input');
+    box.type = 'checkbox'; box.className = 'chk'; box.dataset.k = item.id;
+    var span = document.createElement('span');
+    span.className = 'chk-label text-sm';
+    span.textContent = item.t;                       // textContent, never innerHTML
+    label.appendChild(box); label.appendChild(span);
+    var kill = document.createElement('button');
+    kill.type = 'button';
+    kill.className = 'shrink-0 text-slate-400 hover:text-red-600 text-base leading-none px-1.5 py-0.5';
+    kill.textContent = '\u00d7';
+    kill.title = 'Delete this item';
+    kill.setAttribute('aria-label', 'Delete “' + item.t + '”');
+    kill.addEventListener('click', function(){
+      writeItems(list, readItems(list).filter(function(x){ return x.id !== item.id; }));
+      del('chk:'+item.id);
+      row.remove();
+      updateList(card);
+    });
+    row.appendChild(label); row.appendChild(kill);
+    bindBox(card, box);
+    return row;
+  }
+
+  function renderCustom(card){
+    var list = card.dataset.list;
+    var mount = card.querySelector('.custom-mount');
+    if (!mount) return;
+    mount.textContent = '';
+    readItems(list).forEach(function(item){ mount.appendChild(customRow(card, list, item)); });
+  }
+
+  document.querySelectorAll('[data-list]').forEach(function(card){
+    card.querySelectorAll('.chk').forEach(function(box){ bindBox(card, box); });
+    renderCustom(card);
     updateList(card);
+
+    var form = card.querySelector('.add-form');
+    if (!form) return;
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      var input = form.querySelector('.add-input');
+      var text = (input.value || '').trim();
+      if (!text) return;
+      var list = card.dataset.list;
+      var item = { id: 'u' + Date.now().toString(36) + Math.random().toString(36).slice(2,6), t: text };
+      var arr = readItems(list); arr.push(item); writeItems(list, arr);
+      card.querySelector('.custom-mount').appendChild(customRow(card, list, item));
+      input.value = '';
+      updateList(card);
+    });
   });
+
+  function clearTicks(card){
+    card.querySelectorAll('.chk').forEach(function(b){ b.checked = false; del('chk:'+b.dataset.k); });
+    updateList(card);
+  }
   document.querySelectorAll('[data-reset]').forEach(function(btn){
     btn.addEventListener('click', function(){
-      var card = document.querySelector('[data-list="'+btn.dataset.reset+'"]');
-      card.querySelectorAll('.chk').forEach(function(b){ b.checked = false; del('chk:'+b.dataset.k); });
-      updateList(card);
+      clearTicks(document.querySelector('[data-list="'+btn.dataset.reset+'"]'));
     });
   });
   document.getElementById('reset-checks').addEventListener('click', function(){
-    if (!confirm('Clear every tick on this page?')) return;
-    document.querySelectorAll('[data-list]').forEach(function(card){
-      card.querySelectorAll('.chk').forEach(function(b){ b.checked = false; del('chk:'+b.dataset.k); });
-      updateList(card);
-    });
+    if (!confirm('Clear every tick on this page? Items you added are kept.')) return;
+    document.querySelectorAll('[data-list]').forEach(clearTicks);
   });
 
   /* ── budget ── */
@@ -1437,6 +1543,72 @@ tailwind.config = {
     inputs.forEach(function(i){ i.value = defaults[i.dataset.b]; del('bud:'+i.dataset.b); });
     recalc();
   });
+
+  /* ── offline app ────────────────────────────────────────────────
+     Register the service worker, surface an install button when the
+     browser offers one, and say so plainly when there's no signal. */
+  var pill = document.getElementById('net-pill');
+  function paintNet(){
+    if (!pill) return;
+    pill.classList.toggle('hidden', navigator.onLine !== false);
+  }
+  window.addEventListener('online', paintNet);
+  window.addEventListener('offline', paintNet);
+  paintNet();
+
+  var installBtn = document.getElementById('install-btn');
+  var deferred = null;
+  window.addEventListener('beforeinstallprompt', function(e){
+    e.preventDefault();
+    deferred = e;
+    if (installBtn) installBtn.classList.remove('hidden');
+  });
+  if (installBtn) {
+    installBtn.addEventListener('click', function(){
+      if (!deferred) return;
+      deferred.prompt();
+      deferred.userChoice.then(function(){ deferred = null; installBtn.classList.add('hidden'); });
+    });
+  }
+  window.addEventListener('appinstalled', function(){
+    deferred = null;
+    if (installBtn) installBtn.classList.add('hidden');
+  });
+
+  function offerUpdate(worker){
+    var bar = document.createElement('button');
+    bar.type = 'button';
+    bar.className = 'fixed bottom-4 left-1/2 -translate-x-1/2 z-50 text-sm font-semibold bg-forest-900 text-white px-4 py-2.5 rounded-2xl shadow-soft';
+    bar.textContent = 'A newer plan is ready — tap to update';
+    bar.addEventListener('click', function(){
+      worker.postMessage('skip-waiting');
+      bar.textContent = 'Updating…';
+    });
+    document.body.appendChild(bar);
+  }
+
+  if ('serviceWorker' in navigator && location.protocol !== 'file:') {
+    window.addEventListener('load', function(){
+      navigator.serviceWorker.register('sw.js').then(function(reg){
+        if (reg.waiting) offerUpdate(reg.waiting);
+        reg.addEventListener('updatefound', function(){
+          var sw = reg.installing;
+          if (!sw) return;
+          sw.addEventListener('statechange', function(){
+            // Only an update if a worker was already in charge.
+            if (sw.state === 'installed' && navigator.serviceWorker.controller) offerUpdate(sw);
+          });
+        });
+      }).catch(function(){ /* offline app is a bonus, never a blocker */ });
+
+      var reloading = false;
+      navigator.serviceWorker.addEventListener('controllerchange', function(){
+        if (reloading) return;
+        reloading = true;
+        location.reload();
+      });
+    });
+  }
 })();
 </script>
 </body>

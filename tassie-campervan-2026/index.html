@@ -1154,7 +1154,7 @@
 
 <section id="checklists" class="pt-12">
   <div class="flex items-end justify-between gap-3 mb-4">
-    <div><h2 class="font-display text-2xl sm:text-3xl text-forest-900">Checklists</h2><p class="text-sm text-slate-500 mt-1">Yours to edit. Add your own items, delete them, tick them off — everything is stored on this device and works with no signal.</p></div>
+    <div><h2 class="font-display text-2xl sm:text-3xl text-forest-900">Checklists</h2><p class="text-sm text-slate-500 mt-1">Yours to edit. Add your own items, delete them, tick them off — everything is stored on this device and works with no signal.</p><p id="store-note" class="hidden text-[12px] mt-2"></p></div>
     <button id="reset-checks" class="text-xs font-semibold bg-white border border-sand-200 text-slate-600 px-3 py-2 rounded-xl hover:bg-sand-50 shrink-0">Clear all</button>
   </div>
 
@@ -1544,6 +1544,35 @@
     recalc();
   });
 
+  /* ── keeping the ticks ──────────────────────────────────────────
+     Safari clears script-writable storage for sites left unvisited for
+     about a week, which spans the gap between packing and flying. Ask
+     for persistent storage so the checklists survive it — browsers grant
+     it silently to installed apps and refuse it silently otherwise, so
+     say which way it went rather than leaving it to chance. */
+  var storeNote = document.getElementById('store-note');
+  function paintStore(granted){
+    if (!storeNote) return;
+    storeNote.classList.remove('hidden');
+    if (granted === true) {
+      storeNote.className = 'text-[12px] mt-2 text-forest-800';
+      storeNote.textContent = '\u2713 Saved on this device and marked permanent \u2014 your ticks will still be here on the 12th.';
+    } else if (granted === false) {
+      storeNote.className = 'text-[12px] mt-2 text-amber-800';
+      storeNote.textContent = '\u26a0 Saved on this device, but the browser won\u2019t mark it permanent. Install this page to your home screen \u2014 iOS clears storage for sites left unopened for about a week, and installing exempts it.';
+    } else {
+      storeNote.classList.add('hidden');
+    }
+  }
+  function askPersist(){
+    if (!navigator.storage || !navigator.storage.persist) { paintStore(null); return; }
+    navigator.storage.persisted().then(function(already){
+      if (already) { paintStore(true); return; }
+      return navigator.storage.persist().then(paintStore);
+    }).catch(function(){ paintStore(null); });
+  }
+  askPersist();
+
   /* ── offline app ────────────────────────────────────────────────
      Register the service worker, surface an install button when the
      browser offers one, and say so plainly when there's no signal. */
@@ -1573,6 +1602,7 @@
   window.addEventListener('appinstalled', function(){
     deferred = null;
     if (installBtn) installBtn.classList.add('hidden');
+    askPersist();               // installing is what flips the answer
   });
 
   function offerUpdate(worker){

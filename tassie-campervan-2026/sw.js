@@ -1,7 +1,7 @@
 /* Tassie Campervan — offline service worker.
    Everything the page needs is precached, so the whole itinerary works
    in a valley with no signal. Bump VERSION whenever an asset changes. */
-const VERSION = 'tassie-v1';
+const VERSION = 'tassie-v2';
 const SHELL = [
   './',
   './index.html',

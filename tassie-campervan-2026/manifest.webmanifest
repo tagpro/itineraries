@@ -1,5 +1,5 @@
 {
-  "name": "Tassie Campervan · 12–16 Sep 2026",
+  "name": "Tassie Campervan · 12–19 Sep 2026",
   "short_name": "Tassie Van",
   "description": "Inland up, coast back. Five days on Tasmania's east coast — route, walks, camps and checklists, all offline.",
   "start_url": "./",
@@ -18,6 +18,6 @@
   "shortcuts": [
     { "name": "Today's plan", "short_name": "Itinerary", "url": "./#itinerary" },
     { "name": "Checklists",   "short_name": "Checklists", "url": "./#checklists" },
-    { "name": "Camps & bookings", "short_name": "Camps", "url": "./#camps" }
+    { "name": "Beds & bookings", "short_name": "Beds", "url": "./#camps" }
   ]
 }

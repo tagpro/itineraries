@@ -27,6 +27,10 @@
   .no-sb::-webkit-scrollbar { display:none; }
   .no-sb { -ms-overflow-style:none; scrollbar-width:none; }
 
+  /* links that jump to another day */
+  .daylink { color:#0f3d2e; font-weight:600; border-bottom:1px dotted rgba(15,61,46,.45); cursor:pointer; }
+  .daylink:hover { border-bottom-style:solid; background:#f0f7f4; }
+
   /* nav pills */
   .navpill { white-space:nowrap; border-radius:9999px; padding:.45rem .9rem; font-size:.8125rem; font-weight:600;
              color:#4b5563; transition:all .18s ease; border:1px solid transparent; }
@@ -120,7 +124,7 @@
         <div class="bg-white/10 rounded-2xl p-3"><div class="text-[10px] uppercase tracking-wider text-forest-100/60 font-semibold">Vehicle</div><div class="font-semibold mt-0.5 text-sm">Euro Mini</div><div class="text-[11px] text-forest-100/70">5.94 m · 3.10 m tall</div></div>
         <div class="bg-white/10 rounded-2xl p-3"><div class="text-[10px] uppercase tracking-wider text-forest-100/60 font-semibold">Hotel</div><div class="font-semibold mt-0.5 text-sm">Wed → Sat</div><div class="text-[11px] text-forest-100/70">ibis Styles, Macquarie St</div></div>
         <div class="bg-white/10 rounded-2xl p-3"><div class="text-[10px] uppercase tracking-wider text-forest-100/60 font-semibold">Car out</div><div class="font-semibold mt-0.5 text-sm">Thu 15:30</div><div class="text-[11px] text-forest-100/70">Simba, Holyman Ave</div></div>
-        <div class="bg-white/10 rounded-2xl p-3"><div class="text-[10px] uppercase tracking-wider text-forest-100/60 font-semibold">Car back</div><div class="font-semibold mt-0.5 text-sm">Sat 15:30</div><div class="text-[11px] text-amber-200">move this earlier</div></div>
+        <div class="bg-white/10 rounded-2xl p-3"><div class="text-[10px] uppercase tracking-wider text-forest-100/60 font-semibold">Car back</div><div class="font-semibold mt-0.5 text-sm">Sat 15:30</div><div class="text-[11px] text-forest-100/70">plan for 13:30</div></div>
         <div class="bg-white/10 rounded-2xl p-3"><div class="text-[10px] uppercase tracking-wider text-forest-100/60 font-semibold">Fly home</div><div class="font-semibold mt-0.5 text-sm">Sat 16:30</div><div class="text-[11px] text-forest-100/70">JQ706 → MEL</div></div>
       </div>
     </div>
@@ -149,20 +153,20 @@
 
   <div class="space-y-3">
 
-    <details class="group bg-white rounded-2xl border border-red-200 shadow-soft overflow-hidden" open>
+    <details class="group bg-white rounded-2xl border border-amber-200 shadow-soft overflow-hidden" open>
       <summary class="flex items-start gap-3 p-4 sm:p-5">
-        <span class="badge bg-red-100 text-red-700 mt-0.5">1 · DO THIS NOW</span>
+        <span class="badge bg-amber-100 text-amber-800 mt-0.5">1 · SATURDAY&rsquo;S SHAPE</span>
         <div class="flex-1 min-w-0">
-          <div class="font-semibold text-[15px] text-slate-900">The car is due back one hour before your flight</div>
-          <div class="text-xs text-slate-500 mt-0.5">Saturday 19th &mdash; car in at 15:30, JQ706 pushes back at 16:30</div>
+          <div class="font-semibold text-[15px] text-slate-900">Saturday is built around a 13:30 return, not the 15:30 on the booking</div>
+          <div class="text-xs text-slate-500 mt-0.5">You can hand a hire car back early &mdash; so the plan simply does</div>
         </div>
         <svg class="chev w-4 h-4 text-slate-400 mt-1 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
       </summary>
-      <div class="px-4 sm:px-5 pb-5 -mt-1 text-sm text-slate-600 space-y-2.5 border-t border-red-100 pt-4">
-        <p>Simba has you dropping at 100 Holyman Ave at <strong>15:30</strong>. Jetstar closes domestic check-in <strong>40 minutes before departure &mdash; 15:50</strong>. That leaves twenty minutes for the return inspection, the paperwork, the walk to the terminal and the security queue.</p>
-        <p>You are carry-on only, so there is no bag drop to miss, and it is technically survivable. It is not worth surviving.</p>
-        <p class="font-medium text-slate-800">Open Manage Booking on the Airport Rentals confirmation and move the drop-off to <strong>13:30</strong>. Changing the time is free &mdash; you have already paid for the day either way, and you get the whole Salamanca morning without watching the clock.</p>
-        <div class="flex flex-wrap gap-2 pt-1"><a href="https://kayak.airportrentals.com/mybooking/IM50456624" target="_blank" rel="noopener" class="text-xs font-semibold bg-forest-900 text-white px-3 py-2 rounded-xl hover:bg-forest-800">Manage booking IM50456624 &rarr;</a></div>
+      <div class="px-4 sm:px-5 pb-5 -mt-1 text-sm text-slate-600 space-y-2.5 border-t border-amber-100 pt-4">
+        <p>The booking says 15:30 at 100 Holyman Ave. Jetstar closes domestic check-in at <strong>15:50</strong>, and JQ706 departs at <strong>16:30</strong> &mdash; so taking the booking literally leaves twenty minutes for the return inspection, the paperwork, the walk and security.</p>
+        <p class="font-medium text-slate-800">You do not need anyone&rsquo;s permission to fix that. A hire car can be handed back early; you have paid for the period either way. <a href="#itinerary" data-goto="8" class="daylink">Saturday</a> is therefore planned to reach the depot at <strong>13:30</strong>, and that is the time to hold yourself to &mdash; leave Salamanca at 13:00 and the day has two hours of slack in it.</p>
+        <p>Changing the booked time in Manage Booking is optional and free. It costs nothing and means the counter is expecting you, which is worth two minutes if you would rather not explain yourself at 13:30 on a Saturday.</p>
+        <div class="flex flex-wrap gap-2 pt-1"><a href="https://kayak.airportrentals.com/mybooking/IM50456624" target="_blank" rel="noopener" class="text-xs font-semibold bg-white border border-sand-200 text-slate-700 px-3 py-2 rounded-xl hover:bg-sand-50">Manage booking IM50456624 &rarr;</a></div>
       </div>
     </details>
 
@@ -237,19 +241,33 @@
       </div>
     </details>
 
-    <details class="group bg-white rounded-2xl border border-forest-200 shadow-soft overflow-hidden" open>
+    <details class="group bg-white rounded-2xl border border-amber-200 shadow-soft overflow-hidden" open>
       <summary class="flex items-start gap-3 p-4 sm:p-5">
-        <span class="badge bg-forest-100 text-forest-800 mt-0.5">6 · SAVE $48</span>
+        <span class="badge bg-amber-100 text-amber-800 mt-0.5">6 · TWO PARKS, NOT ONE</span>
         <div class="flex-1 min-w-0">
-          <div class="font-semibold text-[15px] text-slate-900">Freycinet is the only park you pay for</div>
-          <div class="text-xs text-slate-500 mt-0.5">Bay of Fires and kunanyi are both free</div>
+          <div class="font-semibold text-[15px] text-slate-900">Friday walks into a second national park</div>
+          <div class="text-xs text-slate-500 mt-0.5">Which settles the 2-month vs 1-day question: neither, quite</div>
         </div>
         <svg class="chev w-4 h-4 text-slate-400 mt-1 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
       </summary>
-      <div class="px-4 sm:px-5 pb-5 -mt-1 text-sm text-slate-600 space-y-2.5 border-t border-forest-100 pt-4">
-        <p><strong>Bay of Fires Conservation Area is not a national park</strong> — free, including its campgrounds. Wellington Park on kunanyi is free. Oatlands, Ross, Campbell Town, the Blowhole: all free.</p>
-        <p>So skip the $98.35 Holiday Pass. An <strong>Annual One-Park pass for Freycinet is $50.70</strong> and covers you across Sunday evening, Monday and Tuesday.</p>
-        <p class="text-[13px] text-forest-900 bg-forest-50 border border-forest-200 rounded-xl p-3">The Parks &amp; Wildlife account is set up and the pass is being bought <strong>on Friday 11 September</strong>, the day before pick-up. Costs confirmed on the Parks site directly — nothing outstanding here beyond doing it.</p>
+      <div class="px-4 sm:px-5 pb-5 -mt-1 text-sm text-slate-600 space-y-2.5 border-t border-amber-100 pt-4">
+        <p><strong>Bay of Fires Conservation Area is not a national park</strong> — free, including its campgrounds. Wellington Park on kunanyi is free. Oatlands, Ross, Campbell Town, the <em>Bicheno</em> blowhole: all free. That much has not changed.</p>
+        <p class="font-medium text-slate-800">What changed is Friday. <strong>Tasman Arch, Devils Kitchen, Remarkable Cave and the Tessellated Pavement all sit inside Tasman National Park</strong> — a second park, on the one day you are in the hire car rather than the van. A Freycinet-only pass does not cover any of them.</p>
+        <p>So the honest comparison, for two adults arriving by vehicle:</p>
+        <div class="overflow-x-auto no-sb -mx-1 px-1">
+        <table class="w-full text-[13px] border-collapse min-w-[420px]">
+          <thead><tr class="text-left text-slate-500"><th class="font-semibold pb-1.5 pr-3">Option</th><th class="font-semibold pb-1.5 pr-3 whitespace-nowrap">Cost</th><th class="font-semibold pb-1.5">Does it actually work?</th></tr></thead>
+          <tbody class="align-top">
+            <tr class="border-t border-forest-200 bg-forest-50/60"><td class="py-2 pr-3 font-semibold text-forest-900">Freycinet One&nbsp;Park + a 24-hr vehicle pass on Friday</td><td class="py-2 pr-3 font-bold text-forest-800 whitespace-nowrap">$98.40</td><td class="py-2 text-forest-900">Yes. Two separate passes, so the two vehicles are not a problem. <strong>Take this one.</strong></td></tr>
+            <tr class="border-t border-sand-200"><td class="py-2 pr-3 font-medium">Holiday Vehicle Pass, 2 months, all parks</td><td class="py-2 pr-3 font-semibold whitespace-nowrap">$95.50</td><td class="py-2">Cheapest on paper, but it covers <em>one vehicle</em> and you use two. Only works if Parks will put the hire car&rsquo;s plate on it mid-trip.</td></tr>
+            <tr class="border-t border-sand-200"><td class="py-2 pr-3 font-medium">Two Holiday <em>person</em> passes</td><td class="py-2 pr-3 font-semibold whitespace-nowrap">$95.50</td><td class="py-2">No. Person passes are for visitors arriving <em>without</em> a vehicle. You drive in both times.</td></tr>
+            <tr class="border-t border-sand-200"><td class="py-2 pr-3 font-medium">24-hr vehicle passes &times; 3 (Mon, Tue, Fri)</td><td class="py-2 pr-3 font-semibold whitespace-nowrap">$143.10</td><td class="py-2">Works, and costs $45 more than it needs to.</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <p class="text-[13px] text-forest-900 bg-forest-50 border border-forest-200 rounded-xl p-3"><strong>So: keep the $50.70 Freycinet One&nbsp;Park pass you already planned</strong> — it covers Sunday evening, Monday and Tuesday, and takes up to two vehicles. Then buy <strong>one 24-hour vehicle pass on the morning of Friday the 18th</strong>, once you have the hire car&rsquo;s plate. $98.40 all in, $2.90 more than the two-month pass, and nothing depends on a phone call to Parks from the road.</p>
+        <p class="text-[13px] text-slate-500">One mechanical note, since a vehicle pass is issued against a registration number: you will not have the van&rsquo;s plate until Saturday morning, and you will not have the car&rsquo;s until Thursday afternoon. Both passes can be bought on a phone in two minutes, so buy each one when you have the plate in front of you.</p>
+        <p class="text-[13px] text-slate-500">If you decide to skip the Tasman coastal stops and go straight to Port Arthur — which is a historic site, not a national park, and needs no pass — then Friday costs nothing and the Freycinet pass alone does the whole trip. The $47.70 is buying you the arch, the kitchen, the cave and the pavement, which are the best scenery of the day.</p>
         <div class="flex flex-wrap gap-2 pt-1"><a href="tel:1300827727" class="text-xs font-semibold bg-forest-900 text-white px-3 py-2 rounded-xl hover:bg-forest-800">☎ Parks 1300 827 727</a><a href="https://passes.parks.tas.gov.au/" target="_blank" rel="noopener" class="text-xs font-semibold bg-white border border-sand-200 text-slate-700 px-3 py-2 rounded-xl hover:bg-sand-50">Buy online →</a></div>
       </div>
     </details>
@@ -883,6 +901,7 @@
       <div class="px-4 sm:px-5 py-3 bg-white border-b border-sand-100 flex flex-wrap gap-2">
         <a href="https://www.google.com/maps/dir/Triabunna+Cabin+and+Caravan+Park+TAS/The+Springs,+Mount+Wellington+TAS/Salamanca+Place,+Hobart+TAS/BP+Hobart+Airport,+Holyman+Ave,+Cambridge+TAS/Apollo+Motorhome+Holidays,+14+Long+St,+Cambridge+TAS" target="_blank" rel="noopener" class="text-xs font-semibold text-forest-800 bg-white border border-sand-200 px-3 py-1.5 rounded-lg hover:bg-forest-50">🗺 Full route in Google Maps</a>
         <a href="https://hccapps.hobartcity.com.au/PinnacleRoad/" target="_blank" rel="noopener" class="text-xs font-semibold text-red-700 bg-red-50 border border-red-200 px-3 py-1.5 rounded-lg hover:bg-red-100">⚠ Pinnacle Road status — check at 06:00</a>
+        <a href="#itinerary" data-goto="6" class="text-xs font-semibold text-slate-600 bg-white border border-sand-200 px-3 py-1.5 rounded-lg hover:bg-sand-50">Thu 17 · first day in Hobart &rarr;</a>
       </div>
 
       <div class="p-5 sm:p-6">
@@ -939,7 +958,7 @@
           <div class="text-xs font-bold text-sky-700 tracking-wide">14:45 → 15:15 · INTO TOWN</div>
           <div class="font-semibold text-[15px] mt-0.5">ibis Styles Hobart, 173 Macquarie St</div>
           <p class="text-sm text-slate-600 mt-0.5">Booked and <strong>paid in full</strong> — $415.20 for three nights, Jetstar Hotels ref <strong>JQKZANYD3</strong>, Accor ref <strong>QKWSGTWZ</strong>. One standard room, two single beds, two adults. Check-in from 14:00, and the room is yours until Saturday 11:00.</p>
-          <p class="text-[13px] text-slate-500 mt-1.5">The address is the reason the next three days work on foot: Salamanca is nine minutes downhill, Brooke St Pier eleven, and Battery Point just beyond. Nothing below needs a car except Friday.</p>
+          <p class="text-[13px] text-slate-500 mt-1.5">The address is the reason the next three days work on foot: Salamanca is nine minutes downhill, Brooke St Pier eleven, and Battery Point just beyond. Nothing below needs a car except <a href="#itinerary" data-goto="7" class="daylink">Friday</a>.</p>
         </div>
         <div class="tl relative pl-6">
           <span class="absolute left-[-4px] top-1.5 w-2.5 h-2.5 rounded-full bg-forest-700 ring-4 ring-forest-100"></span>
@@ -947,7 +966,7 @@
           <div class="font-semibold text-[15px] mt-0.5">Battery Point, and a meal someone else cooks</div>
           <p class="text-sm text-slate-600 mt-0.5">Five nights of a two-burner stove earns you this. Walk down to Salamanca, up <strong>Kelly&rsquo;s Steps</strong>, round <strong>Arthur Circus</strong> — a ring of 1840s cottages around a green — and back down Hampden Rd. About an hour, flat except the steps, and sunset is 18:00.</p>
           <div class="mt-2 rounded-xl bg-sky-50 border border-sky-200 p-3 text-[13px] text-sky-900">
-            <strong>Mona is shut today.</strong> It opens Thursday to Monday only, so Wednesday is deliberately the low-effort evening and Mona gets Thursday to itself. Don&rsquo;t try to squeeze it in now.
+            <strong>Mona is shut today.</strong> It opens Thursday to Monday only, so Wednesday is deliberately the low-effort evening and Mona gets <a href="#itinerary" data-goto="6" class="daylink">Thursday</a> to itself. Don&rsquo;t try to squeeze it in now.
           </div>
         </div>
       </div>
@@ -1037,6 +1056,7 @@
         <div class="flex flex-wrap items-center gap-x-4 gap-y-1 mt-3 text-[10px] text-slate-400 font-semibold uppercase tracking-wider"><span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-ember-500"></span>you get out here</span><span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-forest-700"></span>drive through</span><span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-sky-500"></span>the walk</span><span class="normal-case tracking-normal text-slate-400">Times are travel only — stops are on top.</span></div>
       </div>
       <div class="px-4 sm:px-5 py-3 bg-white border-b border-sand-100 flex flex-wrap gap-2">
+        <a href="#itinerary" data-goto="5" class="text-xs font-semibold text-slate-600 bg-white border border-sand-200 px-3 py-1.5 rounded-lg hover:bg-sand-50">&larr; Wed 16 · the van goes back</a>
         <a href="https://www.google.com/maps/dir/173+Macquarie+St,+Hobart+TAS/Brooke+Street+Pier,+Hobart+TAS/100+Holyman+Ave,+Cambridge+TAS/The+Pinnacle,+Mount+Wellington+TAS" target="_blank" rel="noopener" class="text-xs font-semibold text-forest-800 bg-white border-sand-200 hover:bg-forest-50 border px-3 py-1.5 rounded-lg">🗺 Ferry pier, then the summit</a>
         <a href="https://mona.net.au/tickets" target="_blank" rel="noopener" class="text-xs font-semibold text-forest-800 bg-white border-sand-200 hover:bg-forest-50 border px-3 py-1.5 rounded-lg">🎟 Book Mona + ferry together</a>
         <a href="https://hccapps.hobartcity.com.au/PinnacleRoad/" target="_blank" rel="noopener" class="text-xs font-semibold text-red-700 bg-red-50 border-red-200 hover:bg-red-100 border px-3 py-1.5 rounded-lg">⚠ Pinnacle Road status</a>
@@ -1073,13 +1093,13 @@
           <div class="font-semibold text-[15px] mt-0.5">Simba Car Hire, 100 Holyman Ave</div>
           <p class="text-sm text-slate-600 mt-0.5">Take the <strong>14:00 ferry back</strong> — 14:25 at the pier, taxi out to Cambridge for about 14:50. That leaves half an hour spare at the airport, which is dull but is the difference between making the mountain in daylight and not.</p>          <div class="mt-2 rounded-xl bg-red-50 border border-red-200 p-3 text-[13px] text-red-900">
             <strong>Bring to the counter:</strong> booking <strong>IM50456624</strong> (Simba ref 187414), a <em>physical</em> driver&rsquo;s licence and a <em>physical</em> credit card in Jaspreet&rsquo;s name — digital cards are refused. A <strong>$500–$2,000 bond</strong> comes off the card. And have your excess answer ready: as booked, it is $6,380.
-          </div>          <p class="text-[13px] text-slate-500 mt-1.5">Suzuki Fronx Hybrid or similar. Photograph every panel before you drive off, exactly as you did with the van.</p>
+          </div>          <p class="text-[13px] text-slate-500 mt-1.5">Suzuki Fronx Hybrid or similar. Photograph every panel before you drive off, exactly as you did with <a href="#itinerary" data-goto="1" class="daylink">the van</a>.</p>
         </div>
         <div class="tl relative pl-6">
           <span class="absolute left-[-4px] top-1.5 w-2.5 h-2.5 rounded-full bg-ember-500 ring-amber-100 ring-4"></span>
           <div class="text-xs font-bold text-ember-600 tracking-wide">16:30 → 18:30 · THE SUMMIT</div>
           <div class="font-semibold text-[15px] mt-0.5">The Pinnacle — the bit the van could not do</div>
-          <p class="text-sm text-slate-600 mt-0.5">Pinnacle Road is sealed the whole way to the summit car park at <strong>1,271 m</strong>. Wednesday&rsquo;s walk started at The Springs, some 700 m below this; today you drive to the top, walk the boardwalk, and stand in the enclosed lookout out of the wind. <strong>Sunset is 18:01.</strong></p>          <div class="mt-2 rounded-xl bg-amber-50 border border-amber-200 p-3 text-[13px] text-amber-900"><strong>Check the road status before you leave town</strong> — same link as Wednesday. Snow and ice restrict it April to September, and it can be closed on a clear day in Hobart. Dress for it: routinely 10 °C colder than the waterfront, with wind that makes that feel much worse. Everything you packed for the Organ Pipes, put back on.</div>          <p class="text-[13px] text-slate-500 mt-1.5">If the road is open but the summit is in cloud, stop at the Big Bend lookout on the way up — it clears more often than the top does.</p>
+          <p class="text-sm text-slate-600 mt-0.5">Pinnacle Road is sealed the whole way to the summit car park at <strong>1,271 m</strong>. <a href="#itinerary" data-goto="5" class="daylink">Wednesday&rsquo;s walk</a> started at The Springs, some 700 m below this; today you drive to the top, walk the boardwalk, and stand in the enclosed lookout out of the wind. <strong>Sunset is 18:01.</strong></p>          <div class="mt-2 rounded-xl bg-amber-50 border border-amber-200 p-3 text-[13px] text-amber-900"><strong>Check the road status before you leave town</strong> — same link as Wednesday. Snow and ice restrict it April to September, and it can be closed on a clear day in Hobart. Dress for it: routinely 10 °C colder than the waterfront, with wind that makes that feel much worse. Everything you packed for the <a href="#itinerary" data-goto="5" class="daylink">Organ Pipes</a>, put back on.</div>          <p class="text-[13px] text-slate-500 mt-1.5">If the road is open but the summit is in cloud, stop at the Big Bend lookout on the way up — it clears more often than the top does.</p>
         </div>
       </div>
 
@@ -1127,11 +1147,12 @@
           <div class="flex flex-col items-center justify-center px-1 shrink-0"><div class="text-[10px] text-slate-400 font-semibold whitespace-nowrap">35 min</div><div class="text-slate-300 text-xs leading-none mt-0.5">──▸</div></div>
           <div class="flex flex-col items-center shrink-0 w-[74px]"><span class="w-2.5 h-2.5 rounded-full bg-ember-500"></span><div class="text-[11px] font-semibold text-slate-700 text-center leading-tight mt-1.5">Hobart</div></div>
         </div>
-        <p class="text-[11px] text-slate-500 mt-2 leading-relaxed">Russell Falls is a 25-minute return stroll on a sealed path, and the Tall Trees loop adds an hour among 80-metre swamp gums. Beware one thing: your Freycinet pass is a <strong>One-Park</strong> pass and does not cover Mt Field, so add a $46.60 day vehicle pass. Lake Dobson Road, further into the park, is gravel — the falls and the tall trees are not.</p>
+        <p class="text-[11px] text-slate-500 mt-2 leading-relaxed">Russell Falls is a 25-minute return stroll on a sealed path, and the Tall Trees loop adds an hour among 80-metre swamp gums. It costs the same in park fees as the peninsula does — Mt Field is a national park too, so it is the same <strong>$47.70 day vehicle pass</strong> either way. Lake Dobson Road, further into the park, is gravel; the falls and the tall trees are not.</p>
       </div>
         <div class="flex flex-wrap items-center gap-x-4 gap-y-1 mt-3 text-[10px] text-slate-400 font-semibold uppercase tracking-wider"><span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-ember-500"></span>you get out here</span><span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-forest-700"></span>drive through</span><span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-sky-500"></span>the walk</span><span class="normal-case tracking-normal text-slate-400">Times are travel only — stops are on top.</span></div>
       </div>
       <div class="px-4 sm:px-5 py-3 bg-white border-b border-sand-100 flex flex-wrap gap-2">
+        <a href="#itinerary" data-goto="5" class="text-xs font-semibold text-slate-600 bg-white border border-sand-200 px-3 py-1.5 rounded-lg hover:bg-sand-50">&larr; Wed 16 · the van goes back</a>
         <a href="https://www.google.com/maps/dir/173+Macquarie+St,+Hobart+TAS/Pirates+Bay+Lookout,+Eaglehawk+Neck+TAS/Tessellated+Pavement,+Eaglehawk+Neck+TAS/Tasman+Arch,+Eaglehawk+Neck+TAS/Port+Arthur+Historic+Site+TAS/Remarkable+Cave,+Port+Arthur+TAS" target="_blank" rel="noopener" class="text-xs font-semibold text-forest-800 bg-white border-sand-200 hover:bg-forest-50 border px-3 py-1.5 rounded-lg">🗺 Full peninsula loop</a>
         <a href="https://portarthur.org.au/port-arthur-entry/" target="_blank" rel="noopener" class="text-xs font-semibold text-forest-800 bg-white border-sand-200 hover:bg-forest-50 border px-3 py-1.5 rounded-lg">🎟 Port Arthur tickets</a>
         <a href="http://www.bom.gov.au/australia/tides/" target="_blank" rel="noopener" class="text-xs font-semibold text-forest-800 bg-white border-sand-200 hover:bg-forest-50 border px-3 py-1.5 rounded-lg">🌊 Tide times, Eaglehawk Neck</a>
@@ -1141,8 +1162,8 @@
         <div class="tl relative pl-6 pb-5">
           <span class="absolute left-[-4px] top-1.5 w-2.5 h-2.5 rounded-full bg-forest-700 ring-forest-100 ring-4"></span>
           <div class="text-xs font-bold text-forest-700 tracking-wide">08:30 · DEPART</div>
-          <div class="font-semibold text-[15px] mt-0.5">Out through Sorell</div>
-          <p class="text-sm text-slate-600 mt-0.5">The A9 Arthur Highway is sealed the entire way and there is nothing on it that a hire car should not be on. Fuel at Sorell if you did not fill last night — the peninsula is thin on servos.</p>
+          <div class="font-semibold text-[15px] mt-0.5">Out through Sorell — with a park pass on the phone</div>
+          <p class="text-sm text-slate-600 mt-0.5">The A9 Arthur Highway is sealed the entire way and there is nothing on it that a hire car should not be on. Fuel at Sorell if you did not fill last night — the peninsula is thin on servos.</p>          <div class="mt-2 rounded-xl bg-amber-50 border border-amber-200 p-3 text-[13px] text-amber-900"><strong>Buy a $47.70 24-hour vehicle pass before you leave.</strong> The pavement, the arch, the kitchen and Remarkable Cave are all inside <strong>Tasman National Park</strong>, and your <a href="#itinerary" data-goto="4" class="daylink">Freycinet One-Park pass</a> covers only Freycinet. A vehicle pass is issued against a registration number, so this one goes on the hire car&rsquo;s plate, not the van&rsquo;s. Two minutes on passes.parks.tas.gov.au.</div>
         </div>
         <div class="tl relative pl-6 pb-5">
           <span class="absolute left-[-4px] top-1.5 w-2.5 h-2.5 rounded-full bg-ember-500 ring-amber-100 ring-4"></span>
@@ -1255,6 +1276,7 @@
         <div class="flex flex-wrap items-center gap-x-4 gap-y-1 mt-3 text-[10px] text-slate-400 font-semibold uppercase tracking-wider"><span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-ember-500"></span>you get out here</span><span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-forest-700"></span>drive through</span><span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-sky-500"></span>the walk</span><span class="normal-case tracking-normal text-slate-400">Times are travel only — stops are on top.</span></div>
       </div>
       <div class="px-4 sm:px-5 py-3 bg-white border-b border-sand-100 flex flex-wrap gap-2">
+        <a href="#itinerary" data-goto="5" class="text-xs font-semibold text-slate-600 bg-white border border-sand-200 px-3 py-1.5 rounded-lg hover:bg-sand-50">&larr; Wed 16 · the van goes back</a>
         <a href="https://www.google.com/maps/dir/Salamanca+Place,+Hobart+TAS/Richmond+Bridge,+Richmond+TAS/100+Holyman+Ave,+Cambridge+TAS/Hobart+Airport+TAS" target="_blank" rel="noopener" class="text-xs font-semibold text-forest-800 bg-white border-sand-200 hover:bg-forest-50 border px-3 py-1.5 rounded-lg">🗺 Salamanca → Richmond → airport</a>
         <a href="https://kayak.airportrentals.com/mybooking/IM50456624" target="_blank" rel="noopener" class="text-xs font-semibold text-red-700 bg-red-50 border-red-200 hover:bg-red-100 border px-3 py-1.5 rounded-lg">🚗 Move the drop-off time</a>
         <a href="https://www.jetstar.com/au/en/home" target="_blank" rel="noopener" class="text-xs font-semibold text-forest-800 bg-white border-sand-200 hover:bg-forest-50 border px-3 py-1.5 rounded-lg">✈ Jetstar check-in</a>
@@ -1271,25 +1293,25 @@
             <span class="badge bg-amber-100 text-amber-800">Saturdays only</span>
             <span class="badge bg-slate-100 text-slate-600">9 min on foot</span>
           </div>
-          <p class="text-sm text-slate-600 mt-0.5">Three hundred stalls the length of Salamanca Place, under the plane trees in front of the sandstone warehouses. It runs rain or shine and it is the single best thing in Hobart that costs nothing. Go early — by eleven it is shoulder to shoulder.</p>          <div class="mt-2 rounded-xl bg-sky-50 border border-sky-200 p-3 text-[13px] text-sky-900">The van week was always going to miss this: the market is Saturdays only, and both your Saturdays were travel days. The Hobart nights are what hand it back — and this is the morning to buy anything you have been meaning to take home, because there is no other chance.</div>
+          <p class="text-sm text-slate-600 mt-0.5">Three hundred stalls the length of Salamanca Place, under the plane trees in front of the sandstone warehouses. It runs rain or shine and it is the single best thing in Hobart that costs nothing. Go early — by eleven it is shoulder to shoulder.</p>          <div class="mt-2 rounded-xl bg-sky-50 border border-sky-200 p-3 text-[13px] text-sky-900">The van week was always going to miss this: the market is Saturdays only, and both your Saturdays were travel days — <a href="#itinerary" data-goto="1" class="daylink">the first</a> in the Midlands, this one flying home. The Hobart nights are what hand it back — and this is the morning to buy anything you have been meaning to take home, because there is no other chance.</div>
         </div>
         <div class="tl relative pl-6 pb-5">
           <span class="absolute left-[-4px] top-1.5 w-2.5 h-2.5 rounded-full bg-forest-700 ring-forest-100 ring-4"></span>
           <div class="text-xs font-bold text-forest-700 tracking-wide">10:45 – 11:00 · CHECK OUT</div>
           <div class="font-semibold text-[15px] mt-0.5">Bags into the car</div>
-          <p class="text-sm text-slate-600 mt-0.5">The room has to be empty by <strong>11:00</strong>. Walk back up, check out, bring the car round and load it — then you are free until the airport with nothing to carry.</p>          <div class="mt-2 rounded-xl bg-amber-50 border border-amber-200 p-3 text-[13px] text-amber-900"><strong>Parking, and a small piece of revenge:</strong> the Salamanca Square car park is underground, which is exactly why the van could not use it on Wednesday. The Fronx is about 1.6 m tall. Park there this time — it is the closest thing to the market by a wide margin, and it fills by nine on market day.</div>
+          <p class="text-sm text-slate-600 mt-0.5">The room has to be empty by <strong>11:00</strong>. Walk back up, check out, bring the car round and load it — then you are free until the airport with nothing to carry.</p>          <div class="mt-2 rounded-xl bg-amber-50 border border-amber-200 p-3 text-[13px] text-amber-900"><strong>Parking, and a small piece of revenge:</strong> the Salamanca Square car park is underground, which is exactly why the van could not use it on <a href="#itinerary" data-goto="5" class="daylink">Wednesday</a>. The Fronx is about 1.6 m tall. Park there this time — it is the closest thing to the market by a wide margin, and it fills by nine on market day.</div>
         </div>
         <div class="tl relative pl-6 pb-5">
           <span class="absolute left-[-4px] top-1.5 w-2.5 h-2.5 rounded-full bg-forest-700 ring-forest-100 ring-4"></span>
           <div class="text-xs font-bold text-forest-700 tracking-wide">11:00 – 12:45 · THE REST OF IT</div>
           <div class="font-semibold text-[15px] mt-0.5">Back to the market, or the waterfront</div>
-          <p class="text-sm text-slate-600 mt-0.5">Second lap of the stalls, lunch from a van, or walk the fifteen minutes round to Constitution Dock and the fish punts. If Wednesday&rsquo;s Battery Point loop got rained off, this is when you do it.</p>
+          <p class="text-sm text-slate-600 mt-0.5">Second lap of the stalls, lunch from a van, or walk the fifteen minutes round to Constitution Dock and the fish punts. If <a href="#itinerary" data-goto="5" class="daylink">Wednesday&rsquo;s Battery Point loop</a> got rained off, this is when you do it.</p>
         </div>
         <div class="tl relative pl-6 pb-5">
           <span class="absolute left-[-4px] top-1.5 w-2.5 h-2.5 rounded-full bg-red-500 ring-red-100 ring-4"></span>
           <div class="text-xs font-bold text-red-600 tracking-wide">13:00 → 13:30 · THE CAR GOES BACK</div>
           <div class="font-semibold text-[15px] mt-0.5">Fuel at Cambridge, then 100 Holyman Ave</div>
-          <p class="text-sm text-slate-600 mt-0.5">Twenty minutes from Salamanca. Fill at the BP on Holyman Ave — same one you used for the van — and hand the car back with photographs of every panel.</p>          <div class="mt-2 rounded-xl bg-red-50 border border-red-200 p-3 text-[13px] text-red-900"><strong>This assumes you moved the drop-off to 13:30.</strong> As booked it is <strong>15:30</strong>, one hour before the flight, with check-in closing at 15:50. If you have not changed it yet, change it now: it is free, and it is the only genuinely fragile hour of the whole trip.</div>
+          <p class="text-sm text-slate-600 mt-0.5">Twenty minutes from Salamanca. Fill at the BP on Holyman Ave — same one you used for the van — and hand the car back with photographs of every panel.</p>          <div class="mt-2 rounded-xl bg-amber-50 border border-amber-200 p-3 text-[13px] text-amber-900"><strong>The booking says 15:30. Come back at 13:30 anyway.</strong> Handing a hire car back early is normal and costs nothing — you have paid for the period either way. Taken literally, 15:30 leaves twenty minutes before check-in closes at 15:50, which is the only fragile hour in the eight days. Changing the booked time in Manage Booking is free and means the counter expects you, but the schedule above is what actually protects the flight.</div>
         </div>
         <div class="tl relative pl-6">
           <span class="absolute left-[-4px] top-1.5 w-2.5 h-2.5 rounded-full bg-ember-500 ring-amber-100 ring-4"></span>
@@ -1419,7 +1441,7 @@
   <div class="rounded-2xl bg-amber-50 border border-amber-200 p-5 mb-4">
     <div class="font-semibold text-sm text-amber-900">Two payments still to make</div>
     <div class="mt-3 space-y-2">
-      <a href="https://passes.parks.tas.gov.au/" target="_blank" rel="noopener" class="flex items-center justify-between gap-3 bg-white border border-amber-200 rounded-xl px-4 py-3 hover:bg-amber-50/50"><div class="min-w-0"><div class="text-sm font-semibold">Freycinet park pass</div><div class="text-xs text-slate-500">Buying it Friday 11 Sep, the day before pick-up</div></div><span class="text-sm font-semibold text-amber-800 shrink-0">$50.70 →</span></a>
+      <a href="https://passes.parks.tas.gov.au/" target="_blank" rel="noopener" class="flex items-center justify-between gap-3 bg-white border border-amber-200 rounded-xl px-4 py-3 hover:bg-amber-50/50"><div class="min-w-0"><div class="text-sm font-semibold">Freycinet One-Park pass</div><div class="text-xs text-slate-500">Buying it Friday 11 Sep — plus a $47.70 day pass for Tasman NP on the 18th</div></div><span class="text-sm font-semibold text-amber-800 shrink-0">$98.40 →</span></a>
       <div class="flex items-center justify-between gap-3 bg-white border border-amber-200 rounded-xl px-4 py-3"><div class="min-w-0"><div class="text-sm font-semibold">Triabunna, at check-in</div><div class="text-xs text-slate-500">Tuesday afternoon — card or cash on you</div></div><span class="text-sm font-semibold text-amber-800 shrink-0">$49.00</span></div>
     </div>
   </div>
@@ -1504,10 +1526,10 @@
 
   <div class="rounded-2xl bg-sky-50 border border-sky-200 p-5 mt-6 mb-4">
     <div class="font-semibold text-sm text-sky-900">✓ Hobart is booked too — three nights and a car</div>
-    <p class="text-[13px] text-slate-600 mt-1">$415.20 of hotel already paid. The car is confirmed but has two things wrong with it, both fixable from your phone in five minutes.</p>
+    <p class="text-[13px] text-slate-600 mt-1">$415.20 of hotel already paid. The car is confirmed; the one thing genuinely outstanding is the excess.</p>
     <div class="mt-3 space-y-2">
       <div class="flex items-center justify-between gap-3 bg-white border border-sky-200 rounded-xl px-4 py-3"><div class="min-w-0"><div class="text-sm font-semibold">ibis Styles Hobart · 173 Macquarie St</div><div class="text-xs text-slate-500">Nights 5–7 · ref <strong>JQKZANYD3</strong> · in Wed 16 from 14:00, out Sat 19 by 11:00</div></div><div class="text-right shrink-0"><div class="text-sm font-semibold text-forest-800">$415.20</div><div class="text-[10px] uppercase tracking-wider text-forest-700 font-bold">paid</div></div></div>
-      <div class="flex items-center justify-between gap-3 bg-white border border-red-200 rounded-xl px-4 py-3"><div class="min-w-0"><div class="text-sm font-semibold">Simba Car Hire · 100 Holyman Ave, Cambridge</div><div class="text-xs text-slate-500">Thu 17 15:30 → Sat 19 15:30 · ref <strong>IM50456624</strong> · Suzuki Fronx Hybrid or similar</div></div><div class="text-right shrink-0"><div class="text-[10px] uppercase tracking-wider text-red-700 font-bold">2 fixes</div></div></div>
+      <div class="flex items-center justify-between gap-3 bg-white border border-red-200 rounded-xl px-4 py-3"><div class="min-w-0"><div class="text-sm font-semibold">Simba Car Hire · 100 Holyman Ave, Cambridge</div><div class="text-xs text-slate-500">Thu 17 15:30 → Sat 19 15:30 · ref <strong>IM50456624</strong> · Suzuki Fronx Hybrid or similar</div></div><div class="text-right shrink-0"><div class="text-[10px] uppercase tracking-wider text-red-700 font-bold">1 fix</div></div></div>
     </div>
   </div>
 
@@ -1528,14 +1550,14 @@
     </div>
 
     <div class="bg-white rounded-2xl border border-red-200 shadow-soft overflow-hidden">
-      <div class="p-5 border-b border-sand-100 bg-red-50/40"><div class="badge bg-red-100 text-red-700 mb-1.5">THE CAR · 2 FIXES</div><h3 class="font-semibold text-[15px] text-slate-900">Simba Car Hire, Hobart Airport</h3><p class="text-xs text-slate-500 mt-0.5">100 Holyman Ave, Cambridge — five minutes from the Apollo depot</p></div>
+      <div class="p-5 border-b border-sand-100 bg-red-50/40"><div class="badge bg-red-100 text-red-700 mb-1.5">THE CAR · 1 FIX</div><h3 class="font-semibold text-[15px] text-slate-900">Simba Car Hire, Hobart Airport</h3><p class="text-xs text-slate-500 mt-0.5">100 Holyman Ave, Cambridge — five minutes from the Apollo depot</p></div>
       <div class="p-5 text-sm text-slate-600 space-y-2">
         <p>Booked through Airport Rentals on 5 September. Reference <strong>IM50456624</strong>, Simba booking <strong>187414</strong>. Suzuki Fronx Hybrid or similar, out Thursday 15:30, back Saturday 15:30.</p>
         <div class="mt-2 rounded-xl bg-red-50 border border-red-200 p-3 text-[13px] text-red-900">
-          <strong>1 · Move the drop-off to 13:30.</strong> As booked, the car is due back sixty minutes before JQ706 departs and check-in closes twenty minutes after that. Free to change, and it buys the whole Salamanca morning.
+          <strong>Deal with the $6,380 excess.</strong> The confirmation says in plain words that you have not selected protection. A card benefit, a standalone excess policy bought online, or Simba&rsquo;s own reduction at the counter — any of the three, but decide before the 17th.
         </div>
-        <div class="mt-2 rounded-xl bg-red-50 border border-red-200 p-3 text-[13px] text-red-900">
-          <strong>2 · Deal with the $6,380 excess.</strong> The confirmation says in plain words that you have not selected protection. A card benefit, a standalone excess policy bought online, or Simba&rsquo;s own reduction at the counter — any of the three, but decide before the 17th.
+        <div class="mt-2 rounded-xl bg-amber-50 border border-amber-200 p-3 text-[13px] text-amber-900">
+          <strong>The 15:30 drop-off is a planning matter, not a problem.</strong> You can hand a car back early, so <a href="#itinerary" data-goto="8" class="daylink">Saturday</a> is built around reaching the depot at 13:30. Changing the booked time is free and means the counter expects you, but it is optional.
         </div>
         <p class="text-[13px] text-slate-500 mt-1.5">At the counter: a <strong>physical</strong> licence and a <strong>physical</strong> credit card in Jaspreet&rsquo;s name — digital cards are explicitly refused — plus a <strong>$500–$2,000 bond</strong> that comes back on return.</p>
         <div class="flex flex-wrap gap-2 mt-3">
@@ -1606,7 +1628,7 @@
       <div class="p-5 border-b border-sand-100 bg-amber-50/40"><div class="badge bg-amber-100 text-amber-800 mb-1.5">RISK 7</div><h3 class="font-semibold text-[15px] text-slate-900">Thursday is the only day Mona exists</h3></div>
       <div class="p-5 text-sm text-slate-600 space-y-2">
         <p>Mona opens Thursday to Monday. You are in Hobart Wednesday, Thursday, Friday and Saturday — and Wednesday you are in a van until mid-afternoon, Friday is the peninsula, Saturday is the market and the flight. That leaves exactly one day, and Mona also closes without much warning for private events.</p>
-        <p class="font-medium text-slate-800">Check mona.net.au when you book the tickets, and check again Wednesday night. If Thursday falls over, the honest answer is that Mona is what you lose — swap Friday and Thursday, do the peninsula on Thursday and Mona Friday, rather than trying to squeeze it into Saturday morning.</p>
+        <p class="font-medium text-slate-800">Check mona.net.au when you book the tickets, and check again Wednesday night. If Thursday falls over, the honest answer is that Mona is what you lose — swap Friday and Thursday, do <a href="#itinerary" data-goto="7" class="daylink">the peninsula</a> on Thursday and Mona Friday, rather than trying to squeeze it into Saturday morning.</p>
         <p>Book the ferry with the entry in the same checkout. Sailings are roughly hourly and they do sell out on a fine Thursday.</p>
       </div>
     </div>
@@ -1655,13 +1677,13 @@
         <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="b1"><span class="chk-label text-sm">Save Apollo&rsquo;s <strong>3:00 pm email</strong> to your phone — it&rsquo;s the only thing that overrides the printed booking</span></label>
         <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="b2"><span class="chk-label text-sm"><strong>Street View Mud Walls Rd</strong> between Colebrook and the A1 — sealed or not?</span></label>
         <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="b3"><span class="chk-label text-sm">Check St Marys Pass roadworks on transport.tas.gov.au</span></label>
-        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="b4"><span class="chk-label text-sm"><strong>Fri 11 Sep:</strong> buy the $50.70 Freycinet One-Park pass</span></label>
+        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="b4"><span class="chk-label text-sm"><strong>Fri 11 Sep:</strong> buy the $50.70 Freycinet One-Park pass — you will need the van&rsquo;s rego</span></label>
         <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="b5"><span class="chk-label text-sm">Save all three camp confirmations offline — coverage is patchy at Freycinet</span></label>
         <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="b6"><span class="chk-label text-sm">Check the card has room for the <strong>$7,500 bond + $125 fee</strong> on the 12th</span></label>
         <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="b7"><span class="chk-label text-sm">Decide on the Callington Mill tour — it uses your whole Oatlands stop</span></label>
         <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="b8"><span class="chk-label text-sm">Download offline Google Maps for the east coast and Midlands</span></label>
         <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="b9"><span class="chk-label text-sm">Pack windproof shell, beanie, gloves, boots, poles, <strong>$1 and $2 coins</strong></span></label>
-        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="b10"><span class="chk-label text-sm"><strong>Move the Simba drop-off to 13:30</strong> Saturday — as booked it is an hour before the flight</span></label>
+        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="b10"><span class="chk-label text-sm">Saturday: be at the depot by <strong>13:30</strong>, not the booked 15:30 — optionally change the booked time too</span></label>
         <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="b11"><span class="chk-label text-sm">Sort the car excess: check your cards first, then buy a policy — <strong>$6,380</strong> is uncovered</span></label>
         <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="b12"><span class="chk-label text-sm">Book <strong>Mona</strong> entry and the ferry together for Thursday — sailings sell out</span></label>
         <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="b13"><span class="chk-label text-sm">Book <strong>Port Arthur</strong> for Friday, and note the ticket stays valid the next day too</span></label>
@@ -1764,7 +1786,7 @@
     <div class="bg-white rounded-2xl border border-sky-200 shadow-soft overflow-hidden" data-list="hobart">
       <div class="p-5 border-b border-sand-100 flex items-start gap-3">
         <div class="flex-1"><h3 class="font-semibold text-[17px] text-slate-900">Hobart, after the van</h3><p class="text-xs text-slate-500 mt-0.5">Wednesday afternoon to Saturday lunchtime</p></div>
-        <span class="text-xs font-bold text-forest-800 progress-text shrink-0">0/8</span>
+        <span class="text-xs font-bold text-forest-800 progress-text shrink-0">0/9</span>
       </div>
       <div class="h-1 bg-sand-100"><div class="progress-bar h-1 bg-forest-700 transition-all" style="width:0%"></div></div>
       <div class="p-5 space-y-3">
@@ -1773,7 +1795,8 @@
         <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="h3"><span class="chk-label text-sm">Thursday: physical licence and physical credit card in Jaspreet&rsquo;s name for the counter</span></label>
         <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="h4"><span class="chk-label text-sm">Photograph every panel of the car before you drive it off the lot</span></label>
         <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="h5"><span class="chk-label text-sm">Check <strong>Pinnacle Road</strong> again Thursday afternoon, before driving the summit</span></label>
-        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="h6"><span class="chk-label text-sm">Friday: check the <strong>tide</strong> for the Tessellated Pavement the night before</span></label>
+        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="h6"><span class="chk-label text-sm">Friday: buy the <strong>$47.70 Tasman NP day pass</strong> for the hire car before you set off</span></label>
+        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="h9"><span class="chk-label text-sm">Friday: check the <strong>tide</strong> for the Tessellated Pavement the night before</span></label>
         <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="h7"><span class="chk-label text-sm">Friday afternoon: check in online for JQ706 — it opens 48 hours out</span></label>
         <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="h8"><span class="chk-label text-sm">Saturday: room empty by <strong>11:00</strong>, and fuel the car at Cambridge before dropping it</span></label>
         <div class="custom-mount space-y-3"></div>
@@ -1802,7 +1825,8 @@
         <div class="px-5 py-3.5 border-b border-sand-100 bg-sand-50/60 flex items-center justify-between"><h3 class="font-semibold text-sm text-slate-900">Fixed costs</h3><span class="text-sm font-bold text-forest-800" data-subtotal="fixed">$0</span></div>
         <div class="divide-y divide-sand-100">
           <div class="flex items-center gap-3 px-5 py-3"><div class="flex-1 min-w-0"><div class="text-sm font-medium">Campervan hire <span class="badge bg-forest-100 text-forest-800 ml-1">confirmed</span></div><div class="text-xs text-slate-500">$622.25 paid + $125 Hobart location fee at the counter. The $7,500 bond is separate and comes back</div></div><div class="flex items-center gap-1 shrink-0"><span class="text-slate-400 text-sm">$</span><input type="number" step="0.05" class="bg-sand-50 border border-sand-200 rounded-lg px-2 py-1.5 w-24 text-right text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-forest-700/30" data-b="van" data-group="fixed" value="747.25"></div></div>
-          <div class="flex items-center gap-3 px-5 py-3"><div class="flex-1 min-w-0"><div class="text-sm font-medium">Freycinet park pass <span class="badge bg-amber-100 text-amber-800 ml-1">buying 11 Sep</span></div><div class="text-xs text-slate-500">One-Park annual $50.70 — the only park you pay for. <button id="cheap-mode" class="underline decoration-dotted hover:text-forest-800">Use the 24-hr vehicle pass, $46.60</button></div></div><div class="flex items-center gap-1 shrink-0"><span class="text-slate-400 text-sm">$</span><input type="number" step="0.05" class="bg-sand-50 border border-sand-200 rounded-lg px-2 py-1.5 w-24 text-right text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-forest-700/30" data-b="pass" data-group="fixed" data-cheap="46.60" value="50.70"></div></div>
+          <div class="flex items-center gap-3 px-5 py-3"><div class="flex-1 min-w-0"><div class="text-sm font-medium">Freycinet One-Park pass <span class="badge bg-amber-100 text-amber-800 ml-1">buying 11 Sep</span></div><div class="text-xs text-slate-500">$50.70, twelve months, one park, up to two vehicles — covers Sunday evening, Monday and Tuesday. One 24-hr pass only works if both Freycinet walks fall inside a single window. <button id="cheap-mode" class="underline decoration-dotted hover:text-forest-800">Try it at $47.70</button></div></div><div class="flex items-center gap-1 shrink-0"><span class="text-slate-400 text-sm">$</span><input type="number" step="0.05" class="bg-sand-50 border border-sand-200 rounded-lg px-2 py-1.5 w-24 text-right text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-forest-700/30" data-b="pass" data-group="fixed" data-cheap="47.70" value="50.70"></div></div>
+          <div class="flex items-center gap-3 px-5 py-3"><div class="flex-1 min-w-0"><div class="text-sm font-medium">Tasman NP pass, Friday <span class="badge bg-sky-100 text-sky-800 ml-1">buy on the day</span></div><div class="text-xs text-slate-500">24-hour vehicle pass, $47.70 — the hire car needs its own. Zero if you skip the coastal stops and go straight to Port Arthur</div></div><div class="flex items-center gap-1 shrink-0"><span class="text-slate-400 text-sm">$</span><input type="number" step="0.05" class="bg-sand-50 border border-sand-200 rounded-lg px-2 py-1.5 w-24 text-right text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-forest-700/30" data-b="tasmanpass" data-group="fixed" value="47.70"></div></div>
           <div class="flex items-center gap-3 px-5 py-3"><div class="flex-1 min-w-0"><div class="text-sm font-medium">Diesel</div><div class="text-xs text-slate-500">~670 km · 67–80 L at ~245–250 c/L · one fill, at Cambridge</div></div><div class="flex items-center gap-1 shrink-0"><span class="text-slate-400 text-sm">$</span><input type="number" class="bg-sand-50 border border-sand-200 rounded-lg px-2 py-1.5 w-24 text-right text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-forest-700/30" data-b="fuel" data-group="fixed" value="190"></div></div>
         </div>
       </div>
@@ -1860,7 +1884,7 @@
           <div class="flex justify-between"><span class="text-forest-100/70">Excl. van hire</span><span class="font-semibold" id="ex-van">$0</span></div>
         </div>
         <button id="reset-budget" class="mt-5 w-full text-xs font-semibold bg-white/10 hover:bg-white/20 px-3 py-2.5 rounded-xl">Reset to defaults</button>
-        <p class="text-[11px] text-forest-100/50 mt-3 leading-relaxed">Flights are not included, and neither are the two refundable bonds — $7,500 on the van, $500–$2,000 on the car. Only one national park charges: Bay of Fires and kunanyi are free, and Port Arthur is a separate ticket, not a park pass.</p>
+        <p class="text-[11px] text-forest-100/50 mt-3 leading-relaxed">Flights are not included, and neither are the two refundable bonds — $7,500 on the van, $500–$2,000 on the car. Two national parks charge — Freycinet and Tasman — and they need separate passes because you are in two different vehicles. Bay of Fires and kunanyi are free, and Port Arthur is a ticket, not a park pass.</p>
       </div>
     </div>
   </div>
@@ -1872,11 +1896,12 @@
     <p class="text-sm text-slate-600 mb-3">Seven reviewers went over this route across two rounds, and every confirmed booking — van, camps, hotel, car and flights — has now been read off the actual email. These are what remains unsettled, so you don&rsquo;t act on a number that was inferred rather than found:</p>
     <ul class="text-sm text-slate-600 space-y-1.5 list-disc pl-4">
       <li><strong>Mud Walls Road's surface.</strong> A 2017 sealing project completed, but a 2020 account still describes gravel. This is the one that could break Saturday's route. Street View it.</li>
-      <li><strong>Whether the $50.70 Freycinet One-Park pass is per vehicle or per adult.</strong> Sources split. It's the difference between saving $48 and saving nothing.</li>
+      <li><strong>Settled:</strong> the $50.70 Freycinet One-Park pass covers the holder <em>and up to seven passengers</em>, and takes up to two vehicle registrations — so it is one purchase for the pair of you, not two. Person passes are only for visitors arriving without a vehicle, which rules them out here.</li>
       <li><strong>St Marys Pass roadworks status for September 2026.</strong> Landslip repairs and reduced speed limits were reported; the data is stale. Recheck the week before.</li>
       <li><strong>Devil's Corner's access road and parking.</strong> One review praises the view as worth "the gravel access road"; another notes caravanners arriving and leaving. Eyeball it, or ring 0448 521 412.</li>
       <li><strong>Maximum vehicle lengths.</strong> Rates and availability are now settled — all three parks are booked and confirmed — but none of them publishes a length limit, and none of the three confirmations records the van&rsquo;s 5.94 m. Mention it when you check in; Iluka&rsquo;s Premium Slab sites are the surest fit.</li>
       <li><strong>How often Mount Amos is actually dry.</strong> The "about half by 09:00" figure is reasoning from Coles Bay's September climate plus dew, not a published statistic.</li>
+      <li><strong>Corrected:</strong> Freycinet is <em>not</em> the only park you pay for. Tasman National Park covers the Tessellated Pavement, Tasman Arch, Devils Kitchen and Remarkable Cave, so Friday needs its own vehicle pass. This page said otherwise until the Hobart days were planned.</li>
       <li><strong>Live Parks Tasmania track alerts.</strong> The alerts register was unreachable from here. Check it the week you travel — and Pinnacle Road on the morning itself.</li>
       <li><strong>Simba&rsquo;s unsealed-road wording.</strong> Not published anywhere I could reach. Every Tasmanian operator I could read excludes damage on unsealed roads, and you are carrying the full $6,380 excess — so Days 6 to 8 are planned entirely on sealed roads and you should read the T&amp;Cs at the counter before inventing a detour.</li>
       <li><strong>What the hire car actually costs.</strong> The Airport Rentals confirmation states the vehicle, the times and the excess, but never a total. The $150 in the budget is a two-day benchmark, not your figure — open Manage Booking and replace it.</li>
@@ -1917,15 +1942,29 @@
         (on ? 'bg-forest-900 text-white border-forest-900 shadow-soft' : 'bg-white text-slate-600 border-sand-200 hover:border-forest-700/40');
     });
   }
+  function showDay(n){
+    var t = document.querySelector('.daytab[data-day="' + n + '"]');
+    if (!t) return;
+    tabs.forEach(function(x){ x.classList.remove('on'); });
+    t.classList.add('on');
+    panels.forEach(function(p){ p.classList.toggle('hidden', p.dataset.day !== n); });
+    paint();
+  }
   tabs.forEach(function(t){
-    t.addEventListener('click', function(){
-      tabs.forEach(function(x){ x.classList.remove('on'); });
-      t.classList.add('on');
-      panels.forEach(function(p){ p.classList.toggle('hidden', p.dataset.day !== t.dataset.day); });
-      paint();
-    });
+    t.addEventListener('click', function(){ showDay(t.dataset.day); });
   });
   paint();
+
+  /* Days reference each other constantly — Thursday's summit is Wednesday's
+     walk from higher up, Saturday's market is the one Day 1 warned you'd miss.
+     Any link carrying data-goto switches to that day and scrolls to it. */
+  document.querySelectorAll('[data-goto]').forEach(function(a){
+    a.addEventListener('click', function(e){
+      e.preventDefault();
+      showDay(a.dataset.goto);
+      document.getElementById('itinerary').scrollIntoView({ behavior:'smooth', block:'start' });
+    });
+  });
 
   /* ── nav pill highlight ── */
   var pills = document.querySelectorAll('.navpill');

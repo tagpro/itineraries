@@ -1,6 +1,6 @@
 module github.com/tagpro/itineraries/server
 
-go 1.24.7
+go 1.27.1
 
 require (
 	github.com/syumai/workers-go v0.35.0

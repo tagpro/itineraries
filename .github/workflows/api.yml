@@ -46,7 +46,7 @@ jobs:
     # that names it can read them, and the environment's rules — which
     # branches may deploy, any required reviewer — apply to every deploy.
     environment:
-      name: production
+      name: api-production
       url: https://travel.jaspreet.casa/api/v1/healthz
     concurrency:
       group: deploy-api

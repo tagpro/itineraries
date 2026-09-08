@@ -135,7 +135,7 @@ account and happen once.
 
    Paste the `database_id` it prints into `wrangler.jsonc` and commit.
 
-2. **Add three secrets to the `production` environment** of the
+2. **Add three secrets to the `api-production` environment** of the
    repository (*Settings → Environments*; create it if it does not exist).
    The deploy job names that environment, which is what lets it read them;
    a job without the name — the test job, any pull request — cannot. The

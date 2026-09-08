@@ -135,16 +135,22 @@ account and happen once.
 
    Paste the `database_id` it prints into `wrangler.jsonc` and commit.
 
-2. **Add three GitHub Actions secrets** to the repository:
+2. **Add three secrets to the `api-production` environment** of the
+   repository (*Settings → Environments*; create it if it does not exist).
+   The deploy job names that environment, which is what lets it read them;
+   a job without the name — the test job, any pull request — cannot. The
+   environment's own settings can also restrict deploys to `main` and
+   require a reviewer.
 
    | Secret | What |
    |---|---|
    | `CLOUDFLARE_ACCOUNT_ID` | From the Workers overview page in the dashboard |
-   | `CLOUDFLARE_API_TOKEN` | An API token with **Workers Scripts: Edit**, **D1: Edit**, **Workers Routes: Edit** on the `jaspreet.casa` zone, and **Account Settings: Read** |
+   | `CLOUDFLARE_API_TOKEN` | An API token with **Workers Scripts: Edit**, **D1: Edit**, **Account Settings: Read**, and on the `jaspreet.casa` zone **Workers Routes: Edit** and **Zone: Read** (wrangler looks the zone id up by name) |
    | `API_ADMIN_KEY` | Any long random string, e.g. `openssl rand -base64 32` |
 
    The workflow pushes `API_ADMIN_KEY` into the Worker as `ADMIN_KEY` after
-   each deploy, so rotating it is a matter of changing the GitHub secret.
+   each deploy, so rotating it is a matter of changing the environment
+   secret and pressing *Run workflow* on the API workflow.
 
 3. **Point DNS at GitHub Pages, proxied.** In the `jaspreet.casa` zone:
 
@@ -162,10 +168,11 @@ account and happen once.
    `travel.jaspreet.info`; a Cloudflare redirect rule on the old zone keeps
    old links working.
 
-4. **Push to `main`.** The `API` workflow applies migrations, builds the
-   Worker, deploys it, and sets the secret. Until steps 1 and 2 are done it
-   skips the deploy with a notice instead of failing. Until the DNS record
-   exists the Worker is also reachable at its `*.workers.dev` URL.
+4. **Push to `main`**, or press *Run workflow* on the `API` workflow in
+   the Actions tab. It applies migrations, builds the Worker, deploys it,
+   and sets the secret. Until steps 1 and 2 are done it skips the deploy
+   with a notice instead of failing. Until the DNS record exists the Worker
+   is also reachable at its `*.workers.dev` URL.
 
 5. **Create the first trip** with the `curl` above, and hand the token to
    the page.

@@ -21,7 +21,7 @@
       "binding": "DB",
       "database_name": "itineraries",
       // One-time: `npx wrangler d1 create itineraries` prints the id.
-      "database_id": "REPLACE_WITH_ID_FROM_wrangler_d1_create",
+      "database_id": "3dd68814-bcde-4738-9272-c5e9e16b4d7a",
       "migrations_dir": "migrations"
     }
   ],

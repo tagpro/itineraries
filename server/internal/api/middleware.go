@@ -39,12 +39,15 @@ func (s *Server) requireAdmin(next http.Handler) http.Handler {
 }
 
 // requireTrip loads the trip named in the path and checks the bearer token
-// against it. A missing trip and a wrong token produce the same response,
-// so a caller without a token cannot learn which trip ids exist.
+// against it. A missing trip, a wrong token and a token of the wrong shape
+// all produce the same response, so a caller without a token cannot learn
+// which trip ids exist. The shape check comes first: it costs nothing, so
+// junk aimed at the API never reaches the database.
 func (s *Server) requireTrip(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		id := r.PathValue("trip")
-		if !domain.ValidSlug(id) {
+		tok := auth.Bearer(r)
+		if !domain.ValidSlug(id) || !auth.WellFormed(tok) {
 			writeError(w, http.StatusUnauthorized, "trip token required")
 			return
 		}
@@ -53,7 +56,7 @@ func (s *Server) requireTrip(next http.Handler) http.Handler {
 			s.fail(w, r, err)
 			return
 		}
-		if err != nil || !auth.Verify(auth.Bearer(r), t.TokenHash) {
+		if err != nil || !auth.Verify(tok, t.TokenHash) {
 			writeError(w, http.StatusUnauthorized, "trip token required")
 			return
 		}

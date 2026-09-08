@@ -1,6 +1,7 @@
 package api_test
 
 import (
+	"context"
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
@@ -9,6 +10,7 @@ import (
 	"time"
 
 	"github.com/tagpro/itineraries/server/internal/api"
+	"github.com/tagpro/itineraries/server/internal/domain"
 	"github.com/tagpro/itineraries/server/internal/store"
 )
 
@@ -327,4 +329,36 @@ func TestSplitOrigins(t *testing.T) {
 func itoa(n int64) string {
 	b, _ := json.Marshal(n)
 	return string(b)
+}
+
+// countingStore records how often the API looks a trip up.
+type countingStore struct {
+	store.Store
+	gets int
+}
+
+func (c *countingStore) GetTrip(ctx context.Context, id string) (domain.Trip, error) {
+	c.gets++
+	return c.Store.GetTrip(ctx, id)
+}
+
+func TestMalformedTokenNeverReachesStore(t *testing.T) {
+	cs := &countingStore{Store: store.NewMemory()}
+	h := api.New(api.Config{Store: cs, AdminKey: adminKey, Version: "test", Now: func() time.Time { return fixedNow }}).Handler()
+	tok := createTrip(t, h, "trip")
+	cs.gets = 0
+	for _, bad := range []string{"", "short", tok + "x", strings.Repeat("a", 42) + "+"} {
+		if rr := do(t, h, "GET", "/api/v1/trips/trip", bad, ""); rr.Code != http.StatusUnauthorized {
+			t.Errorf("token %q: got %d want 401", bad, rr.Code)
+		}
+	}
+	if cs.gets != 0 {
+		t.Fatalf("malformed tokens reached the store %d times", cs.gets)
+	}
+	if rr := do(t, h, "GET", "/api/v1/trips/trip", tok, ""); rr.Code != http.StatusOK {
+		t.Fatalf("real token: got %d %s", rr.Code, rr.Body.String())
+	}
+	if cs.gets != 1 {
+		t.Fatalf("a well-formed token should cost exactly one lookup, got %d", cs.gets)
+	}
 }

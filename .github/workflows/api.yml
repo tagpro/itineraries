@@ -47,28 +47,57 @@ jobs:
       CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
     steps:
       - uses: actions/checkout@v4
+
+      # Until the one-time setup in server/README.md is done — the D1 id
+      # pasted into wrangler.jsonc and the three secrets added — there is
+      # nothing to deploy to. Say so and stop, rather than fail the run.
+      - name: Check the deploy is configured
+        id: ready
+        env:
+          ADMIN_KEY: ${{ secrets.API_ADMIN_KEY }}
+        run: |
+          missing=""
+          [ -n "$CLOUDFLARE_API_TOKEN" ]  || missing="$missing CLOUDFLARE_API_TOKEN"
+          [ -n "$CLOUDFLARE_ACCOUNT_ID" ] || missing="$missing CLOUDFLARE_ACCOUNT_ID"
+          [ -n "$ADMIN_KEY" ]             || missing="$missing API_ADMIN_KEY"
+          if [ -n "$missing" ]; then
+            echo "::notice title=Deploy skipped::Repository secrets not set:$missing. See server/README.md."
+            echo "ready=false" >> "$GITHUB_OUTPUT"; exit 0
+          fi
+          if grep -q REPLACE_WITH_ID wrangler.jsonc; then
+            echo "::notice title=Deploy skipped::wrangler.jsonc still has the placeholder D1 database_id. Run 'wrangler d1 create itineraries' and paste the id."
+            echo "ready=false" >> "$GITHUB_OUTPUT"; exit 0
+          fi
+          echo "ready=true" >> "$GITHUB_OUTPUT"
+
       - uses: actions/setup-go@v5
+        if: steps.ready.outputs.ready == 'true'
         with:
           go-version-file: server/go.mod
           cache-dependency-path: server/go.sum
       - uses: actions/setup-node@v4
+        if: steps.ready.outputs.ready == 'true'
         with:
           node-version: 22
           cache: npm
           cache-dependency-path: server/package-lock.json
       - run: npm ci
+        if: steps.ready.outputs.ready == 'true'
 
       - name: Apply D1 migrations
+        if: steps.ready.outputs.ready == 'true'
         run: npx wrangler d1 migrations apply itineraries --remote
 
       # wrangler runs `make wasm` itself via build.command, then uploads.
       - name: Deploy the Worker
+        if: steps.ready.outputs.ready == 'true'
         run: npx wrangler deploy
 
       # Secrets live in Cloudflare, sourced from GitHub so there is one place
       # to rotate them. Putting a secret creates a new version of the Worker,
       # which is why it runs after the deploy rather than before it.
       - name: Set the admin key
+        if: steps.ready.outputs.ready == 'true'
         run: printf '%s' "$ADMIN_KEY" | npx wrangler secret put ADMIN_KEY
         env:
           ADMIN_KEY: ${{ secrets.API_ADMIN_KEY }}

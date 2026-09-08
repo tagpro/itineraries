@@ -163,8 +163,9 @@ account and happen once.
    old links working.
 
 4. **Push to `main`.** The `API` workflow applies migrations, builds the
-   Worker, deploys it, and sets the secret. Until the DNS record exists the
-   Worker is also reachable at its `*.workers.dev` URL.
+   Worker, deploys it, and sets the secret. Until steps 1 and 2 are done it
+   skips the deploy with a notice instead of failing. Until the DNS record
+   exists the Worker is also reachable at its `*.workers.dev` URL.
 
 5. **Create the first trip** with the `curl` above, and hand the token to
    the page.

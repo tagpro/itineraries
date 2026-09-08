@@ -1,6 +1,7 @@
 # Tests and builds the API on every change to it; deploys it to Cloudflare
-# when those changes land on main. The site itself is unaffected — GitHub
-# Pages keeps publishing the static files exactly as before.
+# when those changes land on main, or when started by hand from the Actions
+# tab (Run workflow) on main. The site itself is unaffected — GitHub Pages
+# keeps publishing the static files exactly as before.
 name: API
 
 on:
@@ -9,6 +10,7 @@ on:
     paths: ["server/**", ".github/workflows/api.yml"]
   pull_request:
     paths: ["server/**", ".github/workflows/api.yml"]
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -37,7 +39,7 @@ jobs:
 
   deploy:
     needs: test
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     concurrency:
       group: deploy-api

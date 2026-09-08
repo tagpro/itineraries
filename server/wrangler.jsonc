@@ -1,0 +1,35 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "itineraries-api",
+  "main": "./build/worker.mjs",
+  "compatibility_date": "2025-09-01",
+
+  // The Worker answers only under /api on the site's own host, so the
+  // page and the API share an origin and no CORS is involved. Everything
+  // else on that host falls through to GitHub Pages untouched.
+  "routes": [
+    { "pattern": "travel.jaspreet.casa/api/*", "zone_name": "jaspreet.casa" }
+  ],
+  // Keep the *.workers.dev URL too — it is the way to try the API before
+  // the DNS record exists, and a harmless second front door afterwards.
+  "workers_dev": true,
+
+  "build": { "command": "make wasm" },
+
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "itineraries",
+      // One-time: `npx wrangler d1 create itineraries` prints the id.
+      "database_id": "REPLACE_WITH_ID_FROM_wrangler_d1_create",
+      "migrations_dir": "migrations"
+    }
+  ],
+
+  // Comma-separated origins that may call the API cross-origin. Empty
+  // means same-origin only. ADMIN_KEY is a secret, not a var — see the
+  // README and the deploy workflow.
+  "vars": { "ALLOWED_ORIGINS": "" },
+
+  "observability": { "enabled": true }
+}

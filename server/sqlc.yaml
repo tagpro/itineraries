@@ -1,0 +1,13 @@
+# sqlc turns migrations/ + internal/store/queries.sql into typed Go in
+# internal/store/queries. Regenerate with `make sqlc`; CI fails if the
+# committed output is stale.
+version: "2"
+sql:
+  - engine: "sqlite"
+    schema: "migrations"
+    queries: "internal/store/queries.sql"
+    gen:
+      go:
+        package: "queries"
+        out: "internal/store/queries"
+        emit_empty_slices: true

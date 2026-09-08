@@ -1,0 +1,14 @@
+{
+  "name": "itineraries-api",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "build": "make wasm",
+    "dev": "wrangler d1 migrations apply itineraries --local && wrangler dev",
+    "migrate": "wrangler d1 migrations apply itineraries --remote",
+    "deploy": "wrangler deploy"
+  },
+  "devDependencies": {
+    "wrangler": "^4.0.0"
+  }
+}

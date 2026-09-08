@@ -1,0 +1,74 @@
+# Tests and builds the API on every change to it; deploys it to Cloudflare
+# when those changes land on main. The site itself is unaffected — GitHub
+# Pages keeps publishing the static files exactly as before.
+name: API
+
+on:
+  push:
+    branches: [main]
+    paths: ["server/**", ".github/workflows/api.yml"]
+  pull_request:
+    paths: ["server/**", ".github/workflows/api.yml"]
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    working-directory: server
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: server/go.mod
+          cache-dependency-path: server/go.sum
+      - uses: sqlc-dev/setup-sqlc@v1
+        with:
+          sqlc-version: "1.31.1"
+      - run: make fmt
+      - run: make sqlc-check SQLC=sqlc
+      - run: make test
+      # Proves the Worker compiles and fits the free plan, without deploying.
+      - run: make size
+
+  deploy:
+    needs: test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    concurrency:
+      group: deploy-api
+      cancel-in-progress: false
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: server/go.mod
+          cache-dependency-path: server/go.sum
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: server/package-lock.json
+      - run: npm ci
+
+      - name: Apply D1 migrations
+        run: npx wrangler d1 migrations apply itineraries --remote
+
+      # wrangler runs `make wasm` itself via build.command, then uploads.
+      - name: Deploy the Worker
+        run: npx wrangler deploy
+
+      # Secrets live in Cloudflare, sourced from GitHub so there is one place
+      # to rotate them. Putting a secret creates a new version of the Worker,
+      # which is why it runs after the deploy rather than before it.
+      - name: Set the admin key
+        run: printf '%s' "$ADMIN_KEY" | npx wrangler secret put ADMIN_KEY
+        env:
+          ADMIN_KEY: ${{ secrets.API_ADMIN_KEY }}

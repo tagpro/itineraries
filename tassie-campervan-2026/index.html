@@ -99,6 +99,7 @@
       <a href="#planb"      class="navpill">Plan B</a>
       <a href="#checklists" class="navpill">Checklists</a>
       <a href="#budget"     class="navpill">Budget</a>
+      <a href="#sync"       class="navpill">Sync</a>
     </nav>
   </div>
 </header>
@@ -1918,6 +1919,63 @@
   </div>
 </footer>
 
+<section id="sync" class="pt-12">
+  <div class="bg-white rounded-3xl border border-sand-200 p-6 shadow-soft">
+    <h2 class="font-display text-2xl sm:text-3xl text-forest-900">Sync between phones</h2>
+    <p class="text-sm text-slate-500 mt-1">The checklists live on this phone and work with no signal. Connect the phone to the trip and every phone holding the same link sees the same ticks and items &mdash; the later change wins.</p>
+
+    <div id="sync-off" class="mt-4">
+      <div class="flex gap-2 flex-wrap">
+        <button id="sync-enable" type="button" class="text-xs font-semibold bg-forest-900 text-white px-3 py-2 rounded-xl hover:bg-forest-800">Enable sync</button>
+        <button id="sync-join-toggle" type="button" class="text-xs font-semibold bg-white text-forest-900 border border-forest-900 px-3 py-2 rounded-xl hover:bg-sand-50">I have a join link</button>
+      </div>
+      <form id="sync-create" class="hidden mt-3">
+        <label for="sync-key" class="block text-[12px] text-slate-500 mb-1.5">Paste the API&rsquo;s admin key. It is used once, to create this trip on the server, and is not kept on the phone.</label>
+        <div class="flex gap-2 flex-wrap">
+          <input id="sync-key" type="password" class="flex-1 min-w-0 bg-sand-50 border border-sand-200 rounded-xl px-3 py-2 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-forest-700/30" placeholder="Admin key" autocomplete="off" spellcheck="false">
+          <button type="submit" class="text-xs font-semibold bg-forest-900 text-white px-3 py-2 rounded-xl hover:bg-forest-800 shrink-0">Create the trip</button>
+        </div>
+        <div id="sync-exists" class="hidden mt-3 rounded-xl bg-amber-50 border border-amber-200 p-3">
+          <p class="text-[12px] text-amber-800">This trip already exists on the server. Copy its join link from a phone that is connected &mdash; or make a new token here, which puts every other phone off the trip until it opens the new link.</p>
+          <button id="sync-rotate-create" type="button" class="mt-2 text-xs font-semibold bg-amber-800 text-white px-3 py-2 rounded-xl">Make a new token</button>
+        </div>
+      </form>
+      <form id="sync-join" class="hidden mt-3">
+        <label for="sync-link-in" class="block text-[12px] text-slate-500 mb-1.5">Paste the join link, or just the token from it. Opening a join link connects the phone on its own.</label>
+        <div class="flex gap-2 flex-wrap">
+          <input id="sync-link-in" type="text" class="flex-1 min-w-0 bg-sand-50 border border-sand-200 rounded-xl px-3 py-2 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-forest-700/30" placeholder="https://&hellip;/#join=&hellip;" autocomplete="off" spellcheck="false">
+          <button type="submit" class="text-xs font-semibold bg-forest-900 text-white px-3 py-2 rounded-xl hover:bg-forest-800 shrink-0">Connect</button>
+        </div>
+      </form>
+      <p id="sync-msg" class="hidden text-[12px] mt-2"></p>
+    </div>
+
+    <div id="sync-on" class="hidden mt-4">
+      <p id="sync-status" class="text-sm font-semibold text-slate-500">Syncing&hellip;</p>
+      <p class="text-[12px] text-slate-500 mt-1">Anyone who opens this link is on the trip. Send it to Prabhjot; don&rsquo;t post it anywhere public.</p>
+      <div class="mt-3 flex gap-2 flex-wrap">
+        <input id="sync-link" type="text" readonly class="flex-1 min-w-0 bg-sand-50 border border-sand-200 rounded-xl px-3 py-2 text-[12px] text-slate-600 font-mono" aria-label="Join link">
+        <button id="sync-copy" type="button" class="text-xs font-semibold bg-forest-900 text-white px-3 py-2 rounded-xl hover:bg-forest-800 shrink-0">Copy join link</button>
+        <button id="sync-share" type="button" class="hidden text-xs font-semibold bg-white text-forest-900 border border-forest-900 px-3 py-2 rounded-xl hover:bg-sand-50 shrink-0">Share&hellip;</button>
+      </div>
+      <div class="flex items-center justify-between gap-3 mt-3 flex-wrap">
+        <button id="sync-now" type="button" class="text-xs text-slate-500 hover:text-slate-700">Sync now</button>
+        <div class="flex gap-4">
+          <button id="sync-rotate-toggle" type="button" class="text-xs text-slate-400 hover:text-slate-600">Link leaked? Rotate the token</button>
+          <button id="sync-off-btn" type="button" class="text-xs text-slate-400 hover:text-red-600">Disconnect this phone</button>
+        </div>
+      </div>
+      <form id="sync-rotate" class="hidden mt-3">
+        <label for="sync-key2" class="block text-[12px] text-slate-500 mb-1.5">Rotating makes a new token. This phone keeps working; every other phone is off the trip until it opens the new link. Paste the admin key to confirm.</label>
+        <div class="flex gap-2 flex-wrap">
+          <input id="sync-key2" type="password" class="flex-1 min-w-0 bg-sand-50 border border-sand-200 rounded-xl px-3 py-2 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-forest-700/30" placeholder="Admin key" autocomplete="off" spellcheck="false">
+          <button type="submit" class="text-xs font-semibold bg-amber-800 text-white px-3 py-2 rounded-xl shrink-0">Rotate</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
 </main>
 <script>
 (function(){
@@ -2011,6 +2069,7 @@
     box.addEventListener('change', function(){
       if (box.checked) set('chk:'+box.dataset.k,'1'); else del('chk:'+box.dataset.k);
       updateList(card);
+      onTick(card.dataset.list, box);
     });
   }
 
@@ -2020,7 +2079,7 @@
     var label = document.createElement('label');
     label.className = 'flex gap-3 items-start cursor-pointer flex-1 min-w-0';
     var box = document.createElement('input');
-    box.type = 'checkbox'; box.className = 'chk'; box.dataset.k = item.id;
+    box.type = 'checkbox'; box.className = 'chk'; box.dataset.k = item.id; box.dataset.custom = '1';
     var span = document.createElement('span');
     span.className = 'chk-label text-sm';
     span.textContent = item.t;                       // textContent, never innerHTML
@@ -2036,6 +2095,7 @@
       del('chk:'+item.id);
       row.remove();
       updateList(card);
+      onDelete(list, item.id);
     });
     row.appendChild(label); row.appendChild(kill);
     bindBox(card, box);
@@ -2065,6 +2125,7 @@
       var list = card.dataset.list;
       var item = { id: 'u' + Date.now().toString(36) + Math.random().toString(36).slice(2,6), t: text };
       var arr = readItems(list); arr.push(item); writeItems(list, arr);
+      onAdd(list, item);
       card.querySelector('.custom-mount').appendChild(customRow(card, list, item));
       input.value = '';
       updateList(card);
@@ -2072,7 +2133,11 @@
   });
 
   function clearTicks(card){
-    card.querySelectorAll('.chk').forEach(function(b){ b.checked = false; del('chk:'+b.dataset.k); });
+    card.querySelectorAll('.chk').forEach(function(b){
+      var was = b.checked;
+      b.checked = false; del('chk:'+b.dataset.k);
+      if (was) onTick(card.dataset.list, b);
+    });
     updateList(card);
   }
   document.querySelectorAll('[data-reset]').forEach(function(btn){
@@ -2084,6 +2149,289 @@
     if (!confirm('Clear every tick on this page? Items you added are kept.')) return;
     document.querySelectorAll('[data-list]').forEach(clearTicks);
   });
+
+  /* ── sync between phones ────────────────────────────────────────
+     Everything above keeps working as it is: ticks and your own items
+     live on this phone. Connected to a trip, the page also sends that
+     state to the API and takes back the merged result, so every phone
+     holding the trip's token converges on the same lists. Each entry
+     carries the time it last changed and the later change wins — the
+     rule the server applies too. A tick is an entry; an untick or a
+     deletion is a tombstone, so a later re-tick beats it.
+
+     The trip is named after this page's folder, so a copy of this code
+     in another itinerary talks to that itinerary's trip. */
+  var TRIP = (function(){
+    var seg = location.pathname.split('/').filter(Boolean).pop() || '';
+    return /^[a-z0-9][a-z0-9-]{0,63}$/.test(seg) ? seg : 'tassie-campervan-2026';
+  })();
+  var API = '/api/v1';
+  var cards = Array.prototype.slice.call(document.querySelectorAll('[data-list]'));
+  var ledger = null;
+  var token = get('sync:token') || '';
+  var lastOk = parseInt(get('sync:last') || '0', 10) || 0;
+
+  function readLedger(){ try { var v = JSON.parse(get('sync:ledger') || 'null'); return v && typeof v === 'object' ? v : null; } catch(e){ return null; } }
+  function writeLedger(){ set('sync:ledger', JSON.stringify(ledger)); }
+
+  // Does entry a beat entry b? Later stamp wins; on a tie a tombstone
+  // wins; on a tie of both, the greater value. Same as the server.
+  function wins(a, b){
+    if (!b) return true;
+    if (!a) return false;
+    if (a.t !== b.t) return a.t > b.t;
+    if (!!a.d !== !!b.d) return !!a.d;
+    return JSON.stringify(a.v) > JSON.stringify(b.v);
+  }
+  function itemValue(list, key, fallbackText){
+    var e = ledger[list] && ledger[list][key];
+    return e && e.v && typeof e.v === 'object' ? e.v : { t: fallbackText || '', done:false, o: Date.now() };
+  }
+  // Every local change passes through here: stamp it, keep it, queue a sync.
+  function record(list, key, entry){
+    if (!ledger) return;
+    (ledger[list] = ledger[list] || {})[key] = entry;
+    writeLedger();
+    queueSync();
+  }
+  function onTick(list, box){
+    var now = Date.now(), k = box.dataset.k;
+    if (box.dataset.custom) {
+      var v = itemValue(list, k, box.nextSibling && box.nextSibling.textContent);
+      record(list, k, { v:{ t:v.t, done:!!box.checked, o:v.o }, t:now });
+    } else {
+      record(list, k, box.checked ? { v:true, t:now } : { v:false, t:now, d:true });
+    }
+  }
+  function onAdd(list, item){ record(list, item.id, { v:{ t:item.t, done:false, o:Date.now() }, t:Date.now() }); }
+  function onDelete(list, key){ record(list, key, { v:itemValue(list, key), t:Date.now(), d:true }); }
+
+  // First run: the ledger starts from what this phone already has.
+  function bootLedger(){
+    ledger = readLedger();
+    if (ledger) return;
+    ledger = {};
+    var now = Date.now();
+    cards.forEach(function(card){
+      var list = card.dataset.list, m = ledger[list] = {};
+      card.querySelectorAll('.chk').forEach(function(box){
+        if (!box.dataset.custom && get('chk:'+box.dataset.k) === '1') m[box.dataset.k] = { v:true, t:now };
+      });
+      readItems(list).forEach(function(item, i){
+        m[item.id] = { v:{ t:item.t, done: get('chk:'+item.id) === '1', o: now + i }, t:now };
+      });
+    });
+    writeLedger();
+  }
+
+  // Take the server's view in, entry by entry, and repaint if anything won.
+  function absorb(lists){
+    var changed = false;
+    Object.keys(lists || {}).forEach(function(list){
+      var mine = ledger[list] = ledger[list] || {}, theirs = lists[list] || {};
+      Object.keys(theirs).forEach(function(k){
+        if (wins(theirs[k], mine[k])) { mine[k] = theirs[k]; changed = true; }
+      });
+    });
+    if (changed) { writeLedger(); applyLedger(); }
+  }
+  function applyLedger(){
+    cards.forEach(function(card){
+      var list = card.dataset.list, m = ledger[list] || {};
+      card.querySelectorAll('.chk').forEach(function(box){
+        if (box.dataset.custom) return;
+        var e = m[box.dataset.k], on = !!(e && !e.d && e.v === true);
+        box.checked = on;
+        if (on) set('chk:'+box.dataset.k, '1'); else del('chk:'+box.dataset.k);
+      });
+      var items = [];
+      Object.keys(m).forEach(function(k){
+        var e = m[k];
+        if (e.d || !e.v || typeof e.v !== 'object') return;
+        items.push({ id:k, t:String(e.v.t || ''), o:e.v.o || 0 });
+        if (e.v.done) set('chk:'+k, '1'); else del('chk:'+k);
+      });
+      items.sort(function(a, b){ return a.o - b.o || (a.id < b.id ? -1 : 1); });
+      writeItems(list, items.map(function(i){ return { id:i.id, t:i.t }; }));
+      renderCustom(card);
+      updateList(card);
+    });
+  }
+
+  /* One request does the whole exchange: send everything this phone has,
+     receive everything the trip has. Runs after each change (debounced),
+     when the page opens or comes back to the front, when the connection
+     returns, and every 45 s while the page is visible. */
+  var inflight = false, again = false, timer = null;
+  function queueSync(){ if (!token) return; clearTimeout(timer); timer = setTimeout(syncNow, 700); }
+  function syncNow(){
+    if (!token || !ledger) return;
+    if (inflight) { again = true; return; }
+    if (navigator.onLine === false) { paintSync('offline'); return; }
+    inflight = true;
+    paintSync('syncing');
+    fetch(API + '/trips/' + TRIP, {
+      method: 'PATCH', cache: 'no-store',
+      headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ lists: ledger })
+    }).then(function(res){
+      if (res.status === 401) { paintSync('rejected'); return null; }
+      if (res.status === 400) { return res.json().then(function(d){ paintSync('error', d.error); return null; }); }
+      if (!res.ok) throw new Error('http ' + res.status);
+      return res.json();
+    }).then(function(data){
+      if (!data) return;
+      absorb(data.lists);
+      lastOk = Date.now(); set('sync:last', String(lastOk));
+      paintSync('ok');
+    }).catch(function(){
+      paintSync(navigator.onLine === false ? 'offline' : 'error');
+    }).then(function(){
+      inflight = false;
+      if (again) { again = false; queueSync(); }
+    });
+  }
+
+  /* ── the panel at the bottom ── */
+  function el(id){ return document.getElementById(id); }
+  var ui = { off: el('sync-off'), on: el('sync-on'), status: el('sync-status'), link: el('sync-link'), msg: el('sync-msg'), exists: el('sync-exists') };
+  function joinLink(){ return location.origin + location.pathname + '#join=' + token; }
+  function parseToken(s){
+    s = (s || '').trim();
+    var m = /join=([A-Za-z0-9_-]{43})/.exec(s);
+    if (m) return m[1];
+    return /^[A-Za-z0-9_-]{43}$/.test(s) ? s : '';
+  }
+  function paintSync(state, detail){
+    if (!ui.on) return;
+    var on = !!token;
+    ui.on.classList.toggle('hidden', !on);
+    ui.off.classList.toggle('hidden', on);
+    if (!on) return;
+    ui.link.value = joinLink();
+    var cls = 'text-sm font-semibold ', txt;
+    if (state === 'syncing')       { cls += 'text-slate-500';  txt = 'Syncing…'; }
+    else if (state === 'ok')       { cls += 'text-forest-800'; txt = '✓ In sync · ' + new Date(lastOk).toLocaleTimeString('en-AU', { hour: '2-digit', minute: '2-digit' }); }
+    else if (state === 'offline')  { cls += 'text-amber-800';  txt = 'Offline — changes are kept here and sent when you’re back'; }
+    else if (state === 'rejected') { cls += 'text-red-600';    txt = 'The server rejected this phone’s token — it may have been rotated. Disconnect, then open the new link.'; }
+    else                           { cls += 'text-amber-800';  txt = detail ? 'The server said: ' + detail : 'Couldn’t reach the server — will try again'; }
+    ui.status.className = cls;
+    ui.status.textContent = txt;
+  }
+  function say(text, bad){
+    ui.msg.className = 'text-[12px] mt-2 ' + (bad ? 'text-red-600' : 'text-slate-500');
+    ui.msg.textContent = text;
+  }
+  function connect(t){
+    token = t; set('sync:token', t);
+    ui.msg.className = 'hidden';
+    paintSync('syncing');
+    syncNow();
+  }
+  // Rotate the trip's token with the admin key. done(err, token).
+  function rotate(key, done){
+    fetch(API + '/trips/' + TRIP + '/token', { method: 'POST', headers: { 'Authorization': 'Bearer ' + key } })
+      .then(function(res){
+        if (res.status === 200) return res.json().then(function(d){ done(null, d.token); });
+        if (res.status === 401) return done('That admin key was not accepted.');
+        if (res.status === 404) return done('There is no trip on the server to rotate yet.');
+        return res.json().then(function(d){ done(d.error || ('The server answered ' + res.status)); });
+      }).catch(function(){ done('Couldn’t reach the server. Check the signal and try again.'); });
+  }
+
+  if (ui.on) {
+    // A join link carries the token after '#', which never reaches the
+    // server or its logs. Keep it, then take it out of the address bar.
+    (function(){
+      var t = parseToken(location.hash);
+      if (t) { token = t; set('sync:token', t); history.replaceState(null, '', location.pathname + location.search); }
+    })();
+
+    el('sync-enable').addEventListener('click', function(){
+      el('sync-create').classList.remove('hidden'); el('sync-join').classList.add('hidden'); el('sync-key').focus();
+    });
+    el('sync-join-toggle').addEventListener('click', function(){
+      el('sync-join').classList.remove('hidden'); el('sync-create').classList.add('hidden'); el('sync-link-in').focus();
+    });
+    // Enable sync: create the trip with the admin key, typed once, never kept.
+    el('sync-create').addEventListener('submit', function(e){
+      e.preventDefault();
+      var key = el('sync-key').value.trim();
+      if (!key) return;
+      say('Creating the trip…');
+      ui.exists.classList.add('hidden');
+      fetch(API + '/trips', {
+        method: 'POST', headers: { 'Authorization': 'Bearer ' + key, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: TRIP, name: (document.title || TRIP).slice(0, 120) })
+      }).then(function(res){
+        if (res.status === 201) return res.json().then(function(d){ el('sync-key').value = ''; connect(d.token); });
+        if (res.status === 409) { ui.msg.className = 'hidden'; ui.exists.classList.remove('hidden'); return; }
+        if (res.status === 401) { say('That admin key was not accepted.', true); return; }
+        return res.json().then(function(d){ say(d.error || ('The server answered ' + res.status), true); });
+      }).catch(function(){ say('Couldn’t reach the server. Check the signal and try again.', true); });
+    });
+    el('sync-rotate-create').addEventListener('click', function(){
+      var key = el('sync-key').value.trim();
+      if (!key) { say('Paste the admin key first.', true); return; }
+      rotate(key, function(err, t){
+        if (err) { say(err, true); return; }
+        el('sync-key').value = ''; ui.exists.classList.add('hidden'); connect(t);
+      });
+    });
+    el('sync-join').addEventListener('submit', function(e){
+      e.preventDefault();
+      var t = parseToken(el('sync-link-in').value);
+      if (!t) { say('That doesn’t look like a join link or a token.', true); return; }
+      el('sync-link-in').value = '';
+      connect(t);
+    });
+
+    // Connected: the join link, and the button that copies it.
+    var copyBtn = el('sync-copy');
+    function copied(){
+      copyBtn.textContent = 'Copied ✓';
+      setTimeout(function(){ copyBtn.textContent = 'Copy join link'; }, 1600);
+    }
+    copyBtn.addEventListener('click', function(){
+      var link = joinLink();
+      var fallback = function(){
+        ui.link.focus(); ui.link.select();
+        try { document.execCommand('copy'); copied(); } catch(e){ /* the text stays selected for a long-press */ }
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(link).then(copied, fallback);
+      else fallback();
+    });
+    if (navigator.share) {
+      el('sync-share').classList.remove('hidden');
+      el('sync-share').addEventListener('click', function(){
+        navigator.share({ title: document.title, text: 'Join the trip checklists', url: joinLink() }).catch(function(){});
+      });
+    }
+    el('sync-now').addEventListener('click', syncNow);
+    el('sync-off-btn').addEventListener('click', function(){
+      if (!confirm('Disconnect this phone from the trip? Your ticks stay on the phone; they just stop syncing.')) return;
+      token = ''; del('sync:token');
+      el('sync-rotate').classList.add('hidden');
+      paintSync('off');
+    });
+    el('sync-rotate-toggle').addEventListener('click', function(){ el('sync-rotate').classList.toggle('hidden'); el('sync-key2').focus(); });
+    el('sync-rotate').addEventListener('submit', function(e){
+      e.preventDefault();
+      var key = el('sync-key2').value.trim();
+      if (!key) return;
+      rotate(key, function(err, t){
+        if (err) { ui.status.className = 'text-sm font-semibold text-red-600'; ui.status.textContent = err; return; }
+        el('sync-key2').value = ''; el('sync-rotate').classList.add('hidden'); connect(t);
+      });
+    });
+
+    bootLedger();
+    paintSync(token ? 'syncing' : 'off');
+    if (token) syncNow();
+    window.addEventListener('online', syncNow);
+    document.addEventListener('visibilitychange', function(){ if (!document.hidden) syncNow(); });
+    setInterval(function(){ if (!document.hidden) syncNow(); }, 45000);
+  }
 
   /* ── budget ── */
   var inputs = document.querySelectorAll('[data-b]');

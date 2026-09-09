@@ -72,6 +72,25 @@ curl -X PATCH https://travel.jaspreet.casa/api/v1/trips/tassie-campervan-2026 \
   -d '{"lists":{"before":{"b1":{"v":true,"t":1757656740000}}}}'
 ```
 
+The page does the first of these itself (*Enable sync*, at the bottom of a
+plan), so the terminal is only needed as a fallback. If the admin key lives
+in Doppler, wrap the call so the key never touches the shell history:
+
+```sh
+doppler run -p all-projects -c dev_personal -- sh -c '
+curl -s -X POST https://travel.jaspreet.casa/api/v1/trips \
+  -H "Authorization: Bearer $API_ADMIN_KEY" \
+  -H "Content-Type: application/json" \
+  -d "{\"id\":\"tassie-campervan-2026\",\"name\":\"Tasmania, Sep 2026\"}"'
+
+# The token in the reply is shown once. Its join link is
+#   https://travel.jaspreet.casa/tassie-campervan-2026/#join=<token>
+# To invalidate every phone and mint a new one:
+doppler run -p all-projects -c dev_personal -- sh -c '
+curl -s -X POST https://travel.jaspreet.casa/api/v1/trips/tassie-campervan-2026/token \
+  -H "Authorization: Bearer $API_ADMIN_KEY"'
+```
+
 ## Layout
 
 ```

@@ -1,0 +1,18 @@
+[
+  {"query": "we've got 10 days on the NZ south island end of feb, flights are booked with air nz and i've got a car from christchurch. can you put together a proper plan for it like the tassie one", "should_trigger": true},
+  {"query": "ok so prabh and i are doing the great ocean road in january, nothing booked yet except the airbnb in lorne. what should we actually do with 4 days", "should_trigger": true},
+  {"query": "turn my japan bookings into something i can actually use on my phone when we're there in april", "should_trigger": true},
+  {"query": "add a new trip folder for the kimberley drive, broome to kununurra, may 2027", "should_trigger": true},
+  {"query": "I've got confirmation emails scattered across gmail for our Vietnam trip in March - flights, two hotels, a Ha Long cruise. Can you pull them together and work out the day by day?", "should_trigger": true},
+  {"query": "can you research the best walks around queenstown for a week in march and build me the itinerary page", "should_trigger": true},
+  {"query": "we're taking mum to tasmania for her 70th in november, 5 days, she can't do stairs. plan it", "should_trigger": true},
+  {"query": "same thing as the campervan page but for our europe trip next year", "should_trigger": true},
+  {"query": "the tassie page's countdown says 3 days but the trip starts on the 12th. can you check the timezone in that Date constructor", "should_trigger": false},
+  {"query": "add a note to server/README.md about the cloudflare rate limiting rule on the /api/* path", "should_trigger": false},
+  {"query": "whats the cheapest way to get from hobart airport out to the apollo depot at cambridge on a saturday morning", "should_trigger": false},
+  {"query": "can you rebuild app.css for tassie-campervan-2026, i added a couple of tailwind classes to the hikes section", "should_trigger": false},
+  {"query": "book me a table at Franklin in Hobart for the 17th, 7pm, two people", "should_trigger": false},
+  {"query": "my sync panel says the server rejected this phone's token. what happened and how do i get back on", "should_trigger": false},
+  {"query": "write me a packing list for a week of cold weather hiking, we'll be in a van with no heating except on mains power", "should_trigger": false},
+  {"query": "summarise the flight change email jetstar sent me back in april, i want to know what actually moved", "should_trigger": false}
+]

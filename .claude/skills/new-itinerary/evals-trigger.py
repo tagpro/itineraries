@@ -18,8 +18,10 @@ import argparse
 import json
 import os
 import pathlib
+import select
 import subprocess
 import sys
+import time
 from concurrent.futures import ThreadPoolExecutor
 
 HERE = pathlib.Path(__file__).resolve().parent
@@ -35,38 +37,59 @@ def triggered(query: str, model: str | None, timeout: int,
         cmd += ["--model", model]
     # The guard against nesting is for interactive terminals; a subprocess is fine.
     env = {k: v for k, v in os.environ.items() if k != "CLAUDECODE"}
-    try:
-        p = subprocess.run(cmd, cwd=REPO, env=env, timeout=timeout,
-                           stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
-    except subprocess.TimeoutExpired:
-        return None
+    proc = subprocess.Popen(cmd, cwd=REPO, env=env,
+                            stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
 
-    saw_turn, hit = False, False
-    for line in p.stdout.decode("utf-8", "replace").splitlines():
-        try:
-            ev = json.loads(line)
-        except ValueError:
-            continue
-        if show and ev.get("type") == "system":
-            names = [c.get("name") for c in ev.get("commands", []) or []]
-            if SKILL in names:
-                print(f"  [registered] the skill is offered to this run")
-        if ev.get("type") != "assistant":
-            continue
-        saw_turn = True
-        for c in ev.get("message", {}).get("content", []):
-            if c.get("type") == "text" and show and c.get("text", "").strip():
-                print(f"  [text] {c['text'].strip()[:300]}")
-            if c.get("type") != "tool_use":
+    # Read the stream as it arrives and stop the moment the question is
+    # answered. Whether the skill was reached is settled in the first few
+    # events; letting the run continue afterwards means waiting minutes for
+    # work whose result is thrown away.
+    deadline = time.time() + timeout
+    saw_turn = hit = False
+    buf = ""
+    try:
+        while not hit:
+            left = deadline - time.time()
+            if left <= 0:
+                break
+            ready, _, _ = select.select([proc.stdout], [], [], min(left, 1.0))
+            if not ready:
+                if proc.poll() is not None:
+                    break
                 continue
-            inp = c.get("input") or {}
-            if show:
-                print(f"  [tool] {c.get('name')} {json.dumps(inp)[:160]}")
-            if c.get("name") == "Skill" and inp.get("skill") == SKILL:
-                hit = True
-            # Reading the skill counts too: that is what invoking it does.
-            elif SKILL in str(inp.get("file_path", "")) + str(inp.get("path", "")):
-                hit = True
+            chunk = os.read(proc.stdout.fileno(), 65536)
+            if not chunk:
+                break
+            buf += chunk.decode("utf-8", "replace")
+            while "\n" in buf and not hit:
+                line, buf = buf.split("\n", 1)
+                try:
+                    ev = json.loads(line)
+                except ValueError:
+                    continue
+                if show and ev.get("type") == "system":
+                    if SKILL in [c.get("name") for c in ev.get("commands", []) or []]:
+                        print("  [registered] the skill is offered to this run")
+                if ev.get("type") != "assistant":
+                    continue
+                saw_turn = True
+                for c in ev.get("message", {}).get("content", []):
+                    if c.get("type") == "text" and show and c.get("text", "").strip():
+                        print(f"  [text] {c['text'].strip()[:300]}")
+                    if c.get("type") != "tool_use":
+                        continue
+                    inp = c.get("input") or {}
+                    if show:
+                        print(f"  [tool] {c.get('name')} {json.dumps(inp)[:160]}")
+                    if c.get("name") == "Skill" and inp.get("skill") == SKILL:
+                        hit = True
+                    # Reading the skill counts too: that is what invoking it does.
+                    elif SKILL in str(inp.get("file_path", "")) + str(inp.get("path", "")):
+                        hit = True
+    finally:
+        proc.kill()
+        proc.wait()
+
     if show:
         print(f"  => turns seen: {saw_turn}, skill invoked: {hit}")
     return hit if saw_turn else None

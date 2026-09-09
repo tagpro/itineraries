@@ -54,3 +54,16 @@ func TestBearer(t *testing.T) {
 		}
 	}
 }
+
+func TestWellFormed(t *testing.T) {
+	tok, _ := NewToken()
+	if !WellFormed(tok) {
+		t.Fatalf("a fresh token must be well formed: %q", tok)
+	}
+	bad := []string{"", "short", tok[:42], tok + "x", tok[:42] + "+", tok[:42] + "=", tok[:42] + " "}
+	for _, s := range bad {
+		if WellFormed(s) {
+			t.Errorf("%q should not be well formed", s)
+		}
+	}
+}

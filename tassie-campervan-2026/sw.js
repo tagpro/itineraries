@@ -1,7 +1,7 @@
 /* Tassie Campervan — offline service worker.
    Everything the page needs is precached, so the whole itinerary works
    in a valley with no signal. Bump VERSION whenever an asset changes. */
-const VERSION = 'tassie-v6';
+const VERSION = 'tassie-v7';
 const SHELL = [
   './',
   './index.html',
@@ -45,6 +45,8 @@ self.addEventListener('fetch', function (e) {
   try { url = new URL(req.url); } catch (err) { return; }
   // Leave anything off this origin alone — map links, tel: and the like.
   if (url.origin !== self.location.origin) return;
+  // The API is never cached: its answer changes between one call and the next.
+  if (url.pathname.indexOf('/api/') === 0) return;
 
   // Navigations: try the network so edits land, fall back to the cached page.
   if (req.mode === 'navigate') {

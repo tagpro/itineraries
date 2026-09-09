@@ -72,6 +72,25 @@ curl -X PATCH https://travel.jaspreet.casa/api/v1/trips/tassie-campervan-2026 \
   -d '{"lists":{"before":{"b1":{"v":true,"t":1757656740000}}}}'
 ```
 
+The page does the first of these itself (*Enable sync*, at the bottom of a
+plan), so the terminal is only needed as a fallback. If the admin key lives
+in Doppler, wrap the call so the key never touches the shell history:
+
+```sh
+doppler run -p all-projects -c dev_personal -- sh -c '
+curl -s -X POST https://travel.jaspreet.casa/api/v1/trips \
+  -H "Authorization: Bearer $API_ADMIN_KEY" \
+  -H "Content-Type: application/json" \
+  -d "{\"id\":\"tassie-campervan-2026\",\"name\":\"Tasmania, Sep 2026\"}"'
+
+# The token in the reply is shown once. Its join link is
+#   https://travel.jaspreet.casa/tassie-campervan-2026/#join=<token>
+# To invalidate every phone and mint a new one:
+doppler run -p all-projects -c dev_personal -- sh -c '
+curl -s -X POST https://travel.jaspreet.casa/api/v1/trips/tassie-campervan-2026/token \
+  -H "Authorization: Bearer $API_ADMIN_KEY"'
+```
+
 ## Layout
 
 ```
@@ -174,5 +193,29 @@ account and happen once.
    with a notice instead of failing. Until the DNS record exists the Worker
    is also reachable at its `*.workers.dev` URL.
 
-5. **Create the first trip** with the `curl` above, and hand the token to
-   the page.
+5. **Connect the page.** Open the plan, scroll to *Sync between phones*
+   at the bottom, tap **Enable sync** and paste the admin key. The page
+   creates the trip, keeps the trip token on that phone, and shows the
+   join link; **Copy join link** is how every other phone gets it. The
+   `curl` above does the same thing by hand.
+
+## Abuse, and what bounds it
+
+Every list endpoint needs the trip token, so nobody without it can read
+or change a checklist. What a stranger can do is spend the free plan's
+daily request allowance, after which the Worker answers errors until
+midnight UTC; the page keeps working from its own copy and catches up
+afterwards. Two things keep that small:
+
+- The Worker refuses any bearer token that is not 43 URL-safe base64
+  characters before it touches the database, so junk costs no D1 read.
+- A **rate-limiting rule** in Cloudflare (*Security → WAF → Rate limiting
+  rules*; the free plan includes one) on `travel.jaspreet.casa/api/*`,
+  say 30 requests per 10 seconds per IP, blocks a trickle at the edge
+  before it counts against the Worker. A phone syncs a few times a
+  minute at most. Do not put a JS challenge on that path: the page's own
+  requests cannot pass one.
+
+If a join link leaks, **Rotate the token** at the bottom of the page
+(with the admin key) invalidates every phone; the ones that should stay
+open the new link.

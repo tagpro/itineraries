@@ -30,6 +30,24 @@ func Hash(token string) string {
 	return hex.EncodeToString(sum[:])
 }
 
+// WellFormed reports whether s has the shape of a token NewToken makes:
+// 43 characters of URL-safe base64, unpadded. The API checks this before
+// looking a trip up, so a request carrying junk costs no database read.
+func WellFormed(s string) bool {
+	if len(s) != 43 {
+		return false
+	}
+	for i := 0; i < len(s); i++ {
+		c := s[i]
+		switch {
+		case c >= 'a' && c <= 'z', c >= 'A' && c <= 'Z', c >= '0' && c <= '9', c == '-', c == '_':
+		default:
+			return false
+		}
+	}
+	return true
+}
+
 // Verify reports whether token matches hash without leaking timing.
 func Verify(token, hash string) bool {
 	if token == "" || hash == "" {

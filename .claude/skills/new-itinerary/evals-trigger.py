@@ -27,7 +27,8 @@ SKILL = HERE.name
 REPO = HERE.parents[3]
 
 
-def triggered(query: str, model: str | None, timeout: int) -> bool | None:
+def triggered(query: str, model: str | None, timeout: int,
+              show: bool = False) -> bool | None:
     """True/False, or None if the run failed to produce a transcript."""
     cmd = ["claude", "-p", query, "--output-format", "stream-json", "--verbose"]
     if model:
@@ -40,24 +41,35 @@ def triggered(query: str, model: str | None, timeout: int) -> bool | None:
     except subprocess.TimeoutExpired:
         return None
 
-    saw_turn = False
+    saw_turn, hit = False, False
     for line in p.stdout.decode("utf-8", "replace").splitlines():
         try:
             ev = json.loads(line)
         except ValueError:
             continue
-        if ev.get("type") == "assistant":
-            saw_turn = True
-            for c in ev.get("message", {}).get("content", []):
-                if c.get("type") != "tool_use":
-                    continue
-                inp = c.get("input") or {}
-                if c.get("name") == "Skill" and inp.get("skill") == SKILL:
-                    return True
-                # Reading the skill counts too: that is what invoking it does.
-                if SKILL in str(inp.get("file_path", "")) + str(inp.get("path", "")):
-                    return True
-    return False if saw_turn else None
+        if show and ev.get("type") == "system":
+            names = [c.get("name") for c in ev.get("commands", []) or []]
+            if SKILL in names:
+                print(f"  [registered] the skill is offered to this run")
+        if ev.get("type") != "assistant":
+            continue
+        saw_turn = True
+        for c in ev.get("message", {}).get("content", []):
+            if c.get("type") == "text" and show and c.get("text", "").strip():
+                print(f"  [text] {c['text'].strip()[:300]}")
+            if c.get("type") != "tool_use":
+                continue
+            inp = c.get("input") or {}
+            if show:
+                print(f"  [tool] {c.get('name')} {json.dumps(inp)[:160]}")
+            if c.get("name") == "Skill" and inp.get("skill") == SKILL:
+                hit = True
+            # Reading the skill counts too: that is what invoking it does.
+            elif SKILL in str(inp.get("file_path", "")) + str(inp.get("path", "")):
+                hit = True
+    if show:
+        print(f"  => turns seen: {saw_turn}, skill invoked: {hit}")
+    return hit if saw_turn else None
 
 
 def main() -> int:
@@ -67,7 +79,15 @@ def main() -> int:
     ap.add_argument("--timeout", type=int, default=300, help="seconds per run")
     ap.add_argument("-j", "--jobs", type=int, default=4)
     ap.add_argument("-q", "--quiet", action="store_true")
+    ap.add_argument("--debug", metavar="QUERY", default=None,
+                    help="run one query once and print what the transcript actually "
+                         "contained, instead of scoring the set")
     a = ap.parse_args()
+
+    if a.debug:
+        print(f"query: {a.debug}")
+        triggered(a.debug, a.model, a.timeout, show=True)
+        return 0
 
     evals = json.loads((HERE / "evals-trigger.json").read_text())
     jobs = [(e, i) for e in evals for i in range(a.runs)]

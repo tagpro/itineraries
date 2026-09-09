@@ -1,7 +1,5 @@
 __pycache__/
 *.pyc
 
-# Scratch space Claude Code creates inside the repository: isolated worktrees
-# for subagents, and the temporary command files an eval harness writes.
+# Claude Code creates isolated worktrees for subagents inside the repository.
 .claude/worktrees/
-.claude/commands/

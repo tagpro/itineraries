@@ -127,8 +127,10 @@ time, so also:
 
 ## 6 · Ship it
 
-Add a card for the trip to the root `index.html`; a folder nobody links to is
-invisible. Mark superseded plans rather than deleting them. Commit the folder
+Add a card for the trip to the root `index.html`, under *Upcoming*; a folder
+nobody links to is invisible. A draft the trip outgrows comes out of the
+repository altogether — git keeps it, and a list of dead plans helps nobody.
+Once a trip has happened, move its card to a *Past* heading. Commit the folder
 and the root card together, open the pull request, and only then offer sync —
 the page's own *Sync between phones* panel creates the trip and produces the
 join link.

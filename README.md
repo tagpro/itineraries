@@ -11,8 +11,6 @@ phones over a small API if you want them to.
 | | |
 |---|---|
 | [`tassie-campervan-2026/`](tassie-campervan-2026/) | Tasmania, 12–19 Sep 2026 — a campervan up the east coast, then Hobart. The current plan, and the reference build for everything else |
-| [`tasmania-exploration-2026/`](tasmania-exploration-2026/) | An earlier plan for the same dates, before the van was booked |
-| [`tassie-2026/`](tassie-2026/) | An earlier two-base version, with a filterable trail explorer |
 | [`server/`](server/) | The checklist sync API — Go on Cloudflare Workers and D1. See its [README](server/README.md) |
 
 ## How it is served

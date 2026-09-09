@@ -12,10 +12,10 @@ conventions below follow from it.
 
 ```
 index.html                  the trip list — hand-maintained, one card per trip
+fonts/  icons/              the list page's own copies, so archiving a trip
+                            cannot break it
 CNAME                       travel.jaspreet.casa
 tassie-campervan-2026/      the reference build: offline, installable, syncing
-tasmania-exploration-2026/  superseded drafts, kept for reference
-tassie-2026/
 server/                     the sync API — Go on Cloudflare Workers + D1
 .github/workflows/api.yml   tests the API on every change; deploys from main
 .claude/skills/             skills for working here

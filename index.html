@@ -6,36 +6,32 @@
 <title>Travel · Jaspreet</title>
 <meta name="description" content="Trip plans, one page each. Open a trip to use it offline or install it on your phone.">
 <meta name="theme-color" content="#0f3d2e">
-<link rel="icon" type="image/png" sizes="192x192" href="./tassie-campervan-2026/icons/icon-192.png">
+<link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png">
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
 <style>
-  /* Each trip is its own page with its own manifest, so this page stays a
-     plain list of links: no framework, no CDN, no iframe. A real navigation
-     is what lets the destination page offer "Add to Home Screen". */
-
-  /* Same faces as the trip pages; they degrade to the system stack if the
-     files ever move. */
+  /* This page is a list and nothing else. Each trip is its own page with its
+     own manifest, service worker and offline copy, so a real navigation is
+     what lets the destination offer "Add to Home Screen" — no iframe, no
+     framework, no CDN. It also keeps its own fonts and icon rather than
+     borrowing a trip's, so archiving a trip cannot break it. */
   @font-face { font-family: "Outfit"; font-style: normal; font-weight: 300 800; font-display: swap;
-               src: url("./tassie-campervan-2026/fonts/outfit.woff2") format("woff2"); }
+               src: url("./fonts/outfit.woff2") format("woff2"); }
   @font-face { font-family: "Playfair Display"; font-style: normal; font-weight: 400 900; font-display: swap;
-               src: url("./tassie-campervan-2026/fonts/playfair.woff2") format("woff2"); }
+               src: url("./fonts/playfair.woff2") format("woff2"); }
 
   :root {
     color-scheme: light dark;
-    --bg: #faf9f6;        --card: #ffffff;      --line: #e8e4dc;
-    --ink: #0f172a;       --muted: #64748b;     --faint: #94a3b8;
-    --forest: #0f3d2e;    --forest-2: #0f5c43;  --forest-soft: #e6f2ec;
-    --ember: #d9531e;     --ember-soft: #fdebe3;
-    --accent: #0f5c43;
-    --primary-bg: #0f3d2e; --primary-ink: #ffffff; --primary-muted: rgba(255,255,255,.72);
+    --bg: #faf9f6;  --card: #ffffff;  --line: #e8e4dc;
+    --ink: #0f172a; --muted: #64748b; --faint: #94a3b8;
+    --accent: #0f5c43; --accent-soft: #e6f2ec;
+    --ember: #d9531e; --ember-soft: #fdebe3;
   }
   @media (prefers-color-scheme: dark) {
     :root {
-      --bg: #0f1412;      --card: #171e1b;      --line: #26302b;
-      --ink: #eef2ef;     --muted: #a3b0a9;     --faint: #6f7d76;
-      --forest-soft: #16352a;
-      --ember: #f0703d;   --ember-soft: #3a2118;
-      --accent: #8fd6b6;
-      --primary-bg: #0b2a20;
+      --bg: #0f1412;  --card: #171e1b;  --line: #26302b;
+      --ink: #eef2ef; --muted: #a3b0a9; --faint: #6f7d76;
+      --accent: #8fd6b6; --accent-soft: #16352a;
+      --ember: #f0703d; --ember-soft: #3a2118;
     }
   }
 
@@ -46,98 +42,72 @@
     font-family: "Outfit", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
     line-height: 1.5; -webkit-font-smoothing: antialiased;
   }
-  main { max-width: 56rem; margin: 0 auto; padding: 3rem 1.25rem 5rem; }
+  main { max-width: 44rem; margin: 0 auto; padding: 3.5rem 1.25rem 5rem; }
 
   .eyebrow { font-size: .7rem; letter-spacing: .18em; text-transform: uppercase; font-weight: 700; color: var(--muted); }
-  h1 { font-family: "Playfair Display", Georgia, serif; font-weight: 500; font-size: clamp(2.2rem, 6vw, 3.4rem); line-height: 1.05; margin: .4rem 0 .6rem; }
-  .lede { color: var(--muted); font-size: 1.05rem; max-width: 34rem; margin: 0; }
+  h1 { font-family: "Playfair Display", Georgia, serif; font-weight: 500;
+       font-size: clamp(2.2rem, 6vw, 3.2rem); line-height: 1.05; margin: .4rem 0 .6rem; }
+  .lede { color: var(--muted); font-size: 1.05rem; max-width: 32rem; margin: 0; }
 
-  .trips { list-style: none; padding: 0; margin: 2.5rem 0 0; display: grid; gap: 1rem; }
-  @media (min-width: 40rem) { .trips { grid-template-columns: 1fr 1fr; } .trips li.primary { grid-column: 1 / -1; } }
+  h2 { font-size: .75rem; letter-spacing: .16em; text-transform: uppercase; font-weight: 700;
+       color: var(--faint); margin: 2.75rem 0 .9rem; }
 
+  .trips { list-style: none; padding: 0; margin: 0; display: grid; gap: .85rem; }
   .card {
-    display: flex; flex-direction: column; gap: .55rem; height: 100%;
-    background: var(--card); border: 1px solid var(--line); border-radius: 1.5rem; padding: 1.4rem 1.5rem;
-    color: inherit; text-decoration: none;
-    box-shadow: 0 10px 30px -12px rgba(15, 61, 46, .12);
-    transition: transform .15s ease, box-shadow .15s ease;
+    display: flex; flex-direction: column; gap: .5rem;
+    background: var(--card); border: 1px solid var(--line); border-radius: 1.25rem;
+    padding: 1.25rem 1.4rem; color: inherit; text-decoration: none;
+    transition: transform .15s ease, border-color .15s ease;
   }
-  .card:hover { transform: translateY(-2px); box-shadow: 0 16px 36px -14px rgba(15, 61, 46, .22); }
+  .card:hover { transform: translateY(-2px); border-color: var(--accent); }
   .card:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
-  .card .when { font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; font-weight: 700; color: var(--muted); }
-  .card h2 { font-family: "Playfair Display", Georgia, serif; font-weight: 500; font-size: 1.55rem; line-height: 1.15; margin: 0; }
+  .when { font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; font-weight: 700; color: var(--muted); }
+  .card h3 { font-family: "Playfair Display", Georgia, serif; font-weight: 500;
+             font-size: 1.45rem; line-height: 1.2; margin: 0; }
   .card p { margin: 0; color: var(--muted); font-size: .95rem; }
-  .card .foot { display: flex; align-items: center; justify-content: space-between; gap: .75rem; margin-top: auto; padding-top: .6rem; }
+  .foot { display: flex; align-items: center; justify-content: space-between; gap: .75rem;
+          margin-top: .35rem; padding-top: .6rem; }
   .badges { display: flex; flex-wrap: wrap; gap: .4rem; }
-  .badge { font-size: .68rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; padding: .22rem .6rem; border-radius: 999px; background: var(--forest-soft); color: var(--accent); }
-  .badge.ember { background: var(--ember-soft); color: var(--ember); }
-  .badge.quiet { background: transparent; color: var(--faint); border: 1px solid var(--line); }
+  .badge { font-size: .66rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+           padding: .22rem .6rem; border-radius: 999px; background: var(--accent-soft); color: var(--accent); }
+  .badge.now { background: var(--ember-soft); color: var(--ember); }
   .go { font-weight: 600; font-size: .9rem; white-space: nowrap; color: var(--accent); }
 
-  .primary .card { background: var(--primary-bg); color: var(--primary-ink); border-color: transparent; position: relative; overflow: hidden; padding: 1.8rem 1.75rem; }
-  .primary .card::before { content: ""; position: absolute; right: -3.5rem; top: -3.5rem; width: 14rem; height: 14rem; border-radius: 50%; background: rgba(255,255,255,.05); }
-  .primary .card::after  { content: ""; position: absolute; right: -1rem; top: 6rem; width: 8rem; height: 8rem; border-radius: 50%; background: rgba(255,255,255,.05); }
-  .primary .card > * { position: relative; }
-  .primary .card .when, .primary .card p { color: var(--primary-muted); }
-  .primary .card h2 { font-size: clamp(1.8rem, 4.5vw, 2.4rem); }
-  .primary .card .badge { background: rgba(255,255,255,.12); color: #fff; }
-  .primary .card .badge.ember { background: var(--ember); color: #fff; }
-  .primary .card .go { color: #fff; }
-
-  .install { margin: 1rem 0 0; padding: 1rem 1.25rem; border-radius: 1rem; background: var(--forest-soft); color: var(--ink); font-size: .92rem; }
+  .install { margin: 1.75rem 0 0; padding: .95rem 1.2rem; border-radius: 1rem;
+             background: var(--accent-soft); color: var(--ink); font-size: .9rem; }
   .install strong { color: var(--accent); }
-  .install code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .85em; }
 
-  h3 { font-size: .75rem; letter-spacing: .16em; text-transform: uppercase; font-weight: 700; color: var(--faint); margin: 2.5rem 0 -.25rem; }
   footer { margin-top: 3.5rem; color: var(--faint); font-size: .8rem; }
   footer a { color: inherit; }
+  footer code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .85em; }
 </style>
 </head>
 <body>
 <main>
   <header>
-    <div class="eyebrow">Travel · Jaspreet &amp; Prabhjot</div>
-    <h1>Where next</h1>
+    <div class="eyebrow">travel.jaspreet.casa</div>
+    <h1>Trips</h1>
     <p class="lede">One page per trip. Open a trip and it works with no signal; open it on your phone and it can live on the home screen.</p>
   </header>
 
+  <h2>Upcoming</h2>
   <ul class="trips">
-    <li class="primary">
+    <li>
       <a class="card" href="./tassie-campervan-2026/">
         <div class="when">Sat 12 → Sat 19 September 2026 · 8 days</div>
-        <h2>Tasmania: a campervan up the coast, then Hobart</h2>
+        <h3>Tasmania: a campervan up the coast, then Hobart</h3>
         <p>Inland to Bay of Fires, back down through Freycinet, the van handed in, then three nights in Hobart with a small car. Route, walks, beds, budget and checklists — every road sealed.</p>
         <div class="foot">
-          <div class="badges"><span class="badge ember">Current</span><span class="badge">Installable</span><span class="badge">Works offline</span></div>
-          <span class="go">Open the plan →</span>
+          <div class="badges"><span class="badge now">Next</span><span class="badge">Works offline</span></div>
+          <span class="go">Open →</span>
         </div>
       </a>
     </li>
   </ul>
 
   <p class="install">
-    <strong>To put it on your phone:</strong> open the plan above, then on iPhone tap <em>Share → Add to Home Screen</em>; on Android tap the <em>Install</em> button in its header. Do it from the plan itself, not this page — the app is the plan.
+    <strong>To put a trip on your phone:</strong> open it, then on iPhone tap <em>Share → Add to Home Screen</em>; on Android tap <em>Install</em> in its header. Do it from the trip page, not this one — the app is the plan.
   </p>
-
-  <h3>Earlier drafts of the same trip</h3>
-  <ul class="trips">
-    <li>
-      <a class="card" href="./tasmania-exploration-2026/">
-        <div class="when">12 – 19 September 2026</div>
-        <h2>Tasmania Exploration, 8 days</h2>
-        <p>The first full-length plan for these dates, before the campervan was booked. Kept for reference.</p>
-        <div class="foot"><div class="badges"><span class="badge quiet">Superseded</span></div><span class="go">Open →</span></div>
-      </a>
-    </li>
-    <li>
-      <a class="card" href="./tassie-2026/">
-        <div class="when">September 2026</div>
-        <h2>Tasmania Explorer: verified guide</h2>
-        <p>A two-base, hub-and-spoke plan with a filterable trail explorer — seven walks and about six and a half hours of driving. Kept for reference.</p>
-        <div class="foot"><div class="badges"><span class="badge quiet">Superseded</span></div><span class="go">Open →</span></div>
-      </a>
-    </li>
-  </ul>
 
   <footer>
     Each trip is a folder with its own <code>index.html</code>. To add one, add the folder and a card here.

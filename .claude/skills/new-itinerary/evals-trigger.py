@@ -12,6 +12,31 @@ tool invoking it or anything reading its SKILL.md.
 Run it in a normal terminal. Nested inside a Claude Code session the child
 process can attach to the calling session and never take a turn, which scores
 every query as "did not trigger" whether it should have or not.
+
+What scoring this set established, so it need not be re-derived:
+
+  * The negatives are solid. Eight near-misses — fixing a Date constructor on
+    an existing page, rebuilding app.css, debugging a rejected sync token —
+    stayed away under every description tried.
+
+  * The description is not the lever for the positives. Three substantially
+    different ones (narrow; heavy on natural phrasings; explicitly claiming
+    the deliverable) scored 10, 9 and 9 out of 16, with the same six queries
+    flat at 0/3 every time.
+
+  * What the skill loses to is artifact-design. Transcripts of the misses
+    decide it in their first sentence, before any tool call — "I'll research
+    the best walks around Queenstown and then build a styled itinerary
+    artifact" — then write the page to /tmp and publish it to claude.ai.
+
+  * The lever is how the request is framed. "...plan it" misses; the same
+    words plus "and add it to the site" reads the repo, finds CLAUDE.md and
+    invokes the skill. Naming the site, the repo or a folder is what settles
+    it, and `/new-itinerary` always does.
+
+  * One-shot `claude -p` is a harsh proxy: no conversation, and a strong
+    prior to just do the task. A real session already talking about the repo
+    is a friendlier case that this cannot measure.
 """
 
 import argparse

@@ -2154,18 +2154,29 @@
 
   /* A manifest shortcut or a bookmark names its section in the hash. The
      sync join link lives in the hash too and is not a section, so it
-     falls through to whichever section this phone opens on. */
-  function hashSection(){
+     falls through to whichever section this phone opens on.
+
+     A section in the hash is spent as it is read: it opens that section
+     once and is then wiped from the URL. Otherwise a fragment left in the
+     address bar — this page's nav used to be plain anchor links, so any
+     tab open from before carries one — outranks the starred section on
+     every refresh, for as long as that tab lives. A hash that is not a
+     section is left where it is for the sync module to read. */
+  function takeHash(){
     var id = location.hash.replace(/^#/, '');
-    return secName[id] ? id : null;
+    if (!secName[id]) return null;
+    if (window.history && history.replaceState) {
+      history.replaceState(null, '', location.pathname + location.search);
+    }
+    return id;
   }
-  showSection(hashSection() || homeSection(), false);
+  showSection(takeHash() || homeSection(), false);
   paintHome();
 
   /* Tapping a shortcut while the app is already open changes the hash
      without reloading, so the section has to follow it. */
   window.addEventListener('hashchange', function(){
-    var id = hashSection();
+    var id = takeHash();
     if (id) showSection(id);
   });
 
@@ -2731,6 +2742,8 @@
   }
 
   if ('serviceWorker' in navigator && location.protocol !== 'file:') {
+    // Captured before any worker can claim this page.
+    var hadController = !!navigator.serviceWorker.controller;
     window.addEventListener('load', function(){
       navigator.serviceWorker.register('sw.js').then(function(reg){
         if (reg.waiting) offerUpdate(reg.waiting);
@@ -2744,9 +2757,16 @@
         });
       }).catch(function(){ /* offline app is a bonus, never a blocker */ });
 
+      /* The worker calls clients.claim(), so the first one to install takes
+         control of this very page and fires controllerchange on a first
+         visit too. Reloading then is pointless — the page came off the
+         network a moment ago — and it costs a section named in the URL,
+         which has already been read and cleared by the time the reload
+         lands. Same test the update bar uses: only a worker replacing one
+         already in charge is worth a reload. */
       var reloading = false;
       navigator.serviceWorker.addEventListener('controllerchange', function(){
-        if (reloading) return;
+        if (reloading || !hadController) return;
         reloading = true;
         location.reload();
       });

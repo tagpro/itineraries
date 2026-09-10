@@ -22,8 +22,23 @@
 <link rel="stylesheet" href="app.css">
 
 <style>
-  html { scroll-behavior: smooth; scroll-padding-top: 72px; }
-  body { -webkit-font-smoothing: antialiased; background: #faf9f6; }
+  html { scroll-behavior: smooth; scroll-padding-top: calc(72px + env(safe-area-inset-top)); }
+  body { -webkit-font-smoothing: antialiased; background: #faf9f6;
+         padding-left: env(safe-area-inset-left); padding-right: env(safe-area-inset-right); }
+
+  /* ── the notch, and the bar along the bottom ─────────────────────
+     viewport-fit=cover with a translucent status bar means an installed
+     copy runs edge to edge: the page starts behind the clock, not below
+     it. So anything pinned to an edge pays the inset back, and anything
+     pinned beneath the header has to know the header just got taller by
+     that same amount. The two numbers are the header's own height (57px)
+     and the budget card's old offset from it. */
+  .appbar    { padding-top: env(safe-area-inset-top); }
+  .daytabs   { position: sticky; top: calc(57px + env(safe-area-inset-top)); }
+  .updatebar { bottom: calc(1rem + env(safe-area-inset-bottom)); }
+  @media (min-width:1024px){
+    .budgetcard { position: sticky; top: calc(77px + env(safe-area-inset-top)); }
+  }
   .no-sb::-webkit-scrollbar { display:none; }
   .no-sb { -ms-overflow-style:none; scrollbar-width:none; }
 
@@ -67,7 +82,7 @@
   @media (min-width:1024px){
     .menu  { transform:none; }
     .scrim { display:none; }
-    body   { padding-left:16.5rem; }
+    body   { padding-left: calc(16.5rem + env(safe-area-inset-left)); }
   }
 
   /* custom checkbox */
@@ -112,7 +127,7 @@
 </style>
 </head>
 <body class="font-sans text-slate-800 antialiased">
-<header class="sticky top-0 z-40 bg-sand-50/95 backdrop-blur-xl border-b border-sand-200">
+<header class="appbar sticky top-0 z-40 bg-sand-50/95 backdrop-blur-xl border-b border-sand-200">
   <div class="max-w-5xl mx-auto px-4 sm:px-6">
     <div class="flex items-center justify-between h-14">
       <div class="flex items-center gap-2.5 min-w-0">
@@ -472,7 +487,7 @@
   <h2 class="font-display text-2xl sm:text-3xl text-forest-900">Day by day</h2>
   <p class="text-sm text-slate-500 mt-1 mb-4">Five days in the van, then three in Hobart. Times are the plan; <span class="text-ember-600 font-semibold">amber notes</span> are where research says it&rsquo;s tight.</p>
 
-  <div class="flex gap-2 overflow-x-auto no-sb pb-3 -mx-1 px-1 sticky top-[57px] z-30 bg-sand-50/95 backdrop-blur-md pt-1">
+  <div class="daytabs flex gap-2 overflow-x-auto no-sb pb-3 -mx-1 px-1 z-30 bg-sand-50/95 backdrop-blur-md pt-1">
     <button data-day="1" class="daytab on shrink-0 px-4 py-2.5 rounded-2xl text-left border transition-all"><div class="text-[10px] uppercase tracking-wider font-bold opacity-60">Sat 12</div><div class="text-sm font-semibold">Midlands → St Helens</div></button>
     <button data-day="2" class="daytab shrink-0 px-4 py-2.5 rounded-2xl text-left border transition-all"><div class="text-[10px] uppercase tracking-wider font-bold opacity-60">Sun 13</div><div class="text-sm font-semibold">Bay of Fires</div></button>
     <button data-day="3" class="daytab shrink-0 px-4 py-2.5 rounded-2xl text-left border transition-all"><div class="text-[10px] uppercase tracking-wider font-bold opacity-60">Mon 14</div><div class="text-sm font-semibold">Mount Amos</div></button>
@@ -1970,7 +1985,7 @@
     </div>
 
     <div class="lg:col-span-1">
-      <div class="bg-forest-900 rounded-3xl p-6 text-white shadow-soft lg:sticky lg:top-[77px]">
+      <div class="budgetcard bg-forest-900 rounded-3xl p-6 text-white shadow-soft">
         <div class="text-[11px] uppercase tracking-[.16em] text-forest-100/60 font-semibold">Trip total</div>
         <div class="font-display text-5xl mt-1" id="grand-total">$0</div>
         <div class="text-sm text-forest-100/70 mt-1" id="per-person">— per person</div>
@@ -2732,7 +2747,7 @@
   function offerUpdate(worker){
     var bar = document.createElement('button');
     bar.type = 'button';
-    bar.className = 'fixed bottom-4 left-1/2 -translate-x-1/2 z-50 text-sm font-semibold bg-forest-900 text-white px-4 py-2.5 rounded-2xl shadow-soft';
+    bar.className = 'updatebar fixed left-1/2 -translate-x-1/2 z-50 text-sm font-semibold bg-forest-900 text-white px-4 py-2.5 rounded-2xl shadow-soft';
     bar.textContent = 'A newer plan is ready — tap to update';
     bar.addEventListener('click', function(){
       worker.postMessage('skip-waiting');

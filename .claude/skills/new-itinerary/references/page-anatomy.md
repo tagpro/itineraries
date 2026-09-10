@@ -154,12 +154,20 @@ is written with `textContent`, never `innerHTML`.
 
 Tailwind is configured in `build/tailwind.config.js`; a different trip can use
 a different palette, but keep the structure — one dark hero, white cards on a
-warm ground, `2xl`/`3xl` corners. The sticky offsets are tuned to the header
-height (`scroll-padding-top: 72px`, the day-tab row at `top-[57px]`, the budget
-card at `lg:top-[77px]`); change the header and re-tune them — a stale offset
-leaves a strip of page sliding through the gap. The menu is hand-written CSS in
-the page's `<style>`, not Tailwind, and it takes the layout with it: `body` gets
-a left padding at `1024px` and up, where the menu stops being a drawer.
+warm ground, `2xl`/`3xl` corners. The menu is hand-written CSS in the page's
+`<style>`, not Tailwind, and it takes the layout with it: `body` gets a left
+padding at `1024px` and up, where the menu stops being a drawer.
+
+Everything pinned to an edge is hand-written too, in one block, because the
+page is `viewport-fit=cover` with a translucent status bar — an installed copy
+starts *behind* the clock, not below it. `.appbar` pays back
+`env(safe-area-inset-top)`, `.updatebar` pays back the bottom inset, `body`
+pays back left and right, and the menu column pays back top and bottom. The two
+that sit *under* the header — `.daytabs` and `.budgetcard` — add the inset to
+the header's own height (57px, and 77px for the budget card), so change the
+header and they must be re-tuned with it: a stale offset leaves a strip of page
+sliding through the gap. Chromium cannot emulate the insets, so test by
+substituting real lengths for `env(…)` in a copy of the page.
 
 `build/README.md` has the stylesheet rebuild and the reason classes must appear
 as literal strings in `index.html`.

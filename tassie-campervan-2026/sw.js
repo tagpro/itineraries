@@ -1,7 +1,14 @@
 /* Tassie Campervan — offline service worker.
    Everything the page needs is precached, so the whole itinerary works
-   in a valley with no signal. Bump VERSION whenever an asset changes. */
-const VERSION = 'tassie-v7';
+   in a valley with no signal. Bump VERSION whenever an asset changes.
+
+   Every itinerary on travel.jaspreet.casa shares one CacheStorage, so the
+   name has to say which trip a cache belongs to: activate below clears this
+   trip's older versions and leaves the other trips' caches alone. Deleting
+   every cache that is not this one — which is what this file used to do —
+   wipes the offline copy of whichever trip was installed first. */
+const PREFIX  = 'tassie';
+const VERSION = PREFIX + '-v8';
 const SHELL = [
   './',
   './index.html',
@@ -27,7 +34,10 @@ self.addEventListener('activate', function (e) {
   e.waitUntil(
     caches.keys()
       .then(function (keys) {
-        return Promise.all(keys.map(function (k) { return k === VERSION ? null : caches.delete(k); }));
+        return Promise.all(keys.map(function (k) {
+          var mine = k.indexOf(PREFIX + '-') === 0;
+          return (!mine || k === VERSION) ? null : caches.delete(k);
+        }));
       })
       .then(function () { return self.clients.claim(); })
   );

@@ -56,6 +56,9 @@ class of mistake that a browser hides until someone is on a mountain.
 - **Checklist `data-k` keys are the sync keys.** Renaming or renumbering one
   unticks that box on every phone already holding the trip. Add new keys; never
   reuse a retired one.
+- **A section the menu opens must carry `.pane`, and every `.pane` needs a menu
+  row.** One section shows at a time; a mismatch either leaves two on screen at
+  once or strands a section nothing can reach. `check.py` fails on both.
 
 ### `app.css` is generated
 

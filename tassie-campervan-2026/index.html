@@ -22,7 +22,7 @@
 <link rel="stylesheet" href="app.css">
 
 <style>
-  html { scroll-behavior: smooth; scroll-padding-top: 118px; }
+  html { scroll-behavior: smooth; scroll-padding-top: 72px; }
   body { -webkit-font-smoothing: antialiased; background: #faf9f6; }
   .no-sb::-webkit-scrollbar { display:none; }
   .no-sb { -ms-overflow-style:none; scrollbar-width:none; }
@@ -31,11 +31,44 @@
   .daylink { color:#0f3d2e; font-weight:600; border-bottom:1px dotted rgba(15,61,46,.45); cursor:pointer; }
   .daylink:hover { border-bottom-style:solid; background:#f0f7f4; }
 
-  /* nav pills */
-  .navpill { white-space:nowrap; border-radius:9999px; padding:.45rem .9rem; font-size:.8125rem; font-weight:600;
-             color:#4b5563; transition:all .18s ease; border:1px solid transparent; }
-  .navpill:hover { background:#f0f7f4; color:#0f3d2e; }
-  .navpill.on { background:#0f3d2e; color:#fff; }
+  /* ── the side menu ──────────────────────────────────────────────
+     The whole plan is one file, but scrolling from the budget back to
+     Friday on a phone is a chore, so one section shows at a time and
+     the menu is how you move between them. A wide screen keeps it open
+     down the left; a phone slides it in over the page. */
+  /* The page is viewport-fit=cover with a translucent status bar, so an
+     installed copy runs full-bleed: without these the top row sits under
+     the clock and the footer under the home indicator. */
+  .menu  { position:fixed; inset:0 auto 0 0; width:16.5rem; z-index:60; display:flex; flex-direction:column;
+           background:#fff; border-right:1px solid #ece7dc;
+           padding-top:env(safe-area-inset-top); padding-bottom:env(safe-area-inset-bottom);
+           transform:translateX(-100%); transition:transform .22s ease; }
+  .menu.open { transform:none; }
+  .scrim { position:fixed; inset:0; z-index:50; background:rgba(15,23,42,.4);
+           opacity:0; pointer-events:none; transition:opacity .22s ease; }
+  .scrim.open { opacity:1; pointer-events:auto; }
+
+  .navrow { display:flex; align-items:center; border-radius:.85rem; transition:background .16s ease; }
+  .navrow:hover { background:#f0f7f4; }
+  .navrow.on { background:#0f3d2e; }
+  .navitem { flex:1 1 auto; min-width:0; padding:.55rem .75rem; font-size:.875rem; font-weight:600; color:#475569; }
+  .navrow:hover .navitem { color:#0f3d2e; }
+  .navrow.on .navitem { color:#fff; }
+
+  /* The star marks the section this phone opens on. It is deliberately
+     not synced — one of you can live in the checklists, the other in
+     the day-by-day. */
+  .pin { flex:0 0 auto; padding:.45rem .6rem; font-size:.95rem; line-height:1; color:#cbd5e1; border-radius:.6rem; }
+  .pin:hover { color:#d97706; }
+  .pin.set { color:#d97706; }
+  .navrow.on .pin { color:rgba(255,255,255,.4); }
+  .navrow.on .pin.set { color:#fbbf24; }
+
+  @media (min-width:1024px){
+    .menu  { transform:none; }
+    .scrim { display:none; }
+    body   { padding-left:16.5rem; }
+  }
 
   /* custom checkbox */
   .chk { appearance:none; -webkit-appearance:none; width:1.35rem; height:1.35rem; flex:0 0 auto;
@@ -67,6 +100,13 @@
 
   .hidden { display:none !important; }
 
+  /* On paper there is no menu, so every section prints. */
+  @media print {
+    .menu, .scrim, #menu-btn { display:none !important; }
+    body { padding-left:0; }
+    .pane { display:block !important; }
+  }
+
   input[type=number]::-webkit-outer-spin-button, input[type=number]::-webkit-inner-spin-button { -webkit-appearance:none; margin:0; }
   input[type=number] { -moz-appearance:textfield; }
 </style>
@@ -76,6 +116,7 @@
   <div class="max-w-5xl mx-auto px-4 sm:px-6">
     <div class="flex items-center justify-between h-14">
       <div class="flex items-center gap-2.5 min-w-0">
+        <button id="menu-btn" type="button" class="lg:hidden -ml-2 px-2 py-1 text-2xl leading-none text-forest-900 rounded-xl hover:bg-sand-100" aria-label="Sections" aria-controls="menu" aria-expanded="false">&#9776;</button>
         <span class="text-xl">🚐</span>
         <div class="min-w-0">
           <div class="font-bold text-[15px] leading-tight text-forest-900 truncate">Tassie Campervan</div>
@@ -91,21 +132,74 @@
         </div>
       </div>
     </div>
-    <nav class="flex gap-1.5 overflow-x-auto no-sb pb-2.5 -mx-1 px-1">
-      <a href="#overview"   class="navpill on">Overview</a>
-      <a href="#itinerary"  class="navpill">Itinerary</a>
-      <a href="#hikes"      class="navpill">Hikes</a>
-      <a href="#camps"      class="navpill">Camps</a>
-      <a href="#planb"      class="navpill">Plan B</a>
-      <a href="#checklists" class="navpill">Checklists</a>
-      <a href="#budget"     class="navpill">Budget</a>
-      <a href="#sync"       class="navpill">Sync</a>
-    </nav>
   </div>
 </header>
+<div id="scrim" class="scrim"></div>
+<aside id="menu" class="menu" aria-label="Sections">
+  <div class="flex items-center px-4 pt-4 pb-2">
+    <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Sections</span>
+    <button id="menu-close" type="button" class="lg:hidden ml-auto -mr-1 px-2 py-1 text-slate-400 hover:text-slate-700" aria-label="Close menu">&#10005;</button>
+  </div>
+  <nav class="flex-1 overflow-y-auto no-sb px-2.5 pb-2 space-y-0.5">
+      <div class="navrow" data-sec="overview">
+        <a href="#overview" class="navitem">Overview</a>
+        <button type="button" class="pin" aria-pressed="false">&#9734;</button>
+      </div>
+      <div class="navrow" data-sec="logistics">
+        <a href="#logistics" class="navitem">Logistics</a>
+        <button type="button" class="pin" aria-pressed="false">&#9734;</button>
+      </div>
+      <div class="navrow" data-sec="itinerary">
+        <a href="#itinerary" class="navitem">Day by day</a>
+        <button type="button" class="pin" aria-pressed="false">&#9734;</button>
+      </div>
+      <div class="navrow" data-sec="hikes">
+        <a href="#hikes" class="navitem">Hikes</a>
+        <button type="button" class="pin" aria-pressed="false">&#9734;</button>
+      </div>
+      <div class="navrow" data-sec="camps">
+        <a href="#camps" class="navitem">Beds &amp; bookings</a>
+        <button type="button" class="pin" aria-pressed="false">&#9734;</button>
+      </div>
+      <div class="navrow" data-sec="planb">
+        <a href="#planb" class="navitem">Plan B</a>
+        <button type="button" class="pin" aria-pressed="false">&#9734;</button>
+      </div>
+      <div class="navrow" data-sec="checklists">
+        <a href="#checklists" class="navitem">Checklists</a>
+        <button type="button" class="pin" aria-pressed="false">&#9734;</button>
+      </div>
+      <div class="navrow" data-sec="budget">
+        <a href="#budget" class="navitem">Budget</a>
+        <button type="button" class="pin" aria-pressed="false">&#9734;</button>
+      </div>
+      <div class="navrow" data-sec="unconfirmed">
+        <a href="#unconfirmed" class="navitem">Not confirmed</a>
+        <button type="button" class="pin" aria-pressed="false">&#9734;</button>
+      </div>
+      <div class="navrow" data-sec="sync">
+        <a href="#sync" class="navitem">Sync between phones</a>
+        <button type="button" class="pin" aria-pressed="false">&#9734;</button>
+      </div>
+  </nav>
+  <div class="border-t border-sand-200 px-4 py-3">
+    <p class="text-[11px] leading-snug text-slate-500">Opens on <strong id="home-name" class="text-slate-700">Overview</strong>. Tap a star to change it &mdash; on this phone only.</p>
+  </div>
+</aside>
 <main class="max-w-5xl mx-auto px-4 sm:px-6 pb-24">
 
-<section id="overview" class="pt-8">
+<div id="ios-install" class="hidden mt-4 flex items-start gap-3 rounded-2xl bg-sky-50 border border-sky-200 p-4">
+  <span class="text-lg leading-none mt-0.5">&#128241;</span>
+  <p class="flex-1 text-[13px] leading-relaxed text-sky-900">
+    <strong>Put this on your home screen</strong> &mdash; that is what makes it work with no signal.
+    Tap <strong>Share</strong>, then <strong>Add to Home Screen</strong>.
+    If your browser does not offer it, Safari will.
+  </p>
+  <button id="ios-install-x" type="button" class="shrink-0 px-1 text-lg leading-none text-sky-700 hover:text-sky-900" aria-label="Dismiss">&#10005;</button>
+</div>
+
+
+<section id="overview" class="pane pt-8">
   <div class="relative overflow-hidden rounded-3xl bg-forest-900 text-white p-6 sm:p-9 shadow-soft">
     <div class="absolute -right-14 -top-14 w-56 h-56 rounded-full bg-white/5"></div>
     <div class="absolute -right-4 top-24 w-32 h-32 rounded-full bg-white/5"></div>
@@ -308,7 +402,7 @@
   </div>
 </section>
 
-<section class="pt-10">
+<section id="logistics" class="pane pt-8">
   <h2 class="font-display text-2xl mb-4 text-forest-900">Logistics</h2>
   <div class="grid sm:grid-cols-2 gap-4">
     <div class="bg-white rounded-2xl border border-sand-200 p-5 shadow-soft">
@@ -374,11 +468,11 @@
   </div>
 </section>
 
-<section id="itinerary" class="pt-12">
+<section id="itinerary" class="pane pt-8">
   <h2 class="font-display text-2xl sm:text-3xl text-forest-900">Day by day</h2>
   <p class="text-sm text-slate-500 mt-1 mb-4">Five days in the van, then three in Hobart. Times are the plan; <span class="text-ember-600 font-semibold">amber notes</span> are where research says it&rsquo;s tight.</p>
 
-  <div class="flex gap-2 overflow-x-auto no-sb pb-3 -mx-1 px-1 sticky top-[112px] z-30 bg-sand-50/95 backdrop-blur-md pt-1">
+  <div class="flex gap-2 overflow-x-auto no-sb pb-3 -mx-1 px-1 sticky top-[57px] z-30 bg-sand-50/95 backdrop-blur-md pt-1">
     <button data-day="1" class="daytab on shrink-0 px-4 py-2.5 rounded-2xl text-left border transition-all"><div class="text-[10px] uppercase tracking-wider font-bold opacity-60">Sat 12</div><div class="text-sm font-semibold">Midlands → St Helens</div></button>
     <button data-day="2" class="daytab shrink-0 px-4 py-2.5 rounded-2xl text-left border transition-all"><div class="text-[10px] uppercase tracking-wider font-bold opacity-60">Sun 13</div><div class="text-sm font-semibold">Bay of Fires</div></button>
     <button data-day="3" class="daytab shrink-0 px-4 py-2.5 rounded-2xl text-left border transition-all"><div class="text-[10px] uppercase tracking-wider font-bold opacity-60">Mon 14</div><div class="text-sm font-semibold">Mount Amos</div></button>
@@ -1349,7 +1443,7 @@
   </div>
 </section>
 
-<section id="hikes" class="pt-12">
+<section id="hikes" class="pane pt-8">
   <h2 class="font-display text-2xl sm:text-3xl text-forest-900">Hikes</h2>
   <p class="text-sm text-slate-500 mt-1 mb-4">Every trailhead reachable on sealed road. Ratings and distances from AllTrails, grades from Parks Tasmania.</p>
 
@@ -1431,7 +1525,7 @@
   </div>
 </section>
 
-<section id="camps" class="pt-12">
+<section id="camps" class="pane pt-8">
   <h2 class="font-display text-2xl sm:text-3xl text-forest-900">Beds &amp; bookings</h2>
   <p class="text-sm text-slate-500 mt-1 mb-4">Seven nights, all booked: four powered camp sites, then three in Hobart. The van heater is 240 V only and nights run 5–7 °C.</p>
 
@@ -1576,7 +1670,7 @@
   </div>
 </section>
 
-<section id="planb" class="pt-12">
+<section id="planb" class="pane pt-8">
   <h2 class="font-display text-2xl sm:text-3xl text-forest-900">Plan B</h2>
   <p class="text-sm text-slate-500 mt-1 mb-4">Eight ways this wobbles, and what you do instead. None of them ruin a day if you&rsquo;ve decided in advance.</p>
 
@@ -1667,7 +1761,7 @@
   </div>
 </section>
 
-<section id="checklists" class="pt-12">
+<section id="checklists" class="pane pt-8">
   <div class="flex items-end justify-between gap-3 mb-4">
     <div><h2 class="font-display text-2xl sm:text-3xl text-forest-900">Checklists</h2><p class="text-sm text-slate-500 mt-1">Yours to edit. Add your own items, delete them, tick them off — everything is stored on this device and works with no signal.</p><p id="store-note" class="hidden text-[12px] mt-2"></p></div>
     <button id="reset-checks" class="text-xs font-semibold bg-white border border-sand-200 text-slate-600 px-3 py-2 rounded-xl hover:bg-sand-50 shrink-0">Clear all</button>
@@ -1822,7 +1916,7 @@
   </div>
 </section>
 
-<section id="budget" class="pt-12">
+<section id="budget" class="pane pt-8">
   <h2 class="font-display text-2xl sm:text-3xl text-forest-900">Budget tracker</h2>
   <p class="text-sm text-slate-500 mt-1 mb-4">Edit any figure — it saves on this device. Van, camping and the hotel are the real booked amounts; food, fuel, the car and extras are researched benchmarks, marked where I could not verify them.</p>
 
@@ -1876,7 +1970,7 @@
     </div>
 
     <div class="lg:col-span-1">
-      <div class="bg-forest-900 rounded-3xl p-6 text-white shadow-soft lg:sticky lg:top-[132px]">
+      <div class="bg-forest-900 rounded-3xl p-6 text-white shadow-soft lg:sticky lg:top-[77px]">
         <div class="text-[11px] uppercase tracking-[.16em] text-forest-100/60 font-semibold">Trip total</div>
         <div class="font-display text-5xl mt-1" id="grand-total">$0</div>
         <div class="text-sm text-forest-100/70 mt-1" id="per-person">— per person</div>
@@ -1897,7 +1991,7 @@
   </div>
 </section>
 
-<footer class="pt-12">
+<footer id="unconfirmed" class="pane pt-8">
   <div class="bg-white rounded-3xl border border-sand-200 p-6 shadow-soft">
     <h3 class="font-semibold text-slate-900 mb-2">What couldn't be confirmed</h3>
     <p class="text-sm text-slate-600 mb-3">Seven reviewers went over this route across two rounds, and every confirmed booking — van, camps, hotel, car and flights — has now been read off the actual email. These are what remains unsettled, so you don&rsquo;t act on a number that was inferred rather than found:</p>
@@ -1919,7 +2013,7 @@
   </div>
 </footer>
 
-<section id="sync" class="pt-12">
+<section id="sync" class="pane pt-8">
   <div class="bg-white rounded-3xl border border-sand-200 p-6 shadow-soft">
     <h2 class="font-display text-2xl sm:text-3xl text-forest-900">Sync between phones</h2>
     <p class="text-sm text-slate-500 mt-1">The checklists live on this phone and work with no signal. Connect the phone to the trip and every phone holding the same link sees the same ticks and items &mdash; the later change wins.</p>
@@ -1995,6 +2089,86 @@
   else if (days > -5) { cd.textContent = '🚐'; lbl.textContent = 'on the road'; }
   else { cd.textContent = '✓'; lbl.textContent = 'trip done'; }
 
+  /* ── sections and the side menu ──────────────────────────────────
+     One section is on screen at a time, and the menu is the only way
+     between them, so everything the menu can reach carries .pane and a
+     matching row. The star on a row is the section this phone opens
+     on: it is kept locally, not synced, because the two of you will
+     want different ones — whoever is driving lives in the day-by-day,
+     whoever is packing lives in the checklists. */
+  var menu    = document.getElementById('menu');
+  var scrim   = document.getElementById('scrim');
+  var menuBtn = document.getElementById('menu-btn');
+  var rows    = Array.prototype.slice.call(document.querySelectorAll('.navrow'));
+  var panes   = Array.prototype.slice.call(document.querySelectorAll('.pane'));
+  var secName = {};
+  rows.forEach(function(r){ secName[r.dataset.sec] = r.querySelector('.navitem').textContent.trim(); });
+
+  function openMenu(on){
+    menu.classList.toggle('open', on);
+    scrim.classList.toggle('open', on);
+    menuBtn.setAttribute('aria-expanded', on ? 'true' : 'false');
+  }
+  function showSection(id, scroll){
+    if (!secName[id]) id = 'overview';
+    panes.forEach(function(p){ p.classList.toggle('hidden', p.id !== id); });
+    rows.forEach(function(r){
+      var on = r.dataset.sec === id;
+      r.classList.toggle('on', on);
+      r.querySelector('.navitem').setAttribute('aria-current', on ? 'page' : 'false');
+    });
+    if (scroll !== false) window.scrollTo(0, 0);
+  }
+  function homeSection(){
+    var h = get('home');
+    return secName[h] ? h : 'overview';
+  }
+  function paintHome(){
+    var h = homeSection();
+    rows.forEach(function(r){
+      var pin = r.querySelector('.pin'), on = r.dataset.sec === h;
+      pin.classList.toggle('set', on);
+      pin.textContent = on ? '\u2605' : '\u2606';
+      pin.setAttribute('aria-pressed', on ? 'true' : 'false');
+      pin.setAttribute('aria-label', (on ? 'Opens on ' : 'Open on ') + secName[r.dataset.sec]);
+    });
+    document.getElementById('home-name').textContent = secName[h];
+  }
+
+  rows.forEach(function(r){
+    r.querySelector('.navitem').addEventListener('click', function(e){
+      e.preventDefault();
+      showSection(r.dataset.sec);
+      openMenu(false);
+    });
+    r.querySelector('.pin').addEventListener('click', function(){
+      // Starring the section that is already the default clears it.
+      if (homeSection() === r.dataset.sec) del('home'); else set('home', r.dataset.sec);
+      paintHome();
+    });
+  });
+  menuBtn.addEventListener('click', function(){ openMenu(!menu.classList.contains('open')); });
+  document.getElementById('menu-close').addEventListener('click', function(){ openMenu(false); });
+  scrim.addEventListener('click', function(){ openMenu(false); });
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape') openMenu(false); });
+
+  /* A manifest shortcut or a bookmark names its section in the hash. The
+     sync join link lives in the hash too and is not a section, so it
+     falls through to whichever section this phone opens on. */
+  function hashSection(){
+    var id = location.hash.replace(/^#/, '');
+    return secName[id] ? id : null;
+  }
+  showSection(hashSection() || homeSection(), false);
+  paintHome();
+
+  /* Tapping a shortcut while the app is already open changes the hash
+     without reloading, so the section has to follow it. */
+  window.addEventListener('hashchange', function(){
+    var id = hashSection();
+    if (id) showSection(id);
+  });
+
   /* ── day tabs ── */
   var tabs = document.querySelectorAll('.daytab');
   var panels = document.querySelectorAll('.daypanel');
@@ -2024,21 +2198,10 @@
   document.querySelectorAll('[data-goto]').forEach(function(a){
     a.addEventListener('click', function(e){
       e.preventDefault();
+      showSection('itinerary');
       showDay(a.dataset.goto);
-      document.getElementById('itinerary').scrollIntoView({ behavior:'smooth', block:'start' });
     });
   });
-
-  /* ── nav pill highlight ── */
-  var pills = document.querySelectorAll('.navpill');
-  var sections = Array.prototype.map.call(pills, function(p){ return document.querySelector(p.getAttribute('href')); });
-  function onScroll(){
-    var y = window.scrollY + 160, idx = 0;
-    sections.forEach(function(s,i){ if (s && s.offsetTop <= y) idx = i; });
-    pills.forEach(function(p,i){ p.classList.toggle('on', i === idx); });
-  }
-  window.addEventListener('scroll', onScroll, { passive:true });
-  onScroll();
 
   /* ── checklists ─────────────────────────────────────────────────
      Ticks and your own items both live in localStorage, so the lists
@@ -2538,6 +2701,22 @@
     if (installBtn) installBtn.classList.add('hidden');
     askPersist();               // installing is what flips the answer
   });
+
+  /* Android and desktop Chrome fire beforeinstallprompt, so they get the
+     Install button above. iOS has no equivalent API — the share sheet is the
+     only way on — and until this hint the page said nothing about it, which
+     is how you end up standing in a valley with a browser tab. */
+  var iosHint = document.getElementById('ios-install');
+  var ua = navigator.userAgent;
+  var isIOS = /iPad|iPhone|iPod/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);
+  var installed = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+  if (iosHint && isIOS && !installed && get('ios-hint') !== '1') {
+    iosHint.classList.remove('hidden');
+    document.getElementById('ios-install-x').addEventListener('click', function(){
+      iosHint.classList.add('hidden');
+      set('ios-hint', '1');
+    });
+  }
 
   function offerUpdate(worker){
     var bar = document.createElement('button');

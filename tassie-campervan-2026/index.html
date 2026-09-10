@@ -188,6 +188,17 @@
 </aside>
 <main class="max-w-5xl mx-auto px-4 sm:px-6 pb-24">
 
+<div id="ios-install" class="hidden mt-4 flex items-start gap-3 rounded-2xl bg-sky-50 border border-sky-200 p-4">
+  <span class="text-lg leading-none mt-0.5">&#128241;</span>
+  <p class="flex-1 text-[13px] leading-relaxed text-sky-900">
+    <strong>Put this on your home screen</strong> &mdash; that is what makes it work with no signal.
+    Tap <strong>Share</strong>, then <strong>Add to Home Screen</strong>.
+    If your browser does not offer it, Safari will.
+  </p>
+  <button id="ios-install-x" type="button" class="shrink-0 px-1 text-lg leading-none text-sky-700 hover:text-sky-900" aria-label="Dismiss">&#10005;</button>
+</div>
+
+
 <section id="overview" class="pane pt-8">
   <div class="relative overflow-hidden rounded-3xl bg-forest-900 text-white p-6 sm:p-9 shadow-soft">
     <div class="absolute -right-14 -top-14 w-56 h-56 rounded-full bg-white/5"></div>
@@ -2690,6 +2701,22 @@
     if (installBtn) installBtn.classList.add('hidden');
     askPersist();               // installing is what flips the answer
   });
+
+  /* Android and desktop Chrome fire beforeinstallprompt, so they get the
+     Install button above. iOS has no equivalent API — the share sheet is the
+     only way on — and until this hint the page said nothing about it, which
+     is how you end up standing in a valley with a browser tab. */
+  var iosHint = document.getElementById('ios-install');
+  var ua = navigator.userAgent;
+  var isIOS = /iPad|iPhone|iPod/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);
+  var installed = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+  if (iosHint && isIOS && !installed && get('ios-hint') !== '1') {
+    iosHint.classList.remove('hidden');
+    document.getElementById('ios-install-x').addEventListener('click', function(){
+      iosHint.classList.add('hidden');
+      set('ios-hint', '1');
+    });
+  }
 
   function offerUpdate(worker){
     var bar = document.createElement('button');

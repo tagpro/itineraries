@@ -34,7 +34,7 @@ person can read end to end before trusting it.
 | `index.html` script | the `TRIP` fallback | Only used when the path has no usable segment. Keep it equal to the slug |
 | `index.html` script | `var start = new Date(…)` | The countdown, in the destination's offset |
 | `<head>` | title, description, theme-color, apple-mobile-web-app-title | The title shows on the home screen |
-| `manifest.webmanifest` | name, short_name, description, lang, colours, shortcuts | Shortcut URLs must point at section ids that exist |
+| `manifest.webmanifest` | name, short_name, description, lang, colours, shortcuts | Shortcut URLs must name a section the menu opens, or the shortcut lands on the default section instead |
 | `icons/` | all four PNGs | |
 
 ### The cache prefix, specifically
@@ -55,7 +55,30 @@ another — `tassie` and `tassie-2027` would collide. `check.py` enforces both.
 
 ## The sections
 
-Nav pills, section ids and manifest shortcuts all have to agree.
+A whole trip is too long to scroll, so **one section is on screen at a time**
+and the side menu is the only way between them. Three things have to agree: a
+top-level `<section id="…" class="pane …">`, a row in the menu
+
+```html
+<div class="navrow" data-sec="hikes">
+  <a href="#hikes" class="navitem">Hikes</a>
+  <button type="button" class="pin" aria-pressed="false">&#9734;</button>
+</div>
+```
+
+and any manifest shortcut pointing at it. A row without a pane leaves two
+sections on screen at once; a pane without a row is unreachable. `check.py`
+fails on either.
+
+The star sets which section this phone opens on. It is kept in localStorage
+under `NS + 'home'` and deliberately **not** synced: two people carrying the
+same trip want different landing pages — whoever drives lives in the day-by-day,
+whoever packs lives in the checklists. Starring the current default clears it,
+back to the overview.
+
+The hash still works, so manifest shortcuts and bookmarks open their section on
+load and while the app is already running. A hash that is not a section — the
+sync join link, `#join=…` — falls through to the starred default.
 
 **`#overview`** — a dark hero card (summary line, headline, the totals in bold,
 a grid of tiles for the fixed points), then **the shape of the week**: one card
@@ -68,7 +91,7 @@ Then **Read this first** — the most useful section on the page. Numbered
 this week go above things for the trip itself, and where there is an action,
 put the link or phone number in the block.
 
-**Logistics** — plain `<dl>` cards for the vehicle, beds and flights.
+**`#logistics`** — plain `<dl>` cards for the vehicle, beds and flights.
 Reference numbers live here so they are findable at a counter.
 
 **`#itinerary`** — a sticky row of `.daytab` buttons and one `.daypanel` per
@@ -80,7 +103,8 @@ to cut first and what it buys back. Dot colours: ember = you get out, forest =
 drive through, sky = the walk.
 
 Days reference each other constantly — use `<a data-goto="8" class="daylink">`,
-which switches day and scrolls, so the reader never loses the thread.
+which opens the day-by-day and switches to that day from wherever the reader
+was, so they never lose the thread.
 
 **`#hikes`** — a card per walk with rating, review count, distance, time,
 elevation and grade, then two sentences on what it actually is. Include a
@@ -101,7 +125,8 @@ at the wrong time is not read.
 **`#budget`** — grouped editable rows with a sticky total. Every row says where
 its figure came from and whether it is booked or estimated.
 
-**footer — *What couldn't be confirmed*** — mandatory. Each bullet names the
+**`#unconfirmed` — *What couldn't be confirmed*** — mandatory, and a menu row
+of its own so it is not buried at the bottom of something. Each bullet names the
 open question, why it is open, and what would settle it. Mark items resolved
 later as `Settled:` or `Corrected:` rather than deleting them; a reader who
 acted on the old version needs to see the change.
@@ -116,6 +141,8 @@ only per-trip part; `server/README.md` has the contract.
   `[data-reset="<id>"]`.
 - Budget row: `input[data-b="<key>"][data-group="<group>"]`, with one
   `[data-subtotal="<group>"]` and one `[data-summary="<group>"]` per group.
+- Menu row: `.navrow[data-sec="<id>"]` holding `a.navitem[href="#<id>"]` and a
+  `button.pin`, one per `.pane`.
 
 List ids are slugs and keys are `[A-Za-z0-9_.:-]{1,64}`, because the server
 validates both and rejects the whole sync with a 400 if either is wrong. Keys
@@ -128,8 +155,11 @@ is written with `textContent`, never `innerHTML`.
 Tailwind is configured in `build/tailwind.config.js`; a different trip can use
 a different palette, but keep the structure — one dark hero, white cards on a
 warm ground, `2xl`/`3xl` corners. The sticky offsets are tuned to the header
-height (`scroll-padding-top: 118px`, the day-tab row at `top-[112px]`, the
-budget card at `lg:top-[132px]`); change the header and re-tune them.
+height (`scroll-padding-top: 72px`, the day-tab row at `top-[57px]`, the budget
+card at `lg:top-[77px]`); change the header and re-tune them — a stale offset
+leaves a strip of page sliding through the gap. The menu is hand-written CSS in
+the page's `<style>`, not Tailwind, and it takes the layout with it: `body` gets
+a left padding at `1024px` and up, where the menu stops being a drawer.
 
 `build/README.md` has the stylesheet rebuild and the reason classes must appear
 as literal strings in `index.html`.

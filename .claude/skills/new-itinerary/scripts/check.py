@@ -135,6 +135,15 @@ def main(slug: str) -> int:
 
     # ── manifest ──────────────────────────────────────────────────────────
     ids = set(re.findall(r'id="([^"]+)"', markup))
+
+    # One section shows at a time, and .pane is what marks one.
+    panes = set()
+    for tag in re.findall(r'<[a-z]+\b[^>]*\bclass="[^"]*\bpane\b[^"]*"[^>]*>', markup):
+        pid = first(r'id="([^"]+)"', tag)
+        if pid:
+            panes.add(pid)
+        else:
+            fails.append("index.html: a .pane has no id, so the menu cannot reach it")
     mpath = d / "manifest.webmanifest"
     if mpath.exists():
         try:
@@ -153,9 +162,10 @@ def main(slug: str) -> int:
                     fails.append(f"manifest.webmanifest: icon {icon.get('src')} does not exist")
             for sc in man.get("shortcuts", []):
                 frag = sc.get("url", "").split("#", 1)
-                if len(frag) == 2 and frag[1] not in ids:
+                if len(frag) == 2 and frag[1] not in panes:
                     fails.append(f"manifest.webmanifest: shortcut '{sc.get('name')}' points "
-                                 f"at #{frag[1]}, which is not a section on the page")
+                                 f"at #{frag[1]}, which is not a section the menu opens — "
+                                 f"the shortcut would land on the default section instead")
             theme = first(r'<meta name="theme-color" content="([^"]+)"', html)
             if theme and man.get("theme_color") and theme != man["theme_color"]:
                 warns.append(f"theme-color is {theme} in the page and "
@@ -194,12 +204,33 @@ def main(slug: str) -> int:
     for g in sorted(groups - set(re.findall(r'data-summary="([^"]+)"', markup))):
         fails.append(f'index.html: budget group "{g}" has no [data-summary="{g}"]')
 
+    # ── the side menu ─────────────────────────────────────────────────────
+    # The menu is the only way between sections, so a row pointing at
+    # something that is not a pane leaves two sections on screen at once, and
+    # a pane with no row is simply unreachable.
     # Attribute order is not fixed, so match the tag and then look inside it.
+    linked = set()
     for tag in re.findall(r"<a\b[^>]*>", markup):
-        if "navpill" in tag:
+        if "navitem" in tag:
             href = first(r'href="#([^"]+)"', tag)
-            if href and href not in ids:
-                fails.append(f"index.html: nav pill points at #{href}, which is not on the page")
+            if not href:
+                fails.append("index.html: a menu item has no href, so it opens nothing")
+                continue
+            linked.add(href)
+            if href not in ids:
+                fails.append(f"index.html: menu item points at #{href}, which is not on the page")
+            elif href not in panes:
+                fails.append(f"index.html: menu item points at #{href}, which is not a .pane — "
+                             f"opening it would leave two sections on screen at once")
+    if not linked:
+        fails.append("index.html: no .navitem rows — nothing can reach any section")
+    for orphan in sorted(panes - linked):
+        fails.append(f"index.html: #{orphan} is a .pane with no menu item, so nothing on the "
+                     f"page can open it")
+
+    for sec in sorted(re.findall(r'data-sec="([^"]+)"', markup)):
+        if sec not in panes:
+            fails.append(f"index.html: menu row data-sec=\"{sec}\" has no matching .pane")
 
     # ── leftovers from the reference build ────────────────────────────────
     if slug != "tassie-campervan-2026":

@@ -72,7 +72,13 @@ if [ "$WHICH" = all ] || [ "$WHICH" = upgrade ]; then
   if need git; then
     # The last released version is whatever main has; the working tree is new.
     mkdir -p "$TMP/old"
-    if git archive main "$TRIP" 2>/dev/null | tar -x -C "$TMP/old"; then
+    if ! git archive main "$TRIP" 2>/dev/null | tar -x -C "$TMP/old"; then
+      echo "skipping upgrade: no main branch to compare against"
+    elif diff -rq "$TMP/old/$TRIP" "$TRIP" >/dev/null 2>&1; then
+      # Nothing to upgrade to. On a clean checkout of main this is the normal
+      # answer, not a failure: there is no new version to offer the phone.
+      echo "skipping upgrade: the working tree matches main, so there is no update to make"
+    else
       python3 test/serve.py --port 8095 --root "$TMP/old" >/dev/null 2>&1 &
       PIDS+=($!)
       if wait_for "http://127.0.0.1:8095/$TRIP/"; then
@@ -80,8 +86,6 @@ if [ "$WHICH" = all ] || [ "$WHICH" = upgrade ]; then
       else
         echo "the old-version site never came up"; FAILED=1
       fi
-    else
-      echo "skipping upgrade: no main branch to compare against"
     fi
   fi
 fi

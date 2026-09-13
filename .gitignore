@@ -3,3 +3,4 @@ __pycache__/
 
 # Claude Code creates isolated worktrees for subagents inside the repository.
 .claude/worktrees/
+test/node_modules/

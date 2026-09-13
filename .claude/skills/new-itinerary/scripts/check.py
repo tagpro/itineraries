@@ -204,9 +204,13 @@ def main(slug: str) -> int:
         fails.append(f"index.html: budget list id '{blist}' is not a slug — the server "
                      f"rejects the whole sync, and every list stops syncing")
 
-    seed = re.findall(r'\{ k:"([^"]+)", g:"([^"]+)"', html)
+    # Tolerant of spacing, because the alternative is a check that stops
+    # checking the moment someone reformats the seed and still says "ok".
+    seed = re.findall(r'k:\s*"([^"]+)"\s*,\s*g:\s*"([^"]+)"', html)
     if not seed:
-        warns.append("index.html: no BSEED rows — the budget starts empty")
+        fails.append("index.html: no budget seed rows found — either the budget starts "
+                     "empty, or BSEED was reformatted past what this check can read. "
+                     "Either way it is no longer being checked")
     bkeys = [k for k, _ in seed]
     bdupes = {k for k in bkeys if bkeys.count(k) > 1}
     if bdupes:

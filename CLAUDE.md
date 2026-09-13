@@ -17,6 +17,7 @@ fonts/  icons/              the list page's own copies, so archiving a trip
 CNAME                       travel.jaspreet.casa
 tassie-campervan-2026/      the reference build: offline, installable, syncing
 server/                     the sync API — Go on Cloudflare Workers + D1
+test/                       browser tests for the pages — test/README.md
 .github/workflows/api.yml   tests the API on every change; deploys from main
 .claude/skills/             skills for working here
 ```
@@ -40,6 +41,18 @@ python3 .claude/skills/new-itinerary/scripts/check.py <slug>
 
 Run `check.py` before committing any change to a trip page. It catches the
 class of mistake that a browser hides until someone is on a mountain.
+
+Then run the browser tests, which catch the class it cannot:
+
+```sh
+./test/run.sh
+```
+
+Three specs — the page on its own, two phones converging through the real API,
+and the update a phone already holding the trip will actually make. That last
+one is the one to care about: a fresh install proves nothing about the people
+carrying the page. `test/README.md` says what each covers and how to add to
+them.
 
 ### The things that break silently
 

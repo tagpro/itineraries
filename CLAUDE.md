@@ -17,13 +17,15 @@ fonts/  icons/              the list page's own copies, so archiving a trip
 CNAME                       travel.jaspreet.casa
 tassie-campervan-2026/      the reference build: offline, installable, syncing
 server/                     the sync API — Go on Cloudflare Workers + D1
+test/                       browser tests for the pages — test/README.md
 .github/workflows/api.yml   tests the API on every change; deploys from main
 .claude/skills/             skills for working here
 ```
 
-Nothing is generated at read time. Every trip page is one `index.html` with an
-inline `<style>` and one inline `<script>`, a pre-compiled `app.css`, and its
-own fonts and icons. No CDN, no framework, no bundler.
+Nothing is generated at read time. A trip page is `index.html` with an inline
+`<style>`, its behaviour in `app.js`, a pre-compiled `app.css`, and its own
+fonts and icons. No CDN, no framework, no bundler — `app.js` is one IIFE of
+plain JavaScript with no imports, served as it is written.
 
 ## Adding or changing a trip page
 
@@ -40,6 +42,18 @@ python3 .claude/skills/new-itinerary/scripts/check.py <slug>
 
 Run `check.py` before committing any change to a trip page. It catches the
 class of mistake that a browser hides until someone is on a mountain.
+
+Then run the browser tests, which catch the class it cannot:
+
+```sh
+./test/run.sh
+```
+
+Three specs — the page on its own, two phones converging through the real API,
+and the update a phone already holding the trip will actually make. That last
+one is the one to care about: a fresh install proves nothing about the people
+carrying the page. `test/README.md` says what each covers and how to add to
+them.
 
 ### The things that break silently
 
@@ -59,11 +73,25 @@ class of mistake that a browser hides until someone is on a mountain.
 - **A section the menu opens must carry `.pane`, and every `.pane` needs a menu
   row.** One section shows at a time; a mismatch either leaves two on screen at
   once or strands a section nothing can reach. `check.py` fails on both.
+- **A seeded budget row is stamped at the epoch, not at `Date.now()`.** Every
+  phone seeds every row, so a seed carrying a current clock beats edits another
+  phone made earlier — the second phone to join silently undoes the first
+  one's work. Defaults must lose every merge; only a real edit gets a real
+  stamp.
+
+### `app.js` is loaded and precached
+
+Splitting the script out gave the page three things that must agree:
+`index.html` loads it, `sw.js` precaches `./app.js`, and
+`build/tailwind.config.js` scans it. Miss the second and the page works
+perfectly until the signal goes; miss the third and every class the script
+applies drops out of the stylesheet. `check.py` fails on all three.
 
 ### `app.css` is generated
 
 Do not hand-edit it, and never assemble a class name from fragments at runtime
-— Tailwind only emits classes it can see as literal strings in `index.html`.
+— Tailwind only emits classes it can see written out in full, and it scans
+`index.html` and `app.js`.
 `<slug>/build/README.md` has the rebuild command; run it after any markup
 change, then bump `VERSION` in `sw.js` or installed copies keep the old page.
 

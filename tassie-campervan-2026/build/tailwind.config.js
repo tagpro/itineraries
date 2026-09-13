@@ -1,5 +1,6 @@
 module.exports = {
-  content: ['../index.html'],
+  // The script applies most of these classes, so it has to be scanned too.
+  content: ['../index.html', '../app.js'],
   theme: { extend: {
     fontFamily: { sans: ['Outfit','system-ui','sans-serif'], display: ['Playfair Display','Georgia','serif'] },
     colors: {

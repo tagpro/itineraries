@@ -8,11 +8,12 @@
    every cache that is not this one — which is what this file used to do —
    wipes the offline copy of whichever trip was installed first. */
 const PREFIX  = 'tassie';
-const VERSION = PREFIX + '-v11';
+const VERSION = PREFIX + '-v12';
 const SHELL = [
   './',
   './index.html',
   './app.css',
+  './app.js',
   './manifest.webmanifest',
   './fonts/outfit.woff2',
   './fonts/playfair.woff2',

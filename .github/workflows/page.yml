@@ -1,0 +1,84 @@
+# The pages carry more behaviour than the API does — a service worker, a
+# section router, a checklist store and a budget that syncs between phones —
+# and none of it is exercised by `go test`. This runs the browser specs.
+#
+# test/run.sh starts what it needs (a static server, the Go API on its
+# in-memory store) and cleans up after itself. It compares the working tree
+# against origin/main to decide whether there is an update worth testing, so
+# the upgrade spec runs on a pull request and skips on a push that changes
+# nothing about the page.
+#
+# The path lists are duplicated rather than shared through a YAML anchor:
+# whether Actions honours anchors is not something this repository can test,
+# and a workflow that fails to parse is worse than a repeated list.
+name: page
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '*/index.html'
+      - '*/app.js'
+      - '*/app.css'
+      - '*/sw.js'
+      - '*/manifest.webmanifest'
+      - 'test/**'
+      - 'server/**'
+      - '.claude/skills/new-itinerary/scripts/check.py'
+      - '.github/workflows/page.yml'
+  pull_request:
+    paths:
+      - '*/index.html'
+      - '*/app.js'
+      - '*/app.css'
+      - '*/sw.js'
+      - '*/manifest.webmanifest'
+      - 'test/**'
+      - 'server/**'
+      - '.claude/skills/new-itinerary/scripts/check.py'
+      - '.github/workflows/page.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      # Full history: the upgrade spec installs the version people are already
+      # carrying, from origin/main, before applying this change on top.
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: test/package-lock.json
+
+      # The sync spec drives the real API rather than a stand-in for it.
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: server/go.mod
+          cache-dependency-path: server/go.sum
+
+      - name: Install playwright-core
+        working-directory: test
+        run: npm ci
+
+      # test/browser.mjs finds this in the Playwright cache, and tolerates the
+      # browser build not matching the pinned playwright-core version.
+      - name: Install Chromium
+        run: npx --yes playwright@1.55.0 install --with-deps chromium
+
+      - name: Check the wiring of every trip
+        run: |
+          for sw in */sw.js; do
+            [ -e "$sw" ] || continue
+            python3 .claude/skills/new-itinerary/scripts/check.py "$(dirname "$sw")"
+          done
+
+      - name: Run the browser specs
+        run: ./test/run.sh

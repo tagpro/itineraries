@@ -71,13 +71,24 @@ fi
 if [ "$WHICH" = all ] || [ "$WHICH" = upgrade ]; then
   if need git; then
     # The last released version is whatever main has; the working tree is new.
+    # On a CI checkout of a pull request there is no local main, only
+    # origin/main — and silently skipping the most valuable spec is worse
+    # than not having it.
+    BASE=""
+    for ref in "${UPGRADE_BASE:-}" main origin/main; do
+      [ -n "$ref" ] || continue
+      if git rev-parse --verify --quiet "$ref^{commit}" >/dev/null; then BASE=$ref; break; fi
+    done
+
     mkdir -p "$TMP/old"
-    if ! git archive main "$TRIP" 2>/dev/null | tar -x -C "$TMP/old"; then
+    if [ -z "$BASE" ]; then
       echo "skipping upgrade: no main branch to compare against"
+    elif ! git archive "$BASE" "$TRIP" 2>/dev/null | tar -x -C "$TMP/old" 2>/dev/null; then
+      echo "skipping upgrade: $BASE has no $TRIP/ to compare against"
     elif diff -rq "$TMP/old/$TRIP" "$TRIP" >/dev/null 2>&1; then
       # Nothing to upgrade to. On a clean checkout of main this is the normal
       # answer, not a failure: there is no new version to offer the phone.
-      echo "skipping upgrade: the working tree matches main, so there is no update to make"
+      echo "skipping upgrade: the working tree matches $BASE, so there is no update to make"
     else
       python3 test/serve.py --port 8095 --root "$TMP/old" >/dev/null 2>&1 &
       PIDS+=($!)

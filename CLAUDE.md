@@ -19,6 +19,7 @@ tassie-campervan-2026/      the reference build: offline, installable, syncing
 server/                     the sync API — Go on Cloudflare Workers + D1
 test/                       browser tests for the pages — test/README.md
 .github/workflows/api.yml   tests the API on every change; deploys from main
+.github/workflows/page.yml  runs the browser specs on every change to a page
 .claude/skills/             skills for working here
 ```
 

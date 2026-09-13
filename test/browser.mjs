@@ -7,13 +7,32 @@ import { existsSync, readdirSync } from 'fs';
 import { execSync } from 'child_process';
 import path from 'path';
 
+/* Ask playwright-core first: it knows the cache location for this platform,
+   which a hand-built path does not (~/.cache on Linux, ~/Library/Caches on
+   macOS). But it answers with the build this package version wants, which is
+   not always the build that is installed — on the machine this was written on
+   it names chromium-1187 while only 1194 exists — so the answer is checked,
+   and a near miss falls through to whatever chromium is actually there. */
 function managed() {
-  const root = process.env.PLAYWRIGHT_BROWSERS_PATH || `${process.env.HOME}/.cache/ms-playwright`;
-  if (!existsSync(root)) return null;
-  for (const dir of readdirSync(root).filter(d => d.startsWith('chromium')).sort().reverse()) {
-    for (const rel of ['chrome-linux/chrome', 'chrome-mac/Chromium.app/Contents/MacOS/Chromium']) {
-      const p = path.join(root, dir, rel);
-      if (existsSync(p)) return p;
+  try {
+    const declared = chromium.executablePath();
+    if (declared && existsSync(declared)) return declared;
+  } catch { /* no registry entry; fall through to looking around */ }
+
+  const roots = [
+    process.env.PLAYWRIGHT_BROWSERS_PATH,
+    `${process.env.HOME}/.cache/ms-playwright`,
+    `${process.env.HOME}/Library/Caches/ms-playwright`,
+  ].filter(dir => dir && existsSync(dir));
+
+  for (const root of roots) {
+    for (const dir of readdirSync(root).filter(d => d.startsWith('chromium')).sort().reverse()) {
+      for (const rel of ['chrome-linux/chrome',
+                         'chrome-mac/Chromium.app/Contents/MacOS/Chromium',
+                         'chrome-mac-arm64/Chromium.app/Contents/MacOS/Chromium']) {
+        const p = path.join(root, dir, rel);
+        if (existsSync(p)) return p;
+      }
     }
   }
   return null;

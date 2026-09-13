@@ -746,12 +746,12 @@
   }
 
   function brecalc(){
-    var per = {}, planned = 0, spent = 0, now = 0;
+    var per = {}, planned = 0, spent = 0, now = 0, recorded = false;
     Object.keys(bmounts).forEach(function(g){ per[g] = 0; });
     brows().forEach(function(r){
       var eff = r.a === null ? r.p : r.a;
       planned += r.p;
-      if (r.a !== null) spent += r.a;
+      if (r.a !== null) { spent += r.a; recorded = true; }
       now += eff;
       if (per[r.g] === undefined) per[r.g] = 0;
       per[r.g] += eff;
@@ -766,7 +766,9 @@
     document.getElementById('per-person').textContent = bmoney(now / 2) + ' per person';
     document.getElementById('per-day').textContent = bmoney(now / 8);
     document.getElementById('bud-planned').textContent = bmoney(planned);
-    document.getElementById('bud-spent').textContent = spent ? bmoney(spent) : 'nothing yet';
+    // Entering 0 for something that turned out free is a real answer, so
+    // this asks whether a figure was recorded, not whether it was non-zero.
+    document.getElementById('bud-spent').textContent = recorded ? bmoney(spent) : 'nothing yet';
     var vs = document.getElementById('bud-vs'), diff = Math.round(now - planned);
     vs.textContent = diff === 0 ? 'on the money' : (diff > 0 ? '+' + bmoney(diff) + ' over' : bmoney(-diff) + ' under');
     vs.className = diff > 0 ? 'font-semibold text-amber-300' : (diff < 0 ? 'font-semibold text-emerald-300' : 'font-semibold');

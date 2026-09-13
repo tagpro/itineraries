@@ -75,8 +75,11 @@ if [ "$WHICH" = all ] || [ "$WHICH" = upgrade ]; then
     if git archive main "$TRIP" 2>/dev/null | tar -x -C "$TMP/old"; then
       python3 test/serve.py --port 8095 --root "$TMP/old" >/dev/null 2>&1 &
       PIDS+=($!)
-      wait_for "http://127.0.0.1:8095/$TRIP/" &&
+      if wait_for "http://127.0.0.1:8095/$TRIP/"; then
         run test/upgrade.test.mjs "http://127.0.0.1:8095/$TRIP/" "$TMP/old" "$REPO"
+      else
+        echo "the old-version site never came up"; FAILED=1
+      fi
     else
       echo "skipping upgrade: no main branch to compare against"
     fi

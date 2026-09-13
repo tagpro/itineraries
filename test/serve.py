@@ -34,7 +34,9 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             if self.headers.get(header):
                 req.add_header(header, self.headers[header])
         try:
-            with urllib.request.urlopen(req) as r:
+            # An API that accepts the connection and then says nothing would
+            # otherwise hang the whole run; the timeout lands in except below.
+            with urllib.request.urlopen(req, timeout=15) as r:
                 data, code, ctype = r.read(), r.status, r.headers.get("Content-Type", "application/json")
         except urllib.error.HTTPError as e:
             data, code, ctype = e.read(), e.code, e.headers.get("Content-Type", "application/json")

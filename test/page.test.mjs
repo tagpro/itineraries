@@ -79,6 +79,19 @@ r.ok('so does an added row', rows.some(x => x.t === 'Ross bakery'));
 r.ok('and a deleted one stays gone', !rows.some(x => x.k === 'buf'));
 r.ok('the total follows the real figure', (await pg.locator('#bud-vs').textContent()).match(/under|over/) !== null,
   await pg.locator('#bud-vs').textContent());
+
+// Something that turned out free is a recorded answer, not an absent one.
+await pg.fill('[data-bk="fuel"] [data-bf="a"]', '');
+await pg.fill('[data-bk="mill"] [data-bf="a"]', '0');
+await pg.waitForTimeout(300);
+r.ok('a spend of zero is not reported as nothing spent',
+  (await pg.locator('#bud-spent').textContent()) !== 'nothing yet',
+  await pg.locator('#bud-spent').textContent());
+await pg.fill('[data-bk="mill"] [data-bf="a"]', '');
+await pg.waitForTimeout(300);
+r.ok('and with none entered at all it does say so',
+  (await pg.locator('#bud-spent').textContent()) === 'nothing yet',
+  await pg.locator('#bud-spent').textContent());
 await ctx.close();
 
 // ── printing: hiding sections must not lose them on paper ───────────────

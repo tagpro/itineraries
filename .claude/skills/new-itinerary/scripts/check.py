@@ -227,7 +227,8 @@ def main(slug: str) -> int:
 
     # Tolerant of spacing, because the alternative is a check that stops
     # checking the moment someone reformats the seed and still says "ok".
-    seed = re.findall(r'k:\s*"([^"]+)"\s*,\s*g:\s*"([^"]+)"', html)
+    seed = [(m.group("k"), m.group("g")) for m in
+            re.finditer(r'''k:\s*["'](?P<k>[^"']+)["']\s*,\s*g:\s*["'](?P<g>[^"']+)["']''', html)]
     if not seed:
         fails.append("index.html: no budget seed rows found — either the budget starts "
                      "empty, or BSEED was reformatted past what this check can read. "

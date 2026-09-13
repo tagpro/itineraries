@@ -122,8 +122,21 @@ here is approximate.
 the depot, Saturday 9 am", "Every morning before you drive". A checklist read
 at the wrong time is not read.
 
-**`#budget`** — grouped editable rows with a sticky total. Every row says where
-its figure came from and whether it is booked or estimated.
+**`#budget`** — grouped rows with a sticky total. Rows are **data, not
+markup**: `BSEED` in the script is only the first run, after which they live in
+the synced ledger beside the checklists, so a cost entered at a petrol station
+reaches the other phone. Each row carries what was planned and what was
+actually paid; the total follows the real figure wherever one has been entered
+and the plan everywhere else.
+
+Every row still says where its figure came from — the note is what carries
+that, and it is the traveller's to edit once the trip starts.
+
+The seeding stamp is the subtle part. Every phone seeds every row, so a seed
+carrying today's clock would beat an edit another phone made yesterday and the
+second phone to join would quietly undo the first one's work. A default is not
+an edit: it is stamped at the epoch and loses every merge it is in. A figure
+this phone actually typed, and the reset button, keep a real stamp.
 
 **`#unconfirmed` — *What couldn't be confirmed*** — mandatory, and a menu row
 of its own so it is not buried at the bottom of something. Each bullet names the
@@ -139,8 +152,10 @@ only per-trip part; `server/README.md` has the contract.
 - Checklist card: `[data-list="<id>"]`, containing `input.chk[data-k="<key>"]`
   rows, a `.custom-mount`, an `.add-form[data-add="<id>"]`, and a
   `[data-reset="<id>"]`.
-- Budget row: `input[data-b="<key>"][data-group="<group>"]`, with one
-  `[data-subtotal="<group>"]` and one `[data-summary="<group>"]` per group.
+- Budget group: `[data-brows="<g>"]` for the script to render into,
+  `[data-badd="<g>"]` to add with, and one `[data-subtotal="<g>"]` and one
+  `[data-summary="<g>"]` each. The script builds the rows, tagging each
+  `[data-bk="<key>"]` with a `[data-bf="p"]` and a `[data-bf="a"]` field.
 - Menu row: `.navrow[data-sec="<id>"]` holding `a.navitem[href="#<id>"]` and a
   `button.pin`, one per `.pane`.
 

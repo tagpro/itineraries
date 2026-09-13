@@ -193,16 +193,36 @@ def main(slug: str) -> int:
         fails.append(f"index.html: checklist key '{k}' is not [A-Za-z0-9_.:-]{{1,64}} — "
                      f"the server rejects the whole sync")
 
-    budget = re.findall(r'data-b="([^"]+)"', markup)
-    bdupes = {k for k in budget if budget.count(k) > 1}
-    if bdupes:
-        fails.append(f"index.html: duplicate budget keys {sorted(bdupes)}")
+    # ── the budget ────────────────────────────────────────────────────────
+    # Rows are data: BSEED is only the first run, after which they live in the
+    # synced ledger like the checklists. So the same server rules apply to
+    # them, and a row whose group has nowhere to render is simply invisible.
+    blist = first(r"var BUDGET = '([^']+)'", html)
+    if not blist:
+        fails.append("index.html: no `var BUDGET = '…'` — the budget's sync list id is gone")
+    elif not SLUG_RE.match(blist):
+        fails.append(f"index.html: budget list id '{blist}' is not a slug — the server "
+                     f"rejects the whole sync, and every list stops syncing")
 
-    groups = set(re.findall(r'data-group="([^"]+)"', markup))
-    for g in sorted(groups - set(re.findall(r'data-subtotal="([^"]+)"', markup))):
-        fails.append(f'index.html: budget group "{g}" has no [data-subtotal="{g}"]')
-    for g in sorted(groups - set(re.findall(r'data-summary="([^"]+)"', markup))):
-        fails.append(f'index.html: budget group "{g}" has no [data-summary="{g}"]')
+    seed = re.findall(r'\{ k:"([^"]+)", g:"([^"]+)"', html)
+    if not seed:
+        warns.append("index.html: no BSEED rows — the budget starts empty")
+    bkeys = [k for k, _ in seed]
+    bdupes = {k for k in bkeys if bkeys.count(k) > 1}
+    if bdupes:
+        fails.append(f"index.html: duplicate budget keys {sorted(bdupes)} — the later row "
+                     f"would overwrite the earlier one on the first sync")
+    for k in sorted({k for k in bkeys if not KEY_RE.match(k)}):
+        fails.append(f"index.html: budget key '{k}' is not [A-Za-z0-9_.:-]{{1,64}} — the "
+                     f"server rejects the whole sync")
+
+    mounts = set(re.findall(r'data-brows="([^"]+)"', markup))
+    for g in sorted({g for _, g in seed} - mounts):
+        fails.append(f'index.html: the budget seed puts rows in group "{g}", which has no '
+                     f'[data-brows="{g}"] to render into — those rows never appear')
+    for attr in ("data-subtotal", "data-summary", "data-badd"):
+        for g in sorted(mounts - set(re.findall(attr + r'="([^"]+)"', markup))):
+            fails.append(f'index.html: budget group "{g}" has no [{attr}="{g}"]')
 
     # ── the side menu ─────────────────────────────────────────────────────
     # The menu is the only way between sections, so a row pointing at

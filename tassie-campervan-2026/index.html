@@ -1933,54 +1933,49 @@
 
 <section id="budget" class="pane pt-8">
   <h2 class="font-display text-2xl sm:text-3xl text-forest-900">Budget tracker</h2>
-  <p class="text-sm text-slate-500 mt-1 mb-4">Edit any figure — it saves on this device. Van, camping and the hotel are the real booked amounts; food, fuel, the car and extras are researched benchmarks, marked where I could not verify them.</p>
+  <p class="text-sm text-slate-500 mt-1 mb-4">Every row is yours &mdash; change it, add one, delete one. <strong>Plan</strong> is what the figure was before you left; <strong>spent</strong> is what it actually came to. The total below follows the real number wherever you have entered one. All of it syncs to the other phone.</p>
 
   <div class="grid lg:grid-cols-3 gap-4">
     <div class="lg:col-span-2 space-y-4">
       <div class="bg-white rounded-2xl border border-sand-200 shadow-soft overflow-hidden">
         <div class="px-5 py-3.5 border-b border-sand-100 bg-sand-50/60 flex items-center justify-between"><h3 class="font-semibold text-sm text-slate-900">Fixed costs</h3><span class="text-sm font-bold text-forest-800" data-subtotal="fixed">$0</span></div>
-        <div class="divide-y divide-sand-100">
-          <div class="flex items-center gap-3 px-5 py-3"><div class="flex-1 min-w-0"><div class="text-sm font-medium">Campervan hire <span class="badge bg-forest-100 text-forest-800 ml-1">confirmed</span></div><div class="text-xs text-slate-500">$622.25 paid + $125 Hobart location fee at the counter. The $7,500 bond is separate and comes back</div></div><div class="flex items-center gap-1 shrink-0"><span class="text-slate-400 text-sm">$</span><input type="number" step="0.05" class="bg-sand-50 border border-sand-200 rounded-lg px-2 py-1.5 w-24 text-right text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-forest-700/30" data-b="van" data-group="fixed" value="747.25"></div></div>
-          <div class="flex items-center gap-3 px-5 py-3"><div class="flex-1 min-w-0"><div class="text-sm font-medium">Freycinet One-Park pass <span class="badge bg-amber-100 text-amber-800 ml-1">buying 11 Sep</span></div><div class="text-xs text-slate-500">$50.70, twelve months, one park, up to two vehicles — covers Sunday evening, Monday and Tuesday. One 24-hr pass only works if both Freycinet walks fall inside a single window. <button id="cheap-mode" class="underline decoration-dotted hover:text-forest-800">Try it at $47.70</button></div></div><div class="flex items-center gap-1 shrink-0"><span class="text-slate-400 text-sm">$</span><input type="number" step="0.05" class="bg-sand-50 border border-sand-200 rounded-lg px-2 py-1.5 w-24 text-right text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-forest-700/30" data-b="pass" data-group="fixed" data-cheap="47.70" value="50.70"></div></div>
-          <div class="flex items-center gap-3 px-5 py-3"><div class="flex-1 min-w-0"><div class="text-sm font-medium">Tasman NP pass, Friday <span class="badge bg-sky-100 text-sky-800 ml-1">buy on the day</span></div><div class="text-xs text-slate-500">24-hour vehicle pass, $47.70 — the hire car needs its own. Zero if you skip the coastal stops and go straight to Port Arthur</div></div><div class="flex items-center gap-1 shrink-0"><span class="text-slate-400 text-sm">$</span><input type="number" step="0.05" class="bg-sand-50 border border-sand-200 rounded-lg px-2 py-1.5 w-24 text-right text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-forest-700/30" data-b="tasmanpass" data-group="fixed" value="47.70"></div></div>
-          <div class="flex items-center gap-3 px-5 py-3"><div class="flex-1 min-w-0"><div class="text-sm font-medium">Diesel</div><div class="text-xs text-slate-500">~670 km · 67–80 L at ~245–250 c/L · one fill, at Cambridge</div></div><div class="flex items-center gap-1 shrink-0"><span class="text-slate-400 text-sm">$</span><input type="number" class="bg-sand-50 border border-sand-200 rounded-lg px-2 py-1.5 w-24 text-right text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-forest-700/30" data-b="fuel" data-group="fixed" value="190"></div></div>
-        </div>
+        <div class="divide-y divide-sand-100" data-brows="fixed"></div>
+        <form class="flex flex-wrap items-center gap-2 px-5 py-3 border-t border-sand-100 bg-sand-50/40" data-badd="fixed">
+          <input type="text" class="flex-1 min-w-[7rem] bg-white border border-sand-200 rounded-lg px-2.5 py-1.5 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-forest-700/30" placeholder="Add a cost" maxlength="80" required aria-label="What you paid for">
+          <span class="text-slate-400 text-sm">$</span>
+          <input type="number" step="0.01" inputmode="decimal" class="w-20 bg-white border border-sand-200 rounded-lg px-2 py-1.5 text-right text-sm focus:outline-none focus:ring-2 focus:ring-forest-700/30" placeholder="0" aria-label="Amount">
+          <button type="submit" class="text-xs font-semibold bg-forest-900 text-white px-3 py-2 rounded-lg hover:bg-forest-800">Add</button>
+        </form>
       </div>
-
       <div class="bg-white rounded-2xl border border-sand-200 shadow-soft overflow-hidden">
-        <div class="px-5 py-3.5 border-b border-sand-100 bg-sand-50/60 flex items-center justify-between"><h3 class="font-semibold text-sm text-slate-900">Camping — 4 nights, all booked</h3><span class="text-sm font-bold text-forest-800" data-subtotal="camp">$0</span></div>
-        <div class="divide-y divide-sand-100">
-          <div class="flex items-center gap-3 px-5 py-3"><div class="flex-1 min-w-0"><div class="text-sm font-medium">Night 1 · Tasman Holiday Parks <span class="badge bg-forest-100 text-forest-800 ml-1">paid</span></div><div class="text-xs text-slate-500">Booking #57776 · paid in full</div></div><div class="flex items-center gap-1 shrink-0"><span class="text-slate-400 text-sm">$</span><input type="number" step="0.01" class="bg-sand-50 border border-sand-200 rounded-lg px-2 py-1.5 w-24 text-right text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-forest-700/30" data-b="n1" data-group="camp" value="35"></div></div>
-          <div class="flex items-center gap-3 px-5 py-3"><div class="flex-1 min-w-0"><div class="text-sm font-medium">Night 2 · BIG4 Iluka, Coles Bay <span class="badge bg-forest-100 text-forest-800 ml-1">paid</span></div><div class="text-xs text-slate-500">Reservation 263967 · $120 for the two nights</div></div><div class="flex items-center gap-1 shrink-0"><span class="text-slate-400 text-sm">$</span><input type="number" step="0.01" class="bg-sand-50 border border-sand-200 rounded-lg px-2 py-1.5 w-24 text-right text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-forest-700/30" data-b="n2" data-group="camp" value="60"></div></div>
-          <div class="flex items-center gap-3 px-5 py-3"><div class="flex-1 min-w-0"><div class="text-sm font-medium">Night 3 · BIG4 Iluka again <span class="badge bg-forest-100 text-forest-800 ml-1">paid</span></div><div class="text-xs text-slate-500">Same reservation — the second half of the $120</div></div><div class="flex items-center gap-1 shrink-0"><span class="text-slate-400 text-sm">$</span><input type="number" step="0.01" class="bg-sand-50 border border-sand-200 rounded-lg px-2 py-1.5 w-24 text-right text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-forest-700/30" data-b="n3" data-group="camp" value="60"></div></div>
-          <div class="flex items-center gap-3 px-5 py-3"><div class="flex-1 min-w-0"><div class="text-sm font-medium">Night 4 · Triabunna <span class="badge bg-amber-100 text-amber-800 ml-1">on arrival</span></div><div class="text-xs text-slate-500">Ref BBA26090121260069 · payable at check-in</div></div><div class="flex items-center gap-1 shrink-0"><span class="text-slate-400 text-sm">$</span><input type="number" step="0.01" class="bg-sand-50 border border-sand-200 rounded-lg px-2 py-1.5 w-24 text-right text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-forest-700/30" data-b="n4" data-group="camp" value="49"></div></div>
-        </div>
+        <div class="px-5 py-3.5 border-b border-sand-100 bg-sand-50/60 flex items-center justify-between"><h3 class="font-semibold text-sm text-slate-900">Camping</h3><span class="text-sm font-bold text-forest-800" data-subtotal="camp">$0</span></div>
+        <div class="divide-y divide-sand-100" data-brows="camp"></div>
+        <form class="flex flex-wrap items-center gap-2 px-5 py-3 border-t border-sand-100 bg-sand-50/40" data-badd="camp">
+          <input type="text" class="flex-1 min-w-[7rem] bg-white border border-sand-200 rounded-lg px-2.5 py-1.5 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-forest-700/30" placeholder="Add a cost" maxlength="80" required aria-label="What you paid for">
+          <span class="text-slate-400 text-sm">$</span>
+          <input type="number" step="0.01" inputmode="decimal" class="w-20 bg-white border border-sand-200 rounded-lg px-2 py-1.5 text-right text-sm focus:outline-none focus:ring-2 focus:ring-forest-700/30" placeholder="0" aria-label="Amount">
+          <button type="submit" class="text-xs font-semibold bg-forest-900 text-white px-3 py-2 rounded-lg hover:bg-forest-800">Add</button>
+        </form>
       </div>
-
       <div class="bg-white rounded-2xl border border-sand-200 shadow-soft overflow-hidden">
         <div class="px-5 py-3.5 border-b border-sand-100 bg-sand-50/60 flex items-center justify-between"><h3 class="font-semibold text-sm text-slate-900">Food &amp; extras</h3><span class="text-sm font-bold text-forest-800" data-subtotal="food">$0</span></div>
-        <div class="divide-y divide-sand-100">
-          <div class="flex items-center gap-3 px-5 py-3"><div class="flex-1 min-w-0"><div class="text-sm font-medium">Groceries</div><div class="text-xs text-slate-500">Big shop at Campbell Town Saturday, top-up at St Helens Sunday</div></div><div class="flex items-center gap-1 shrink-0"><span class="text-slate-400 text-sm">$</span><input type="number" class="bg-sand-50 border border-sand-200 rounded-lg px-2 py-1.5 w-24 text-right text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-forest-700/30" data-b="groc" data-group="food" value="170"></div></div>
-          <div class="flex items-center gap-3 px-5 py-3"><div class="flex-1 min-w-0"><div class="text-sm font-medium">Meals out &amp; coffee</div><div class="text-xs text-slate-500">Ross bakery, St Helens, Swansea, Salamanca</div></div><div class="flex items-center gap-1 shrink-0"><span class="text-slate-400 text-sm">$</span><input type="number" class="bg-sand-50 border border-sand-200 rounded-lg px-2 py-1.5 w-24 text-right text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-forest-700/30" data-b="eat" data-group="food" value="180"></div></div>
-          <div class="flex items-center gap-3 px-5 py-3"><div class="flex-1 min-w-0"><div class="text-sm font-medium">Callington Mill tour <span class="text-slate-400">(optional)</span></div><div class="text-xs text-slate-500">$15 each, hourly 10:00–15:00 Saturday</div></div><div class="flex items-center gap-1 shrink-0"><span class="text-slate-400 text-sm">$</span><input type="number" class="bg-sand-50 border border-sand-200 rounded-lg px-2 py-1.5 w-24 text-right text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-forest-700/30" data-b="mill" data-group="food" value="30"></div></div>
-          <div class="flex items-center gap-3 px-5 py-3"><div class="flex-1 min-w-0"><div class="text-sm font-medium">Taxi to the depot</div><div class="text-xs text-slate-500">Apollo runs no airport shuttle</div></div><div class="flex items-center gap-1 shrink-0"><span class="text-slate-400 text-sm">$</span><input type="number" class="bg-sand-50 border border-sand-200 rounded-lg px-2 py-1.5 w-24 text-right text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-forest-700/30" data-b="taxi" data-group="food" value="25"></div></div>
-          <div class="flex items-center gap-3 px-5 py-3"><div class="flex-1 min-w-0"><div class="text-sm font-medium">Buffer</div><div class="text-xs text-slate-500">Laundry, coin showers, odds and ends</div></div><div class="flex items-center gap-1 shrink-0"><span class="text-slate-400 text-sm">$</span><input type="number" class="bg-sand-50 border border-sand-200 rounded-lg px-2 py-1.5 w-24 text-right text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-forest-700/30" data-b="buf" data-group="food" value="100"></div></div>
-        </div>
+        <div class="divide-y divide-sand-100" data-brows="food"></div>
+        <form class="flex flex-wrap items-center gap-2 px-5 py-3 border-t border-sand-100 bg-sand-50/40" data-badd="food">
+          <input type="text" class="flex-1 min-w-[7rem] bg-white border border-sand-200 rounded-lg px-2.5 py-1.5 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-forest-700/30" placeholder="Add a cost" maxlength="80" required aria-label="What you paid for">
+          <span class="text-slate-400 text-sm">$</span>
+          <input type="number" step="0.01" inputmode="decimal" class="w-20 bg-white border border-sand-200 rounded-lg px-2 py-1.5 text-right text-sm focus:outline-none focus:ring-2 focus:ring-forest-700/30" placeholder="0" aria-label="Amount">
+          <button type="submit" class="text-xs font-semibold bg-forest-900 text-white px-3 py-2 rounded-lg hover:bg-forest-800">Add</button>
+        </form>
       </div>
-
       <div class="bg-white rounded-2xl border border-sky-200 shadow-soft overflow-hidden">
-        <div class="px-5 py-3.5 border-b border-sand-100 bg-sky-50/60 flex items-center justify-between"><h3 class="font-semibold text-sm text-slate-900">Hobart — 3 nights, after the van</h3><span class="text-sm font-bold text-forest-800" data-subtotal="hobart">$0</span></div>
-        <div class="divide-y divide-sand-100">
-          <div class="flex items-center gap-3 px-5 py-3"><div class="flex-1 min-w-0"><div class="text-sm font-medium">ibis Styles Hobart <span class="badge bg-forest-100 text-forest-800 ml-1">paid</span></div><div class="text-xs text-slate-500">Nights 5–7 · ref JQKZANYD3 · non-refundable, nothing left to pay</div></div><div class="flex items-center gap-1 shrink-0"><span class="text-slate-400 text-sm">$</span><input type="number" step="0.01" class="bg-sand-50 border border-sand-200 rounded-lg px-2 py-1.5 w-24 text-right text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-forest-700/30" data-b="hotel" data-group="hobart" value="415.20"></div></div>
-          <div class="flex items-center gap-3 px-5 py-3"><div class="flex-1 min-w-0"><div class="text-sm font-medium">Simba car hire, 2 days <span class="badge bg-forest-100 text-forest-800 ml-1">confirmed</span></div><div class="text-xs text-slate-500">$58 for the two days — less than the two taxis it saves you if you pick it up on Wednesday</div></div><div class="flex items-center gap-1 shrink-0"><span class="text-slate-400 text-sm">$</span><input type="number" step="0.01" class="bg-sand-50 border border-sand-200 rounded-lg px-2 py-1.5 w-24 text-right text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-forest-700/30" data-b="car" data-group="hobart" value="58"></div></div>
-          <div class="flex items-center gap-3 px-5 py-3"><div class="flex-1 min-w-0"><div class="text-sm font-medium">Excess cover for the car <span class="badge bg-forest-100 text-forest-800 ml-1">covered</span></div><div class="text-xs text-slate-500">Your credit card carries the $6,380 excess — decline the upsell at the counter</div></div><div class="flex items-center gap-1 shrink-0"><span class="text-slate-400 text-sm">$</span><input type="number" step="0.01" class="bg-sand-50 border border-sand-200 rounded-lg px-2 py-1.5 w-24 text-right text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-forest-700/30" data-b="excess" data-group="hobart" value="0"></div></div>
-          <div class="flex items-center gap-3 px-5 py-3"><div class="flex-1 min-w-0"><div class="text-sm font-medium">Mona — entry and ferry <span class="badge bg-forest-100 text-forest-800 ml-1">Thu</span></div><div class="text-xs text-slate-500">2 × $39 entry + 2 × $30 return ferry</div></div><div class="flex items-center gap-1 shrink-0"><span class="text-slate-400 text-sm">$</span><input type="number" step="0.01" class="bg-sand-50 border border-sand-200 rounded-lg px-2 py-1.5 w-24 text-right text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-forest-700/30" data-b="mona" data-group="hobart" value="138"></div></div>
-          <div class="flex items-center gap-3 px-5 py-3"><div class="flex-1 min-w-0"><div class="text-sm font-medium">Port Arthur Historic Site <span class="badge bg-forest-100 text-forest-800 ml-1">Fri</span></div><div class="text-xs text-slate-500">2 × $55 · includes the harbour cruise and a guide talk, valid two days</div></div><div class="flex items-center gap-1 shrink-0"><span class="text-slate-400 text-sm">$</span><input type="number" step="0.01" class="bg-sand-50 border border-sand-200 rounded-lg px-2 py-1.5 w-24 text-right text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-forest-700/30" data-b="parthur" data-group="hobart" value="110"></div></div>
-          <div class="flex items-center gap-3 px-5 py-3"><div class="flex-1 min-w-0"><div class="text-sm font-medium">Petrol for the car</div><div class="text-xs text-slate-500">~300 km in a small hybrid, handed back full</div></div><div class="flex items-center gap-1 shrink-0"><span class="text-slate-400 text-sm">$</span><input type="number" step="0.01" class="bg-sand-50 border border-sand-200 rounded-lg px-2 py-1.5 w-24 text-right text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-forest-700/30" data-b="carfuel" data-group="hobart" value="45"></div></div>
-          <div class="flex items-center gap-3 px-5 py-3"><div class="flex-1 min-w-0"><div class="text-sm font-medium">Two taxis out to Cambridge</div><div class="text-xs text-slate-500">Depot → hotel Wednesday, hotel → car Thursday. About $40 each for the pair of you</div></div><div class="flex items-center gap-1 shrink-0"><span class="text-slate-400 text-sm">$</span><input type="number" step="0.01" class="bg-sand-50 border border-sand-200 rounded-lg px-2 py-1.5 w-24 text-right text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-forest-700/30" data-b="transfers" data-group="hobart" value="80"></div></div>
-          <div class="flex items-center gap-3 px-5 py-3"><div class="flex-1 min-w-0"><div class="text-sm font-medium">Parking</div><div class="text-xs text-slate-500">Two nights at the hotel plus Saturday at Salamanca Square — ask the hotel rate at check-in</div></div><div class="flex items-center gap-1 shrink-0"><span class="text-slate-400 text-sm">$</span><input type="number" step="0.01" class="bg-sand-50 border border-sand-200 rounded-lg px-2 py-1.5 w-24 text-right text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-forest-700/30" data-b="parking" data-group="hobart" value="60"></div></div>
-          <div class="flex items-center gap-3 px-5 py-3"><div class="flex-1 min-w-0"><div class="text-sm font-medium">Eating in Hobart</div><div class="text-xs text-slate-500">Three days of breakfasts, lunches and dinners for two, with no kitchen</div></div><div class="flex items-center gap-1 shrink-0"><span class="text-slate-400 text-sm">$</span><input type="number" step="0.01" class="bg-sand-50 border border-sand-200 rounded-lg px-2 py-1.5 w-24 text-right text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-forest-700/30" data-b="hobfood" data-group="hobart" value="320"></div></div>
-        </div>
+        <div class="px-5 py-3.5 border-b border-sand-100 bg-sky-50/60 flex items-center justify-between"><h3 class="font-semibold text-sm text-slate-900">Hobart — after the van</h3><span class="text-sm font-bold text-forest-800" data-subtotal="hobart">$0</span></div>
+        <div class="divide-y divide-sand-100" data-brows="hobart"></div>
+        <form class="flex flex-wrap items-center gap-2 px-5 py-3 border-t border-sand-100 bg-sand-50/40" data-badd="hobart">
+          <input type="text" class="flex-1 min-w-[7rem] bg-white border border-sand-200 rounded-lg px-2.5 py-1.5 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-forest-700/30" placeholder="Add a cost" maxlength="80" required aria-label="What you paid for">
+          <span class="text-slate-400 text-sm">$</span>
+          <input type="number" step="0.01" inputmode="decimal" class="w-20 bg-white border border-sand-200 rounded-lg px-2 py-1.5 text-right text-sm focus:outline-none focus:ring-2 focus:ring-forest-700/30" placeholder="0" aria-label="Amount">
+          <button type="submit" class="text-xs font-semibold bg-forest-900 text-white px-3 py-2 rounded-lg hover:bg-forest-800">Add</button>
+        </form>
       </div>
     </div>
 
@@ -1988,19 +1983,26 @@
       <div class="budgetcard bg-forest-900 rounded-3xl p-6 text-white shadow-soft">
         <div class="text-[11px] uppercase tracking-[.16em] text-forest-100/60 font-semibold">Trip total</div>
         <div class="font-display text-5xl mt-1" id="grand-total">$0</div>
-        <div class="text-sm text-forest-100/70 mt-1" id="per-person">— per person</div>
-        <div class="mt-5 space-y-2.5 text-sm">
+        <div class="text-sm text-forest-100/70 mt-1" id="per-person">&mdash; per person</div>
+        <p class="text-[11px] text-forest-100/50 mt-2 leading-relaxed">Where it stands now: the real figure where you have entered one, the plan where you have not.</p>
+
+        <div class="mt-5 pt-4 border-t border-white/15 space-y-2 text-sm">
+          <div class="flex justify-between"><span class="text-forest-100/70">Planned</span><span class="font-semibold" id="bud-planned">$0</span></div>
+          <div class="flex justify-between"><span class="text-forest-100/70">Spent so far</span><span class="font-semibold" id="bud-spent">$0</span></div>
+          <div class="flex justify-between"><span class="text-forest-100/70">Against the plan</span><span class="font-semibold" id="bud-vs">&mdash;</span></div>
+        </div>
+
+        <div class="mt-5 pt-4 border-t border-white/15 space-y-2.5 text-sm">
           <div class="flex justify-between"><span class="text-forest-100/70">Fixed</span><span class="font-semibold" data-summary="fixed">$0</span></div>
           <div class="flex justify-between"><span class="text-forest-100/70">Camping</span><span class="font-semibold" data-summary="camp">$0</span></div>
           <div class="flex justify-between"><span class="text-forest-100/70">Food &amp; extras</span><span class="font-semibold" data-summary="food">$0</span></div>
           <div class="flex justify-between"><span class="text-forest-100/70">Hobart</span><span class="font-semibold" data-summary="hobart">$0</span></div>
-        </div>
-        <div class="mt-5 pt-4 border-t border-white/15 space-y-2 text-sm">
           <div class="flex justify-between"><span class="text-forest-100/70">Per day, over 8</span><span class="font-semibold" id="per-day">$0</span></div>
-          <div class="flex justify-between"><span class="text-forest-100/70">Excl. van hire</span><span class="font-semibold" id="ex-van">$0</span></div>
         </div>
-        <button id="reset-budget" class="mt-5 w-full text-xs font-semibold bg-white/10 hover:bg-white/20 px-3 py-2.5 rounded-xl">Reset to defaults</button>
-        <p class="text-[11px] text-forest-100/50 mt-3 leading-relaxed">Flights are not included, and neither are the two refundable bonds — $7,500 on the van, $500–$2,000 on the car. Two national parks charge — Freycinet and Tasman — and they need separate passes because you are in two different vehicles. Bay of Fires and kunanyi are free, and Port Arthur is a ticket, not a park pass.</p>
+
+        <button id="reset-budget" class="mt-5 w-full text-xs font-semibold bg-white/10 hover:bg-white/20 px-3 py-2.5 rounded-xl">Put the original plan back</button>
+        <p class="text-[11px] text-forest-100/50 mt-2 leading-relaxed">That restores the figures this page shipped with and clears what has been spent against them. Rows you added yourself are left alone.</p>
+        <p class="text-[11px] text-forest-100/50 mt-3 leading-relaxed">Flights are not included, and neither are the two refundable bonds &mdash; $7,500 on the van, $500&ndash;$2,000 on the car. Two national parks charge, Freycinet and Tasman, and they need separate passes because you are in two different vehicles.</p>
       </div>
     </div>
   </div>
@@ -2445,6 +2447,7 @@
       renderCustom(card);
       updateList(card);
     });
+    if (typeof brender === 'function' && Object.keys(bmounts || {}).length) brender();
   }
 
   /* One request does the whole exchange: send everything this phone has,
@@ -2622,50 +2625,249 @@
     setInterval(function(){ if (!document.hidden) syncNow(); }, 45000);
   }
 
-  /* ── budget ── */
-  var inputs = document.querySelectorAll('[data-b]');
-  var defaults = {};
-  inputs.forEach(function(i){ defaults[i.dataset.b] = i.value; });
-  var fmt = function(n){ return '$' + Math.round(n).toLocaleString('en-AU'); };
+  /* ── budget ─────────────────────────────────────────────────────
+     Every row is data, not markup. The list below is only the seed: from
+     the first run the rows live in the same ledger as the checklists, so
+     a fuel stop entered at the pump turns up on the other phone. Each
+     row carries what was planned and what was actually paid, because on
+     the road the second is the number you want and the first is what you
+     are judging it against.
 
-  function recalc(){
-    var groups = {};
-    document.querySelectorAll('[data-subtotal]').forEach(function(el){ groups[el.dataset.subtotal] = 0; });
-    inputs.forEach(function(i){
-      var v = parseFloat(i.value);
-      if (isNaN(v)) v = 0;
-      groups[i.dataset.group] += v;
-    });
-    var total = 0;
-    Object.keys(groups).forEach(function(g){
-      total += groups[g];
-      document.querySelector('[data-subtotal="'+g+'"]').textContent = fmt(groups[g]);
-      document.querySelector('[data-summary="'+g+'"]').textContent = fmt(groups[g]);
-    });
-    document.getElementById('grand-total').textContent = fmt(total);
-    document.getElementById('per-person').textContent = fmt(total/2) + ' per person';
-    document.getElementById('per-day').textContent = fmt(total/8);
-    var van = parseFloat(document.querySelector('[data-b="van"]').value) || 0;
-    document.getElementById('ex-van').textContent = fmt(total - van);
+     Keys match the ones the old fixed rows used, so a phone that has
+     been editing figures all week keeps them. */
+  var BUDGET = 'budget';
+  var BSEED = [
+    { k:"van", g:"fixed", p:747.25, t:"Campervan hire", n:"confirmed · $622.25 paid + $125 Hobart location fee at the counter. The $7,500 bond is separate and comes back" },
+    { k:"pass", g:"fixed", p:50.7, t:"Freycinet One-Park pass", n:"buying 11 Sep · $50.70, twelve months, one park, up to two vehicles — covers Sunday evening, Monday and Tuesday. One 24-hr pass only works if both Freycinet walks fall inside a single window." },
+    { k:"tasmanpass", g:"fixed", p:47.7, t:"Tasman NP pass, Friday", n:"buy on the day · 24-hour vehicle pass, $47.70 — the hire car needs its own. Zero if you skip the coastal stops and go straight to Port Arthur" },
+    { k:"fuel", g:"fixed", p:190.0, t:"Diesel", n:"~670 km · 67–80 L at ~245–250 c/L · one fill, at Cambridge" },
+    { k:"n1", g:"camp", p:35.0, t:"Night 1 · Tasman Holiday Parks", n:"paid · Booking #57776 · paid in full" },
+    { k:"n2", g:"camp", p:60.0, t:"Night 2 · BIG4 Iluka, Coles Bay", n:"paid · Reservation 263967 · $120 for the two nights" },
+    { k:"n3", g:"camp", p:60.0, t:"Night 3 · BIG4 Iluka again", n:"paid · Same reservation — the second half of the $120" },
+    { k:"n4", g:"camp", p:49.0, t:"Night 4 · Triabunna", n:"on arrival · Ref BBA26090121260069 · payable at check-in" },
+    { k:"groc", g:"food", p:170.0, t:"Groceries", n:"Big shop at Campbell Town Saturday, top-up at St Helens Sunday" },
+    { k:"eat", g:"food", p:180.0, t:"Meals out & coffee", n:"Ross bakery, St Helens, Swansea, Salamanca" },
+    { k:"mill", g:"food", p:30.0, t:"Callington Mill tour (optional)", n:"$15 each, hourly 10:00–15:00 Saturday" },
+    { k:"taxi", g:"food", p:25.0, t:"Taxi to the depot", n:"Apollo runs no airport shuttle" },
+    { k:"buf", g:"food", p:100.0, t:"Buffer", n:"Laundry, coin showers, odds and ends" },
+    { k:"hotel", g:"hobart", p:415.2, t:"ibis Styles Hobart", n:"paid · Nights 5–7 · ref JQKZANYD3 · non-refundable, nothing left to pay" },
+    { k:"car", g:"hobart", p:58.0, t:"Simba car hire, 2 days", n:"confirmed · $58 for the two days — less than the two taxis it saves you if you pick it up on Wednesday" },
+    { k:"excess", g:"hobart", p:0.0, t:"Excess cover for the car", n:"covered · Your credit card carries the $6,380 excess — decline the upsell at the counter" },
+    { k:"mona", g:"hobart", p:138.0, t:"Mona — entry and ferry", n:"Thu · 2 × $39 entry + 2 × $30 return ferry" },
+    { k:"parthur", g:"hobart", p:110.0, t:"Port Arthur Historic Site", n:"Fri · 2 × $55 · includes the harbour cruise and a guide talk, valid two days" },
+    { k:"carfuel", g:"hobart", p:45.0, t:"Petrol for the car", n:"~300 km in a small hybrid, handed back full" },
+    { k:"transfers", g:"hobart", p:80.0, t:"Two taxis out to Cambridge", n:"Depot → hotel Wednesday, hotel → car Thursday. About $40 each for the pair of you" },
+    { k:"parking", g:"hobart", p:60.0, t:"Parking", n:"Two nights at the hotel plus Saturday at Salamanca Square — ask the hotel rate at check-in" },
+    { k:"hobfood", g:"hobart", p:320.0, t:"Eating in Hobart", n:"Three days of breakfasts, lunches and dinners for two, with no kitchen" }
+  ];
+  var BNUMCLS = 'w-full bg-sand-50 border border-sand-200 rounded-lg px-2 py-1.5 text-right text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-forest-700/30';
+  var BTXTCLS = 'w-full bg-white border border-sand-200 rounded-lg px-2.5 py-1.5 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-forest-700/30';
+
+  var bmounts = {};
+  document.querySelectorAll('[data-brows]').forEach(function(m){ bmounts[m.dataset.brows] = m; });
+  var bmoney = function(n){ return '$' + Math.round(n).toLocaleString('en-AU'); };
+  function bnum(v){
+    if (v === null || v === undefined || v === '') return null;
+    var n = parseFloat(v);
+    return isNaN(n) ? null : n;
   }
-  inputs.forEach(function(i){
-    var saved = get('bud:'+i.dataset.b);
-    if (saved !== null) i.value = saved;
-    i.addEventListener('input', function(){ set('bud:'+i.dataset.b, i.value); recalc(); });
-  });
-  recalc();
+  function bmk(tag, cls, text){
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text !== undefined) e.textContent = text;
+    return e;
+  }
 
-  document.getElementById('cheap-mode').addEventListener('click', function(){
-    document.querySelectorAll('[data-cheap]').forEach(function(i){
-      i.value = i.dataset.cheap;
-      set('bud:'+i.dataset.b, i.value);
+  // The ledger is the truth; this is just a sorted view of it.
+  function brows(){
+    var m = (ledger && ledger[BUDGET]) || {}, out = [];
+    Object.keys(m).forEach(function(k){
+      var e = m[k];
+      if (e.d || !e.v || typeof e.v !== 'object') return;
+      out.push({ k:k, g:String(e.v.g || ''), t:String(e.v.t || ''), n:String(e.v.n || ''),
+                 p:bnum(e.v.p) || 0, a:bnum(e.v.a), o:e.v.o || 0 });
     });
-    recalc();
+    out.sort(function(x, y){ return x.o - y.o || (x.k < y.k ? -1 : 1); });
+    return out;
+  }
+  function bput(r){
+    record(BUDGET, r.k, { v:{ g:r.g, t:r.t, n:r.n, p:r.p, a:r.a, o:r.o }, t:Date.now() });
+  }
+  function bdrop(k){
+    var cur = (ledger[BUDGET] || {})[k];
+    record(BUDGET, k, { v:(cur && cur.v) || {}, t:Date.now(), d:true });
+  }
+
+  /* First run on this phone: lay the seed down, keeping any figure already
+     typed into the old per-row store so nobody loses a week of edits.
+
+     The stamp is the whole game here. Every phone seeds every row, so a seed
+     carrying today's clock would beat an edit another phone made yesterday —
+     the second phone to join would quietly undo the first one's work. A
+     default is not an edit, so it is stamped at the epoch and loses every
+     merge it is ever in. A figure this phone actually typed is an edit and
+     keeps a real stamp, and so does the reset button, which is a deliberate
+     act and has to win. */
+  function bseed(force){
+    if (!ledger) return;
+    if (ledger[BUDGET] && !force) return;
+    var now = Date.now();
+    BSEED.forEach(function(r, i){
+      var kept = force ? null : bnum(get('bud:' + r.k));
+      record(BUDGET, r.k, {
+        v: { g:r.g, t:r.t, n:r.n, p:(kept === null ? r.p : kept), a:null, o:(i + 1) * 10 },
+        t: (force || kept !== null) ? now : 1
+      });
+    });
+  }
+
+  function brow(r){
+    var wrap = bmk('div', 'px-5 py-3');
+    wrap.dataset.bk = r.k;
+
+    var head = bmk('div', 'flex items-start gap-3');
+    var txt = bmk('div', 'flex-1 min-w-0');
+    txt.appendChild(bmk('div', 'text-sm font-medium', r.t));
+    if (r.n) txt.appendChild(bmk('div', 'text-xs text-slate-500 mt-0.5', r.n));
+    head.appendChild(txt);
+    var pen = bmk('button', 'shrink-0 text-slate-300 hover:text-forest-800 px-1 leading-none', '\u270E');
+    pen.type = 'button';
+    pen.setAttribute('aria-label', 'Edit ' + r.t);
+    head.appendChild(pen);
+    wrap.appendChild(head);
+
+    var nums = bmk('div', 'flex items-center gap-3 mt-2');
+    function field(which, value, ph) {
+      var lab = bmk('label', 'flex items-center gap-1.5 flex-1 min-w-0');
+      lab.appendChild(bmk('span', 'text-[10px] uppercase tracking-wider text-slate-400 font-semibold', which === 'p' ? 'plan' : 'spent'));
+      lab.appendChild(bmk('span', 'text-slate-400 text-sm', '$'));
+      var i = bmk('input', BNUMCLS);
+      i.type = 'number'; i.step = '0.01'; i.inputMode = 'decimal';
+      i.value = value === null ? '' : String(value);
+      i.placeholder = ph;
+      i.dataset.bf = which;
+      // A number field renders 50.70 as "50.7", which does not read as money.
+      i.addEventListener('blur', function(){
+        var n = bnum(i.value);
+        if (n !== null && n % 1 !== 0) i.value = n.toFixed(2);
+      });
+      i.addEventListener('input', function(){
+        var cur = r;
+        cur[which] = which === 'p' ? (bnum(i.value) || 0) : bnum(i.value);
+        bput(cur);
+        brecalc();
+      });
+      lab.appendChild(i);
+      return lab;
+    }
+    nums.appendChild(field('p', r.p, '0'));
+    nums.appendChild(field('a', r.a, '\u2014'));
+    wrap.appendChild(nums);
+
+    // The text of a row changes rarely, so it hides behind the pencil.
+    var form = bmk('form', 'hidden mt-2.5 space-y-2 rounded-xl bg-sand-50 border border-sand-200 p-3');
+    var tIn = bmk('input', BTXTCLS); tIn.type = 'text'; tIn.value = r.t; tIn.maxLength = 80;
+    tIn.placeholder = 'What it is'; tIn.setAttribute('aria-label', 'Name');
+    var nIn = bmk('input', BTXTCLS); nIn.type = 'text'; nIn.value = r.n; nIn.maxLength = 160;
+    nIn.placeholder = 'A note — where the figure came from'; nIn.setAttribute('aria-label', 'Note');
+    form.appendChild(tIn); form.appendChild(nIn);
+    var btns = bmk('div', 'flex gap-2');
+    var save = bmk('button', 'text-xs font-semibold bg-forest-900 text-white px-3 py-2 rounded-lg hover:bg-forest-800', 'Save');
+    save.type = 'submit';
+    var kill = bmk('button', 'text-xs font-semibold text-red-600 hover:text-red-700 px-3 py-2 rounded-lg ml-auto', 'Delete');
+    kill.type = 'button';
+    btns.appendChild(save); btns.appendChild(kill);
+    form.appendChild(btns);
+    wrap.appendChild(form);
+
+    pen.addEventListener('click', function(){
+      form.classList.toggle('hidden');
+      if (!form.classList.contains('hidden')) tIn.focus();
+    });
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      var name = tIn.value.trim();
+      if (!name) return;
+      r.t = name; r.n = nIn.value.trim();
+      bput(r);
+      brender();
+    });
+    kill.addEventListener('click', function(){
+      bdrop(r.k);
+      brender();
+    });
+    return wrap;
+  }
+
+  /* Rebuilding throws away the field you were typing in, and sync can
+     land at any moment, so put the caret back where it was. */
+  function brender(){
+    var act = document.activeElement, keep = null;
+    if (act && act.dataset && act.dataset.bf) {
+      var owner = act.closest('[data-bk]');
+      if (owner) keep = { k:owner.dataset.bk, f:act.dataset.bf, s:act.selectionStart };
+    }
+    Object.keys(bmounts).forEach(function(g){ bmounts[g].textContent = ''; });
+    brows().forEach(function(r){
+      var mount = bmounts[r.g] || bmounts.food;
+      if (mount) mount.appendChild(brow(r));
+    });
+    if (keep) {
+      var back = document.querySelector('[data-bk="' + keep.k + '"] [data-bf="' + keep.f + '"]');
+      if (back) { back.focus(); try { back.setSelectionRange(keep.s, keep.s); } catch (e) {} }
+    }
+    brecalc();
+  }
+
+  function brecalc(){
+    var per = {}, planned = 0, spent = 0, now = 0;
+    Object.keys(bmounts).forEach(function(g){ per[g] = 0; });
+    brows().forEach(function(r){
+      var eff = r.a === null ? r.p : r.a;
+      planned += r.p;
+      if (r.a !== null) spent += r.a;
+      now += eff;
+      if (per[r.g] === undefined) per[r.g] = 0;
+      per[r.g] += eff;
+    });
+    Object.keys(per).forEach(function(g){
+      var a = document.querySelector('[data-subtotal="' + g + '"]');
+      var b = document.querySelector('[data-summary="' + g + '"]');
+      if (a) a.textContent = bmoney(per[g]);
+      if (b) b.textContent = bmoney(per[g]);
+    });
+    document.getElementById('grand-total').textContent = bmoney(now);
+    document.getElementById('per-person').textContent = bmoney(now / 2) + ' per person';
+    document.getElementById('per-day').textContent = bmoney(now / 8);
+    document.getElementById('bud-planned').textContent = bmoney(planned);
+    document.getElementById('bud-spent').textContent = spent ? bmoney(spent) : 'nothing yet';
+    var vs = document.getElementById('bud-vs'), diff = Math.round(now - planned);
+    vs.textContent = diff === 0 ? 'on the money' : (diff > 0 ? '+' + bmoney(diff) + ' over' : bmoney(-diff) + ' under');
+    vs.className = diff > 0 ? 'font-semibold text-amber-300' : (diff < 0 ? 'font-semibold text-emerald-300' : 'font-semibold');
+  }
+
+  document.querySelectorAll('[data-badd]').forEach(function(form){
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      var name = form.querySelector('input[type=text]').value.trim();
+      if (!name) return;
+      var amt = form.querySelector('input[type=number]');
+      var last = brows().reduce(function(m, r){ return Math.max(m, r.o); }, 0);
+      bput({ k:'u' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+             g:form.dataset.badd, t:name.slice(0, 80), n:'', p:bnum(amt.value) || 0, a:null, o:last + 10 });
+      form.reset();
+      brender();
+    });
   });
+
   document.getElementById('reset-budget').addEventListener('click', function(){
-    inputs.forEach(function(i){ i.value = defaults[i.dataset.b]; del('bud:'+i.dataset.b); });
-    recalc();
+    if (!window.confirm('Put the original figures back and clear everything spent against them? Rows you added are kept.')) return;
+    bseed(true);
+    brender();
   });
+
+  bseed(false);
+  brender();
 
   /* ── keeping the ticks ──────────────────────────────────────────
      Safari clears script-writable storage for sites left unvisited for

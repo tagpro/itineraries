@@ -59,6 +59,11 @@ class of mistake that a browser hides until someone is on a mountain.
 - **A section the menu opens must carry `.pane`, and every `.pane` needs a menu
   row.** One section shows at a time; a mismatch either leaves two on screen at
   once or strands a section nothing can reach. `check.py` fails on both.
+- **A seeded budget row is stamped at the epoch, not at `Date.now()`.** Every
+  phone seeds every row, so a seed carrying a current clock beats edits another
+  phone made earlier — the second phone to join silently undoes the first
+  one's work. Defaults must lose every merge; only a real edit gets a real
+  stamp.
 
 ### `app.css` is generated
 

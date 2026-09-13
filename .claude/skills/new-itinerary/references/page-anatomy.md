@@ -28,11 +28,11 @@ person can read end to end before trusting it.
 | Where | What | Why |
 |---|---|---|
 | folder name | the trip slug | It **is** the API trip id — the sync module reads it off the URL path. Must match `[a-z0-9][a-z0-9-]{0,63}` |
-| `index.html` script | `var NS = '…:'` | localStorage is per-origin, not per-folder. Two trips sharing a prefix tick each other's boxes |
+| `app.js` | `var NS = '…:'` | localStorage is per-origin, not per-folder. Two trips sharing a prefix tick each other's boxes |
 | `sw.js` | `const PREFIX` | CacheStorage is per-origin too, and `activate` deletes this trip's *older* caches. The prefix is what keeps it from deleting another trip's — see below |
 | `sw.js` | `const VERSION` | `PREFIX + '-vN'`. Bump on every asset change |
-| `index.html` script | the `TRIP` fallback | Only used when the path has no usable segment. Keep it equal to the slug |
-| `index.html` script | `var start = new Date(…)` | The countdown, in the destination's offset |
+| `app.js` | the `TRIP` fallback | Only used when the path has no usable segment. Keep it equal to the slug |
+| `app.js` | `var start = new Date(…)` | The countdown, in the destination's offset |
 | `<head>` | title, description, theme-color, apple-mobile-web-app-title | The title shows on the home screen |
 | `manifest.webmanifest` | name, short_name, description, lang, colours, shortcuts | Shortcut URLs must name a section the menu opens, or the shortcut lands on the default section instead |
 | `icons/` | all four PNGs | |

@@ -22,9 +22,10 @@ test/                       browser tests for the pages — test/README.md
 .claude/skills/             skills for working here
 ```
 
-Nothing is generated at read time. Every trip page is one `index.html` with an
-inline `<style>` and one inline `<script>`, a pre-compiled `app.css`, and its
-own fonts and icons. No CDN, no framework, no bundler.
+Nothing is generated at read time. A trip page is `index.html` with an inline
+`<style>`, its behaviour in `app.js`, a pre-compiled `app.css`, and its own
+fonts and icons. No CDN, no framework, no bundler — `app.js` is one IIFE of
+plain JavaScript with no imports, served as it is written.
 
 ## Adding or changing a trip page
 
@@ -78,10 +79,19 @@ them.
   one's work. Defaults must lose every merge; only a real edit gets a real
   stamp.
 
+### `app.js` is loaded and precached
+
+Splitting the script out gave the page three things that must agree:
+`index.html` loads it, `sw.js` precaches `./app.js`, and
+`build/tailwind.config.js` scans it. Miss the second and the page works
+perfectly until the signal goes; miss the third and every class the script
+applies drops out of the stylesheet. `check.py` fails on all three.
+
 ### `app.css` is generated
 
 Do not hand-edit it, and never assemble a class name from fragments at runtime
-— Tailwind only emits classes it can see as literal strings in `index.html`.
+— Tailwind only emits classes it can see written out in full, and it scans
+`index.html` and `app.js`.
 `<slug>/build/README.md` has the rebuild command; run it after any markup
 change, then bump `VERSION` in `sw.js` or installed copies keep the old page.
 

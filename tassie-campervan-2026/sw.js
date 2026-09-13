@@ -13,6 +13,7 @@ const SHELL = [
   './',
   './index.html',
   './app.css',
+  './app.js',
   './manifest.webmanifest',
   './fonts/outfit.woff2',
   './fonts/playfair.woff2',

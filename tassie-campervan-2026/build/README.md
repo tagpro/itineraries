@@ -12,9 +12,11 @@ npx tailwindcss@3.4.17 -c tailwind.config.js -i app.src.css -o tw.css --minify
 cat fonts.css tw.css > ../app.css && rm tw.css
 ```
 
-Tailwind only emits classes it can see, and it scans `../index.html` — inline
-`<script>` included. So any class name the JS applies must appear as a literal
-string in that file, never assembled from fragments at runtime.
+Tailwind only emits classes it can see, and it scans `../index.html` **and
+`../app.js`** — most of the page's classes are applied from the script. So any
+class name must appear written out in full, never assembled from fragments at
+runtime. Scanning JavaScript costs the odd false positive (`addEventListener('blur',
+…)` emits a `.blur` rule); a few unused bytes beat a missing style.
 
 ## Fonts
 

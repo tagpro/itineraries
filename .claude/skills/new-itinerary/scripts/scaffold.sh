@@ -58,15 +58,19 @@ def sub(path, pairs):
     p.write_text(s, encoding="utf-8")
 
 sub("index.html", [
+    ("<title>Tasmania · Campervan, then Hobart · 12–19 Sep 2026</title>", f"<title>{e_title}</title>"),
+    ('<meta name="apple-mobile-web-app-title" content="Tassie Van">',
+     f'<meta name="apple-mobile-web-app-title" content="{e_short}">'),
+])
+
+# The page's behaviour lives in app.js, so the per-trip constants do too.
+sub("app.js", [
     # localStorage is shared across the whole origin; this prefix is what keeps
     # one trip's ticks out of another's.
     ("var NS = 'tassie-camper-2026:';", f"var NS = '{slug}:';"),
     # Only reached when the URL has no usable path segment.
     ("? seg : 'tassie-campervan-2026';", f"? seg : '{slug}';"),
     ("new Date('2026-09-12T09:00:00+10:00')", f"new Date('{start}T09:00:00{offset}')"),
-    ("<title>Tasmania · Campervan, then Hobart · 12–19 Sep 2026</title>", f"<title>{e_title}</title>"),
-    ('<meta name="apple-mobile-web-app-title" content="Tassie Van">',
-     f'<meta name="apple-mobile-web-app-title" content="{e_short}">'),
 ])
 
 # CacheStorage is per-origin. activate deletes this trip's older caches and

@@ -53,18 +53,39 @@ def main(slug: str) -> int:
         fails.append(f"{slug}/ does not exist")
         return report()
 
-    for r in ["index.html", "app.css", "sw.js", "manifest.webmanifest",
+    for r in ["index.html", "app.js", "app.css", "sw.js", "manifest.webmanifest",
               "fonts/outfit.woff2", "fonts/playfair.woff2", "icons/icon-192.png",
               "icons/icon-512.png", "icons/icon-maskable-512.png",
               "icons/apple-touch-icon.png"]:
         if not (d / r).exists():
             fails.append(f"missing {slug}/{r}")
 
-    html = (d / "index.html").read_text(encoding="utf-8") if (d / "index.html").exists() else ""
-    sw = (d / "sw.js").read_text(encoding="utf-8") if (d / "sw.js").exists() else ""
-    # The page's own script selects on these attributes, so scanning the whole
-    # file would count every selector string as a declaration.
-    markup = re.sub(r"<script\b.*?</script>", "", html, flags=re.S)
+    def read(name: str) -> str:
+        f = d / name
+        return f.read_text(encoding="utf-8") if f.exists() else ""
+
+    page = read("index.html")
+    script = read("app.js")
+    sw = read("sw.js")
+    # Most checks want both files; the ones that read the DOM want only the
+    # markup, with script tags taken out so a selector string in an inline
+    # script is not mistaken for a declaration in the page.
+    html = page + "\n" + script
+    markup = re.sub(r"<script\b.*?</script>", "", page, flags=re.S)
+
+    # The behaviour is in app.js, so the page has to load it and the worker has
+    # to precache it. Miss the second and the page works until the signal goes.
+    if script:
+        if 'src="app.js"' not in page:
+            fails.append("index.html does not load app.js — the page would render and do "
+                         "nothing at all")
+        if "'./app.js'" not in sw:
+            fails.append("sw.js does not precache ./app.js — the page works online and is "
+                         "dead the moment it is not")
+        cfg = d / "build" / "tailwind.config.js"
+        if cfg.exists() and "app.js" not in cfg.read_text(encoding="utf-8"):
+            fails.append("build/tailwind.config.js does not scan ../app.js — Tailwind only "
+                         "emits classes it can see, and the script applies most of them")
 
     # ── the two that fail silently ────────────────────────────────────────
     ns = first(r"var NS = '([^']+)'", html)

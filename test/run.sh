@@ -53,6 +53,7 @@ wait_for http://127.0.0.1:8099/$TRIP/ || { echo "the site never came up"; exit 1
 
 if [ "$WHICH" = all ] || [ "$WHICH" = page ]; then
   run test/page.test.mjs "http://127.0.0.1:8099/$TRIP/" "http://127.0.0.1:8096/$TRIP/"
+  run test/peninsula.test.mjs "http://127.0.0.1:8099/$TRIP/"
 fi
 
 if [ "$WHICH" = all ] || [ "$WHICH" = sync ]; then

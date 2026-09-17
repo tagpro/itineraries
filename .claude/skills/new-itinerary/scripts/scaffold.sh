@@ -77,7 +77,7 @@ sub("app.js", [
 # leaves other trips' alone, which only works if the prefix is this trip's.
 sub("sw.js", [
     ("const PREFIX  = 'tassie';", f"const PREFIX  = '{slug}';"),
-    ("PREFIX + '-v12'", "PREFIX + '-v1'"),
+    ("PREFIX + '-v13'", "PREFIX + '-v1'"),
     ("/* Tassie Campervan — offline service worker.", f"/* {short} — offline service worker."),
 ])
 

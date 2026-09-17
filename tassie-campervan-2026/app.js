@@ -797,6 +797,349 @@
   bseed(false);
   brender();
 
+
+  /* ── Friday on the peninsula ─────────────────────────────────────
+     A day you assemble rather than follow. Every stop worth making is
+     here whether or not it fits, because which ones to drop is the
+     traveller's call and not the page's — the clock warns, it never
+     filters.
+
+     Distances come from a small graph of road legs rather than a time
+     for every pair of places: the peninsula is one spine with spurs,
+     and a table of thirty-by-thirty invented numbers would be fiction.
+     The spine legs are the ones already measured on this page; the
+     spurs are estimates, and the page says so.
+
+     The map is drawn from published coordinates on an equirectangular
+     projection — longitude scaled by cos(latitude), which at this size
+     is true enough that what looks near is near. No tiles, so it works
+     with no signal. */
+  var PEN = 'pen:plan';
+  var PEN_START = 8 * 60 + 30;
+  var PEN_HOME = 18 * 60;
+  var PEN_PLACES = [
+    { id:"hotel", n:"ibis Styles, Macquarie St", s:"Hobart", lat:-42.8837, lng:147.3283, stay:0, tags:["start"], note:"Out through Sorell on the A3, then the A9 the whole way. Sealed, all of it." },
+    { id:"sorell", n:"Sorell", s:"Sorell", lat:-42.783, lng:147.567, stay:15, tags:["food", "free"], note:"Last supermarket and the last certain fuel. The peninsula is thin on servos — fill here." },
+    { id:"richmond", n:"Richmond", s:"Richmond", lat:-42.736, lng:147.438, stay:75, tags:["history", "cafe", "free", "photo-spot"], note:"Australia's oldest bridge still in use, and a gaol older than Port Arthur — the earlier system, not more of the same. Only worth it if you clear Port Arthur by 15:00; the village shuts early in low season. Richmond Bakery serves until 18:00, the latest anywhere on this route." },
+    { id:"bluelagoon", n:"Blue Lagoon Oysters, Boomer Bay", s:"Blue Lagoon", lat:-42.855, lng:147.845, stay:25, tags:["food", "local-favourite", "quirky"], note:"A working farm gate, shucked to order. They sell the Angasi — the native Tasmanian oyster — and its season runs late May to late September, so today sits inside it with a fortnight to spare. Wed–Sun 10:00–16:00. Ring ahead for Angasi." },
+    { id:"bangor", n:"Bangor Vineyard Shed, Dunalley", s:"Bangor", lat:-42.885, lng:147.805, stay:75, tags:["food", "cafe", "local-favourite"], note:"Oysters pulled from the bay in front of the building. Seven days 10:00–17:00, kitchen closes 16:00, shut only two days a year — the most weatherproof stop on the route. No booking needed at the bar." },
+    { id:"dunalley", n:"Dunalley", s:"Dunalley", lat:-42.883, lng:147.8, stay:20, tags:["food", "free"], note:"The swing bridge over the Denison Canal. The bakery is known for its scallop pie, though reviews split hard on the coffee. The Fish Market opens at noon, so it is no use outbound." },
+    { id:"pirateslookout", n:"Pirates Bay Lookout", s:"Pirates Bay", lat:-43.005, lng:147.928, stay:20, tags:["must-see", "lookout", "cafe", "free", "photo-spot"], note:"The orientation stop — the whole sweep of the bay, with Cape Hauy and Cape Pillar down the coast. Cubed Espresso is parked on it, a solar-powered 1957 caravan pouring beans roasted on the peninsula. Thursday to Monday from 09:00; sources differ on whether it shuts at 15:00 or 16:00." },
+    { id:"tessellated", n:"Tessellated Pavement", s:"Pavement", lat:-43.0105, lng:147.933, stay:40, tags:["must-see", "short walk", "free", "tide-dependent", "photo-spot"], note:"Not a pavement and not man-made: siltstone fractured into a grid, then etched by salt into hollow pans and domed loaves. Wants LOW tide — the pans hold water and the whole grid reads; at high water you are looking at the sea. Check the tide tonight. East-facing, so it takes morning light. Slippery when wet." },
+    { id:"dogline", n:"The Dog Line & Officers Quarters", s:"Dog Line", lat:-43.0225, lng:147.92, stay:25, tags:["history", "free", "short walk", "wet-weather-ok"], note:"Thirty metres of sand was all that held the peninsula, so they chained a line of dogs across it. The 1832 Officers Quarters behind is said to be the oldest timber military building in Australia — free museum, 09:00–17:00 — and it explains the semaphore relay that carried news of an escape to Hobart faster than a man could run." },
+    { id:"dootown", n:"Doo Town", s:"Doo Town", lat:-43.045, lng:147.945, stay:10, tags:["quirky", "free", "photo-spot"], note:"Thirty-odd shacks, almost all punning on Doo. It started in 1935 when Eric Round nailed up Doo I, his neighbour answered with Doo Me, and a third followed with Doo Us. Gunadoo, Love Me Doo, Rum Doo, Xanadu — and one holdout called Medhust. It is on the way to the Blowhole." },
+    { id:"blowhole", n:"The Blowhole & Doo-lishus", s:"Blowhole", lat:-43.034392, lng:147.947942, stay:30, tags:["food", "lookout", "free", "quirky"], note:"A collapsed sea tunnel, and the van in the car park half of Tasmania will tell you about — scallop pie, venison pie, berry ice cream. Carry cash. Two caveats today: the swell is running west-southwest and this coast faces east, so the blowhole may do nothing; and nobody could confirm the van has reopened for the season. 0437 469 412." },
+    { id:"tasmanarch", n:"Tasman Arch & Devils Kitchen", s:"Tasman Arch", lat:-43.042071, lng:147.950548, stay:0, tags:["closed"], note:"CLOSED 15 April to 29 September for a rebuild, and the extension covers today. The clifftop track to Waterfall Bay is shut from this end too." },
+    { id:"waterfallbay", n:"Waterfall Bay lookout", s:"Waterfall Bay", lat:-43.065, lng:147.96, stay:0, tags:["gravel"], note:"Seven kilometres of gravel to reach it, and the walk-in from Tasman Arch is closed today. Out of reach on both counts. What lies under it: Cathedral Cave, described as the largest sea cave system in Australia." },
+    { id:"taranna", n:"Taranna & the Chocolate Foundry", s:"Taranna", lat:-43.057, lng:147.852, stay:25, tags:["food", "history", "quirky", "wet-weather-ok"], note:"Federation Chocolate has LEFT Taranna for Richmond, though half the official listings still send you here. What is at 3 South Street now is the Tasmanian Chocolate Foundry, 10:00–16:00 daily, with viewing windows onto the floor. Taranna was also the end of Australia's first railway — convicts pushed the carriages to Port Arthur, some in leg irons." },
+    { id:"unzoo", n:"Tasmanian Devil Unzoo", s:"Unzoo", lat:-43.05, lng:147.9, stay:105, tags:["ticketed", "kid-friendly", "wet-weather-ok"], note:"No perimeter fence — the animals come and go. The only place on the route you will reliably see a devil. About $39 each. Reviewers split hard, and the one useful tip is to arrive after 14:00, when something happens every half hour and feeding is around 16:00." },
+    { id:"koonya", n:"Koonya", s:"Koonya", lat:-43.07, lng:147.8, stay:10, tags:["history", "free"], note:"An 1841 probation station whose cell block and officers' quarters were restored in the eighties and stand in plain view from the road. It was called Cascades until 1887, when the name was changed deliberately to scrub off the convict stain." },
+    { id:"premaydena", n:"Premaydena & Impression Bay", s:"Premaydena", lat:-43.03, lng:147.79, stay:20, tags:["history", "free", "tide-dependent", "lookout"], note:"An agricultural station with 445 convicts by 1851, and where the typhus ship Persian was towed in 1857 after Hobart refused her. At low tide the timbers of the original rail jetty show in the bay. Cresting Premaydena Hill on the way gives you Norfolk Bay, the Forestier Peninsula and, on a clear day, Maria Island." },
+    { id:"coalmines", n:"Coal Mines Historic Site", s:"Coal Mines", lat:-42.988141, lng:147.714598, stay:90, tags:["history", "must-see", "short walk", "free", "local-favourite"], note:"Where Port Arthur sent the men it had given up on. Eighteen underground solitary cells, and mine shafts now readable as circular dips in the paddock. Free, unstaffed and usually empty, which after a morning in Port Arthur's crowds is the entire point. Sources disagree on the last few kilometres — two say sealed to the entrance, others report gravel. You will see the seal end if it does." },
+    { id:"nubeena", n:"Nubeena", s:"Nubeena", lat:-43.1, lng:147.75, stay:15, tags:["food", "free"], note:"The peninsula's actual town — two IGAs, a chemist, fuel, toilets. The bakery shuts at 15:00, the earliest closer on the route." },
+    { id:"whitebeach", n:"White Beach", s:"White Beach", lat:-43.11, lng:147.74, stay:15, tags:["beach", "free", "photo-spot"], note:"Two and a half kilometres of white sand on Wedge Bay, small waves, usually the warmest water on the peninsula. You can pull off the road straight onto it, so it costs two minutes." },
+    { id:"roaringbeach", n:"Roaring Beach", s:"Roaring Beach", lat:-43.11, lng:147.71, stay:45, tags:["beach", "short walk", "photo-spot", "free"], note:"The opposite of the sheltered east coast — a wild south-west-facing surf beach, big dunes, 400 m from the car park. Rips are strong and swimming is not recommended; this is a beach to look at. The final approach surface could not be confirmed." },
+    { id:"lavender", n:"Port Arthur Lavender", s:"Lavender", lat:-43.1191, lng:147.86, stay:50, tags:["cafe", "food", "free", "wet-weather-ok"], note:"Eighteen acres of lavender, rainforest and lakes on Long Bay, five minutes short of the Historic Site. April to November it opens 10:00–16:00 — the only place on the route publishing its low-season hours, which is why it is the safest lunch. Be realistic: lavender flowers December to February. Today it is a good café with a view of green rows." },
+    { id:"portarthur", n:"Port Arthur Historic Site", s:"Port Arthur", lat:-43.14639, lng:147.85139, stay:240, tags:["must-see", "history", "ticketed", "long walk", "cafe", "wet-weather-ok"], note:"Thirty-odd buildings across forty hectares above the water. $55 each, valid two consecutive days, including the 20-minute harbour cruise, the audio guide and the free guide talks. Book online tonight — the cruise time is chosen at checkout now, not claimed at the desk. Four hours is fair; you could spend six. The Asylum Café is down on the grounds, 11:30–15:30, so lunch need not cost you the walk back up." },
+    { id:"stewartsbay", n:"Stewarts Bay", s:"Stewarts Bay", lat:-43.14, lng:147.86, stay:30, tags:["beach", "short walk", "free"], note:"Sheltered and clear, with a coastal track linking it to the Historic Site — the place to decompress either side of Port Arthur without getting back in the car. Reviewers warn the track is overgrown in places and snakey, which matters in September." },
+    { id:"safetycove", n:"Safety Cove Beach", s:"Safety Cove", lat:-43.175, lng:147.855, stay:30, tags:["beach", "photo-spot", "free"], note:"Four kilometres south of Port Arthur on the road you are already taking. White sand, usually calm, and the view is out to Tasman Island and the western side of Cape Pillar — the coastline the boat cruise sells you, from a beach, for nothing. The final spur's surface is unconfirmed." },
+    { id:"remarkable", n:"Remarkable Cave & Maingon Blowhole", s:"Remarkable Cave", lat:-43.187245, lng:147.844382, stay:90, tags:["must-see", "short walk", "lookout", "free", "photo-spot"], note:"The stop that rescues the day, and sealed the entire way. A sea cave you look down into past 115 steps, and from the same car park a 3.4 km return walk to the Maingon Blowhole — easy, about an hour, and it hands you the Cape Raoul dolerite columns from a road your hire terms allow. Spring wildflowers start about now. Mt Brown continues from the same track if the legs want it." },
+    { id:"palmers", n:"Palmers Lookout", s:"Palmers", lat:-43.16, lng:147.83, stay:30, tags:["lookout", "free"], note:"Repeatedly named as worth it, and nobody could establish whether you can drive to it or what the access road is made of. Out until someone local says otherwise — the Maingon Blowhole gives comparable views on a road we know is sealed." },
+    { id:"capehauy", n:"Cape Hauy (Fortescue Bay)", s:"Cape Hauy", lat:-43.1307, lng:147.9703, stay:0, tags:["gravel"], note:"Twelve kilometres of gravel to the trailhead, confirmed by Parks and by AllTrails. The finest half-day walk in Tasmania, and the one thing here that matched Mount Amos. Worth a call to Simba: if the exclusion turns on gazetted roads rather than surface, this comes back." },
+    { id:"caperaoul", n:"Cape Raoul", s:"Cape Raoul", lat:-43.195255, lng:147.777145, stay:0, tags:["gravel"], note:"Gravel on Stormlea Road — sources say the last kilometre, or the last nine. Either breaches the terms. The full walk runs about five hours anyway and would not fit beside Port Arthur." }
+  ];
+  var PEN_LEGS = [
+    ["hotel","sorell",25],
+    ["sorell","richmond",12],
+    ["sorell","bluelagoon",18],
+    ["bluelagoon","dunalley",7],
+    ["dunalley","bangor",3],
+    ["sorell","dunalley",22],
+    ["dunalley","pirateslookout",25],
+    ["pirateslookout","tessellated",4],
+    ["tessellated","dogline",5],
+    ["dogline","dootown",6],
+    ["dootown","blowhole",4],
+    ["blowhole","tasmanarch",4],
+    ["tasmanarch","waterfallbay",12],
+    ["dogline","taranna",14],
+    ["taranna","unzoo",4],
+    ["taranna","koonya",8],
+    ["koonya","premaydena",8],
+    ["premaydena","coalmines",15],
+    ["premaydena","nubeena",10],
+    ["nubeena","whitebeach",6],
+    ["whitebeach","roaringbeach",8],
+    ["taranna","lavender",8],
+    ["lavender","portarthur",5],
+    ["portarthur","stewartsbay",4],
+    ["portarthur","safetycove",6],
+    ["safetycove","remarkable",4],
+    ["portarthur","palmers",12],
+    ["nubeena","portarthur",14],
+    ["blowhole","capehauy",25],
+    ["remarkable","caperaoul",40],
+    ["portarthur","hotel",78]
+  ];
+
+  var penById = {};
+  PEN_PLACES.forEach(function(p){ penById[p.id] = p; });
+  var penAdj = {};
+  PEN_LEGS.forEach(function(l){
+    (penAdj[l[0]] = penAdj[l[0]] || []).push([l[1], l[2]]);
+    (penAdj[l[1]] = penAdj[l[1]] || []).push([l[0], l[2]]);
+  });
+  function penRuledOut(p){
+    if (p.tags.indexOf('closed') >= 0) return 'closed today';
+    if (p.tags.indexOf('gravel') >= 0) return 'gravel — your hire terms';
+    return null;
+  }
+
+  /* Shortest driving time from one place to all the others. Dijkstra over
+     thirty nodes costs nothing, and it beats inventing a number for two
+     places no road directly joins. */
+  function penTimes(from){
+    var dist = {}, seen = {};
+    PEN_PLACES.forEach(function(p){ dist[p.id] = Infinity; });
+    dist[from] = 0;
+    for (;;) {
+      var best = null;
+      Object.keys(dist).forEach(function(k){
+        if (!seen[k] && dist[k] < Infinity && (best === null || dist[k] < dist[best])) best = k;
+      });
+      if (best === null) break;
+      seen[best] = true;
+      (penAdj[best] || []).forEach(function(e){
+        if (dist[best] + e[1] < dist[e[0]]) dist[e[0]] = dist[best] + e[1];
+      });
+    }
+    return dist;
+  }
+
+  function penPlan(){
+    try {
+      var v = JSON.parse(get(PEN) || 'null');
+      if (Object.prototype.toString.call(v) === '[object Array]') {
+        return v.filter(function(id){ return penById[id]; });
+      }
+    } catch (e) {}
+    return [];
+  }
+  function penSave(list){ set(PEN, JSON.stringify(list)); penRender(); }
+  function penAt(){ var l = penPlan(); return l.length ? l[l.length - 1] : 'hotel'; }
+  function penClock(m){
+    var h = Math.floor(m / 60) % 24, mm = m % 60;
+    return (h < 10 ? '0' : '') + h + ':' + (mm < 10 ? '0' : '') + mm;
+  }
+  // Where the day lands, including getting home from wherever it ends.
+  function penFinish(){
+    var list = penPlan(), at = 'hotel', t = PEN_START;
+    list.forEach(function(id){
+      t += penTimes(at)[id] + penById[id].stay;
+      at = id;
+    });
+    return { end: t, home: t + penTimes(at)['hotel'], at: at };
+  }
+
+  var penFilter = null;
+  var penTagList = ['must-see','lookout','short walk','history','beach','cafe','food',
+                    'free','ticketed','photo-spot','local-favourite','quirky',
+                    'tide-dependent','wet-weather-ok','kid-friendly'];
+
+  /* Twenty-eight pins in a peninsula that is mostly one road means labels
+     land on top of each other. Try above the pin, then below, then out to
+     each side, and if every one of those is taken, leave the pin unlabelled
+     rather than print mush — it is still tappable, and the list below names
+     everything anyway. */
+  var PEN_FS = 21;
+  function penLabelSpot(text, cx, cy, r, W, H, taken){
+    var w = text.length * PEN_FS * 0.55, h = PEN_FS;
+    var tries = [
+      { x:cx, y:cy - r - 9,      anchor:'middle', x0:cx - w / 2, y0:cy - r - 9 - h },
+      { x:cx, y:cy + r + h + 3,  anchor:'middle', x0:cx - w / 2, y0:cy + r + 3 },
+      { x:cx + r + 8, y:cy + 7,  anchor:'start',  x0:cx + r + 8, y0:cy + 7 - h },
+      { x:cx - r - 8, y:cy + 7,  anchor:'end',    x0:cx - r - 8 - w, y0:cy + 7 - h }
+    ];
+    for (var i = 0; i < tries.length; i++) {
+      var t = tries[i];
+      if (t.x0 < 2 || t.x0 + w > W - 2 || t.y0 < 2 || t.y0 + h > H - 2) continue;
+      var clash = false;
+      for (var k = 0; k < taken.length; k++) {
+        var o = taken[k];
+        if (t.x0 < o.x0 + o.w && t.x0 + w > o.x0 && t.y0 < o.y0 + o.h && t.y0 + h > o.y0) { clash = true; break; }
+      }
+      if (!clash) { taken.push({ x0:t.x0, y0:t.y0, w:w, h:h }); return t; }
+    }
+    return null;
+  }
+
+  function penMap(){
+    var wrap = document.getElementById('pen-map');
+    if (!wrap) return;
+    var shown = PEN_PLACES.filter(function(p){ return p.id !== 'hotel'; });
+    var lats = shown.map(function(p){ return p.lat; });
+    var lngs = shown.map(function(p){ return p.lng; });
+    var north = Math.max.apply(null, lats), south = Math.min.apply(null, lats);
+    var west = Math.min.apply(null, lngs), east = Math.max.apply(null, lngs);
+    var k = Math.cos((north + south) / 2 * Math.PI / 180);
+    var pad = 0.04;
+    var W = 1000;
+    var H = Math.round(W * ((north - south) + pad * 2) / (((east - west) + pad * 2) * k));
+    function X(lng){ return ((lng - west + pad) * k) / (((east - west) + pad * 2) * k) * W; }
+    function Y(lat){ return ((north - lat + pad) / ((north - south) + pad * 2)) * H; }
+
+    var here = penAt(), plan = penPlan(), out = [];
+    out.push('<svg viewBox="0 0 ' + W + ' ' + H + '" class="w-full block" style="background:#eef5f1" role="img" aria-label="Map of the stops between Hobart and Port Arthur">');
+    PEN_LEGS.forEach(function(l){
+      var a = penById[l[0]], b = penById[l[1]];
+      if (!a || !b || a.id === 'hotel' || b.id === 'hotel') return;
+      out.push('<line x1="' + X(a.lng).toFixed(1) + '" y1="' + Y(a.lat).toFixed(1) +
+               '" x2="' + X(b.lng).toFixed(1) + '" y2="' + Y(b.lat).toFixed(1) +
+               '" stroke="#b9cfc4" stroke-width="3" stroke-linecap="round"/>');
+    });
+    /* Seed the collision set with the pins themselves, or labels land on
+       top of circles that are not theirs. */
+    var taken = shown.map(function(q){
+      var qr = (q.id === here ? 15 : 11) + 3;
+      return { x0: X(q.lng) - qr, y0: Y(q.lat) - qr, w: qr * 2, h: qr * 2 };
+    });
+    var order = shown.slice().sort(function(a, b){
+      var rank = function(x){
+        return (x.id === here ? 0 : 0) + (penRuledOut(x) ? 2 : 0) +
+               (x.tags.indexOf('must-see') >= 0 ? -1 : 0);
+      };
+      return rank(a) - rank(b);
+    });
+    order.forEach(function(p){
+      var ruled = penRuledOut(p), been = plan.indexOf(p.id) >= 0, isHere = p.id === here;
+      var fill = ruled ? '#cbd5e1' : isHere ? '#b45309' : been ? '#94a3b8' : '#0f3d2e';
+      var r = isHere ? 15 : 11;
+      var cx = X(p.lng), cy = Y(p.lat);
+      out.push('<g class="pen-pin" data-pin="' + p.id + '" style="cursor:pointer">');
+      out.push('<circle cx="' + cx.toFixed(1) + '" cy="' + cy.toFixed(1) + '" r="' + (r + 10) + '" fill="transparent"/>');
+      out.push('<circle cx="' + cx.toFixed(1) + '" cy="' + cy.toFixed(1) + '" r="' + r + '" fill="' + fill + '" stroke="#ffffff" stroke-width="3"/>');
+      var spot = penLabelSpot(p.s, cx, cy, r, W, H, taken);
+      if (spot) {
+        out.push('<text x="' + spot.x.toFixed(1) + '" y="' + spot.y.toFixed(1) +
+                 '" text-anchor="' + spot.anchor + '" font-size="' + PEN_FS + '" font-weight="600" fill="#0f3d2e"' +
+                 ' stroke="#eef5f1" stroke-width="5" paint-order="stroke">' + p.s + '</text>');
+      }
+      out.push('</g>');
+    });
+    out.push('</svg>');
+    wrap.innerHTML = out.join('');
+    wrap.querySelectorAll('.pen-pin').forEach(function(g){
+      g.addEventListener('click', function(){ penGo(g.dataset.pin); });
+    });
+  }
+
+  function penGo(id){
+    var p = penById[id];
+    if (!p) return;
+    var ruled = penRuledOut(p);
+    if (ruled && !window.confirm(p.n + ' is ' + ruled + '. Add it anyway?')) return;
+    var list = penPlan();
+    list.push(id);
+    penSave(list);
+  }
+
+  function penRender(){
+    var list = penPlan(), here = penAt(), times = penTimes(here), fin = penFinish();
+
+    document.getElementById('pen-here').textContent = penById[here].n;
+    document.getElementById('pen-clock').textContent = penClock(fin.end);
+    var homeEl = document.getElementById('pen-home');
+    var over = fin.home > PEN_HOME;
+    homeEl.textContent = penClock(fin.home) + (over ? ' · over' : '');
+    homeEl.className = 'text-sm font-semibold ' + (over ? 'text-amber-700' : 'text-forest-800');
+
+    var mount = document.getElementById('pen-plan');
+    mount.textContent = '';
+    if (!list.length) {
+      mount.appendChild(bmk('p', 'px-4 py-3 text-sm text-slate-500', 'Nothing chosen yet. Leaving the hotel at 08:30.'));
+    }
+    var at = 'hotel', t = PEN_START;
+    list.forEach(function(id, i){
+      var drive = penTimes(at)[id], p = penById[id];
+      t += drive;
+      var row = bmk('div', 'px-4 py-3 flex items-start gap-3');
+      var col = bmk('div', 'flex-1 min-w-0');
+      col.appendChild(bmk('div', 'text-sm font-medium', penClock(t) + ' · ' + p.n));
+      col.appendChild(bmk('div', 'text-xs text-slate-500 mt-0.5', drive + ' min drive, then ' + p.stay + ' min here'));
+      row.appendChild(col);
+      if (i === list.length - 1) {
+        var undo = bmk('button', 'shrink-0 text-xs font-semibold text-red-600 hover:text-red-700 px-2 py-1', 'Undo');
+        undo.type = 'button';
+        undo.addEventListener('click', function(){ var l = penPlan(); l.pop(); penSave(l); });
+        row.appendChild(undo);
+      }
+      t += p.stay;
+      at = id;
+      mount.appendChild(row);
+    });
+
+    var next = document.getElementById('pen-next');
+    next.textContent = '';
+    var cands = PEN_PLACES.filter(function(p){
+      if (p.id === 'hotel' || p.id === here) return false;
+      if (penFilter && p.tags.indexOf(penFilter) < 0) return false;
+      return true;
+    }).sort(function(a, b){ return (times[a.id] || 9999) - (times[b.id] || 9999); });
+    document.getElementById('pen-count').textContent = cands.length + ' places';
+
+    cands.forEach(function(p){
+      var ruled = penRuledOut(p), been = list.indexOf(p.id) >= 0;
+      var mins = times[p.id] === Infinity ? null : times[p.id];
+      var row = bmk('div', 'px-4 py-3');
+      var head = bmk('div', 'flex items-baseline gap-2');
+      head.appendChild(bmk('div', 'text-sm font-medium flex-1 min-w-0', p.n));
+      head.appendChild(bmk('div', 'text-xs font-semibold text-slate-500 shrink-0', mins === null ? '—' : mins + ' min'));
+      row.appendChild(head);
+
+      var chips = bmk('div', 'flex flex-wrap gap-1 mt-1.5');
+      if (ruled) chips.appendChild(bmk('span', 'badge bg-red-100 text-red-800', ruled));
+      if (been) chips.appendChild(bmk('span', 'badge bg-slate-100 text-slate-600', 'been'));
+      p.tags.forEach(function(tag){
+        if (tag === 'closed' || tag === 'gravel' || tag === 'start') return;
+        var cls = tag === 'must-see' ? 'badge bg-forest-100 text-forest-800'
+                : tag === 'tide-dependent' ? 'badge bg-amber-100 text-amber-800'
+                : 'badge bg-sand-100 text-slate-600';
+        chips.appendChild(bmk('span', cls, tag));
+      });
+      row.appendChild(chips);
+      row.appendChild(bmk('p', 'text-[13px] text-slate-600 leading-relaxed mt-1.5', p.note));
+
+      var go = bmk('button', 'mt-2 text-xs font-semibold bg-forest-900 text-white px-3 py-2 rounded-lg hover:bg-forest-800',
+                   mins === null ? 'Go here' : 'Go here · arrive ' + penClock(fin.end + mins));
+      go.type = 'button';
+      go.addEventListener('click', function(){ penGo(p.id); });
+      row.appendChild(go);
+      next.appendChild(row);
+    });
+
+    penMap();
+  }
+
+  if (document.getElementById('pen-next')) {
+    var penTagWrap = document.getElementById('pen-tags');
+    penTagList.forEach(function(tag){
+      var b = bmk('button', 'badge bg-white border border-sand-200 text-slate-600 hover:bg-sand-50', tag);
+      b.type = 'button';
+      b.addEventListener('click', function(){
+        penFilter = (penFilter === tag) ? null : tag;
+        penTagWrap.querySelectorAll('button').forEach(function(x){
+          x.className = x.textContent === penFilter
+            ? 'badge bg-forest-900 text-white border border-forest-900'
+            : 'badge bg-white border border-sand-200 text-slate-600 hover:bg-sand-50';
+        });
+        penRender();
+      });
+      penTagWrap.appendChild(b);
+    });
+    document.getElementById('pen-reset').addEventListener('click', function(){ del(PEN); penRender(); });
+    penRender();
+  }
+
   /* ── keeping the ticks ──────────────────────────────────────────
      Safari clears script-writable storage for sites left unvisited for
      about a week, which spans the gap between packing and flying. Ask

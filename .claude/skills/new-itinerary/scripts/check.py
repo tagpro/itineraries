@@ -76,7 +76,9 @@ def main(slug: str) -> int:
     # The behaviour is in app.js, so the page has to load it and the worker has
     # to precache it. Miss the second and the page works until the signal goes.
     if script:
-        if 'src="app.js"' not in page:
+        # The page may cache-bust it as app.js?v=N, which is how a phone
+        # running an older worker is forced to fetch the matching script.
+        if 'src="app.js' not in page:
             fails.append("index.html does not load app.js — the page would render and do "
                          "nothing at all")
         if "'./app.js'" not in sw:

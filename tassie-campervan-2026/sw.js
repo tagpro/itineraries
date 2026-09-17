@@ -8,7 +8,7 @@
    every cache that is not this one — which is what this file used to do —
    wipes the offline copy of whichever trip was installed first. */
 const PREFIX  = 'tassie';
-const VERSION = PREFIX + '-v13';
+const VERSION = PREFIX + '-v14';
 const SHELL = [
   './',
   './index.html',
@@ -75,7 +75,28 @@ self.addEventListener('fetch', function (e) {
     return;
   }
 
-  // Assets: cache first, refresh in the background.
+  /* app.js and app.css must match the page that asked for them. Navigations
+     are network-first, so serving either of these from cache hands a fresh
+     index.html an old script — and that fails silently: the new sections are
+     simply blank, with no error anywhere. Network first, cache as the
+     fallback, so offline still works. ignoreSearch because the page asks for
+     app.js?v=N and the precache holds it unversioned. */
+  if (/\/app\.(js|css)$/.test(url.pathname)) {
+    e.respondWith(
+      fetch(req).then(function (res) {
+        if (res && res.status === 200 && res.type === 'basic') {
+          var copy = res.clone();
+          caches.open(VERSION).then(function (c) { c.put(req, copy); });
+        }
+        return res;
+      }).catch(function () {
+        return caches.match(req, { ignoreSearch: true });
+      })
+    );
+    return;
+  }
+
+  // Everything else: cache first, refresh in the background.
   e.respondWith(
     caches.match(req).then(function (hit) {
       var net = fetch(req).then(function (res) {

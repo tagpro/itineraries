@@ -22,15 +22,20 @@
   function set(k,v){ try { localStorage.setItem(NS+k,v); } catch(e){} }
   function del(k){ try { localStorage.removeItem(NS+k); } catch(e){} }
 
-  /* ── countdown ── */
+  /* ── countdown ──────────────────────────────────────────────────
+     The trip has two ends, and both matter. Counting only from the
+     start and guessing at a length is how the header came to announce
+     'trip done' on the Friday, with two days still to run. */
   var start = new Date('2026-09-12T09:00:00+10:00');
-  var days = Math.ceil((start - new Date()) / 86400000);
+  var finish = new Date('2026-09-19T18:00:00+10:00');
+  var now = new Date();
+  var days = Math.ceil((start - now) / 86400000);
   var cd = document.getElementById('cd-num');
   var lbl = document.querySelector('#countdown div:last-child');
-  if (days > 1) { cd.textContent = days; }
-  else if (days === 1) { cd.textContent = '1'; }
-  else if (days > -5) { cd.textContent = '🚐'; lbl.textContent = 'on the road'; }
-  else { cd.textContent = '✓'; lbl.textContent = 'trip done'; }
+  if (now >= finish) { cd.textContent = '✓'; lbl.textContent = 'trip done'; }
+  else if (now >= start) { cd.textContent = '🚐'; lbl.textContent = 'on the road'; }
+  else if (days <= 1) { cd.textContent = '1'; }
+  else { cd.textContent = days; }
 
   /* ── sections and the side menu ──────────────────────────────────
      One section is on screen at a time, and the menu is the only way
@@ -973,6 +978,15 @@
     return null;
   }
 
+  /* The day's stops are not evenly spread: two dozen sit on the peninsula
+     and a handful trail back up the highway to Richmond. Fitting all of
+     them squeezes the part you are actually driving into a corner, so the
+     map opens on the peninsula and you pan or zoom out for the rest.
+     Panning moves the viewBox rather than re-rendering, so labels grow as
+     you zoom in instead of staying eight pixels tall. */
+  var penView = null, penFull = null;
+  var PEN_PENINSULA = -42.96;   // everything south of this is the day proper
+
   function penMap(){
     var wrap = document.getElementById('pen-map');
     if (!wrap) return;
@@ -988,8 +1002,23 @@
     function X(lng){ return ((lng - west + pad) * k) / (((east - west) + pad * 2) * k) * W; }
     function Y(lat){ return ((north - lat + pad) / ((north - south) + pad * 2)) * H; }
 
+    if (!penView) {
+      var core = shown.filter(function(q){ return q.lat <= PEN_PENINSULA; });
+      if (core.length < 3) core = shown;
+      var cx0 = Math.min.apply(null, core.map(function(q){ return X(q.lng); }));
+      var cx1 = Math.max.apply(null, core.map(function(q){ return X(q.lng); }));
+      var cy0 = Math.min.apply(null, core.map(function(q){ return Y(q.lat); }));
+      var cy1 = Math.max.apply(null, core.map(function(q){ return Y(q.lat); }));
+      var m = 150;   // room for a label that has to sit left of its pin
+      penView = { x: cx0 - m, y: cy0 - m, w: (cx1 - cx0) + m * 2, h: (cy1 - cy0) + m * 2 };
+    }
+    penFull = { x: 0, y: 0, w: W, h: H };
+
     var here = penAt(), plan = penPlan(), out = [];
-    out.push('<svg viewBox="0 0 ' + W + ' ' + H + '" class="w-full block" style="background:#eef5f1" role="img" aria-label="Map of the stops between Hobart and Port Arthur">');
+    out.push('<svg id="pen-svg" viewBox="' + penView.x.toFixed(1) + ' ' + penView.y.toFixed(1) + ' ' +
+             penView.w.toFixed(1) + ' ' + penView.h.toFixed(1) + '" class="w-full block" ' +
+             'style="background:#eef5f1;touch-action:none" role="img" ' +
+             'aria-label="Map of the stops between Hobart and Port Arthur">');
     PEN_LEGS.forEach(function(l){
       var a = penById[l[0]], b = penById[l[1]];
       if (!a || !b || a.id === 'hotel' || b.id === 'hotel') return;
@@ -1028,9 +1057,93 @@
     });
     out.push('</svg>');
     wrap.innerHTML = out.join('');
-    wrap.querySelectorAll('.pen-pin').forEach(function(g){
-      g.addEventListener('click', function(){ penGo(g.dataset.pin); });
+    var svg = wrap.querySelector('svg');
+
+    /* A tap on a pin picks it; a drag moves the map. Telling them apart is
+       the whole trick — without the distance test every pan that starts on
+       a pin adds a stop you did not choose. */
+    var down = null, moved = false, pointers = {}, pinch = null;
+    function apply(){
+      svg.setAttribute('viewBox', penView.x.toFixed(1) + ' ' + penView.y.toFixed(1) + ' ' +
+                                  penView.w.toFixed(1) + ' ' + penView.h.toFixed(1));
+    }
+    function zoom(factor, ox, oy){
+      var nw = Math.min(penFull.w * 1.6, Math.max(penFull.w / 14, penView.w * factor));
+      var scale = nw / penView.w;
+      penView.x = ox - (ox - penView.x) * scale;
+      penView.y = oy - (oy - penView.y) * scale;
+      penView.w = nw;
+      penView.h = penView.h * scale;
+      apply();
+    }
+    function toUser(ev){
+      var r = svg.getBoundingClientRect();
+      return { x: penView.x + (ev.clientX - r.left) / r.width * penView.w,
+               y: penView.y + (ev.clientY - r.top) / r.height * penView.h };
+    }
+    svg.addEventListener('pointerdown', function(ev){
+      pointers[ev.pointerId] = ev;
+      if (Object.keys(pointers).length === 2) {
+        var ps = Object.keys(pointers).map(function(k){ return pointers[k]; });
+        pinch = { d: Math.hypot(ps[0].clientX - ps[1].clientX, ps[0].clientY - ps[1].clientY) };
+        return;
+      }
+      down = { x: ev.clientX, y: ev.clientY, vx: penView.x, vy: penView.y };
+      moved = false;
+      svg.setPointerCapture(ev.pointerId);
     });
+    svg.addEventListener('pointermove', function(ev){
+      if (pointers[ev.pointerId]) pointers[ev.pointerId] = ev;
+      var ids = Object.keys(pointers);
+      if (pinch && ids.length === 2) {
+        var a = pointers[ids[0]], b = pointers[ids[1]];
+        var d = Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY);
+        if (pinch.d > 0) {
+          var mid = toUser({ clientX: (a.clientX + b.clientX) / 2, clientY: (a.clientY + b.clientY) / 2 });
+          zoom(pinch.d / d, mid.x, mid.y);
+        }
+        pinch.d = d;
+        moved = true;
+        return;
+      }
+      if (!down) return;
+      var r = svg.getBoundingClientRect();
+      var dx = (ev.clientX - down.x) / r.width * penView.w;
+      var dy = (ev.clientY - down.y) / r.height * penView.h;
+      if (Math.abs(ev.clientX - down.x) + Math.abs(ev.clientY - down.y) > 6) moved = true;
+      penView.x = down.vx - dx;
+      penView.y = down.vy - dy;
+      apply();
+    });
+    function release(ev){
+      delete pointers[ev.pointerId];
+      if (Object.keys(pointers).length < 2) pinch = null;
+      down = null;
+    }
+    svg.addEventListener('pointerup', release);
+    svg.addEventListener('pointercancel', release);
+    svg.addEventListener('wheel', function(ev){
+      ev.preventDefault();
+      var u = toUser(ev);
+      zoom(ev.deltaY > 0 ? 1.15 : 0.87, u.x, u.y);
+    }, { passive: false });
+
+    wrap.querySelectorAll('.pen-pin').forEach(function(g){
+      g.addEventListener('click', function(){ if (!moved) penGo(g.dataset.pin); });
+    });
+
+    var bar = bmk('div', 'absolute top-2 right-2 flex gap-1');
+    [['\u2212', function(){ zoom(1.4, penView.x + penView.w / 2, penView.y + penView.h / 2); }],
+     ['+', function(){ zoom(0.7, penView.x + penView.w / 2, penView.y + penView.h / 2); }],
+     ['all', function(){ penView = { x:0, y:0, w:penFull.w, h:penFull.h }; apply(); }]
+    ].forEach(function(spec){
+      var b = bmk('button', 'text-xs font-semibold bg-white/90 border border-sand-200 text-slate-700 rounded-lg px-2.5 py-1.5 shadow-soft', spec[0]);
+      b.type = 'button';
+      b.setAttribute('aria-label', spec[0] === '+' ? 'Zoom in' : spec[0] === 'all' ? 'Show everything' : 'Zoom out');
+      b.addEventListener('click', spec[1]);
+      bar.appendChild(b);
+    });
+    wrap.appendChild(bar);
   }
 
   function penGo(id){

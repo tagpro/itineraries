@@ -95,6 +95,10 @@ if [ "$WHICH" = all ] || [ "$WHICH" = upgrade ]; then
       PIDS+=($!)
       if wait_for "http://127.0.0.1:8095/$TRIP/"; then
         run test/upgrade.test.mjs "http://127.0.0.1:8095/$TRIP/" "$TMP/old" "$REPO"
+        # Restore the released copy: upgrade.test.mjs overwrote it in place.
+        rm -rf "$TMP/old/$TRIP"
+        git archive "$BASE" "$TRIP" | tar -x -C "$TMP/old"
+        run test/stale-script.test.mjs "http://127.0.0.1:8095/$TRIP/" "$TMP/old" "$REPO"
       else
         echo "the old-version site never came up"; FAILED=1
       fi

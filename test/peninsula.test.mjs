@@ -35,13 +35,23 @@ r.ok('the coastline is drawn', land.subpaths >= 4, String(land.subpaths));
 r.ok('and covers more than the pins do', land.wide);
 r.ok('inland stops fall on land, not in the sea', land.ashore.length === 5, land.ashore.join(' | '));
 
-const nav = await pg.$$eval('#peninsula a[href*="google.com/maps"]', as => ({
-  n: as.length,
-  sample: as.find(a => decodeURIComponent(a.href).includes('Port Arthur Historic Site')) ? 'ok' : 'missing',
-  safe: as.every(a => a.rel.includes('noopener')),
-}));
-r.ok('every option offers Navigate', nav.n >= 28, String(nav.n));
-r.ok('and sends Google the place, not a guess', nav.sample === 'ok');
+/* Counting links across the whole section would pass with the status card's
+   own link missing, so each owner is asked for its one link separately. */
+const MAPS = 'a[href*="google.com/maps"]';
+const nav = await pg.evaluate(sel => {
+  const rows = [...document.querySelectorAll('#pen-next > div')];
+  const all = [...document.querySelectorAll('#peninsula ' + sel)];
+  return {
+    here: document.querySelectorAll('#pen-nav ' + sel).length,
+    rows: rows.length,
+    everyRow: rows.every(d => d.querySelectorAll(sel).length === 1),
+    sample: all.some(a => decodeURIComponent(a.href).includes('Port Arthur Historic Site')),
+    safe: all.every(a => a.rel.includes('noopener')),
+  };
+}, MAPS);
+r.ok('where you are now offers Navigate', nav.here === 1, String(nav.here));
+r.ok('and so does every option, exactly once', nav.rows === 28 && nav.everyRow, nav.rows + ' rows');
+r.ok('it sends Google the place, not a guess', nav.sample);
 r.ok('external links are opened safely', nav.safe);
 r.ok('options are listed', (await pg.locator('#pen-count').textContent()).includes('places'));
 r.ok('starts at the hotel', (await pg.locator('#pen-here').textContent()).includes('ibis'));

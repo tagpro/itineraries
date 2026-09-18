@@ -17,6 +17,32 @@ r.ok('the section opens', await pg.locator('#peninsula').isVisible());
 r.ok('the closure warning is up front', (await pg.locator('#peninsula').textContent()).includes('closed today'));
 const pins = await pg.$$eval('#pen-map .pen-pin', g => g.length);
 r.ok('the map draws every pin', pins === 28, String(pins));
+
+/* Land and pins go through one projection, so the cheapest way to prove they
+   still agree is to ask the SVG whether a pin falls inside the coastline. */
+const land = await pg.evaluate(() => {
+  const path = document.querySelector('#pen-svg path');
+  const on = id => {
+    const c = document.querySelector('.pen-pin[data-pin="' + id + '"] circle:last-of-type');
+    return path.isPointInFill(new DOMPoint(+c.getAttribute('cx'), +c.getAttribute('cy')));
+  };
+  const bb = path.getBBox();
+  return { subpaths: (path.getAttribute('d').match(/M/g) || []).length,
+           wide: bb.width > 1000 && bb.height > 1200,
+           ashore: ['portarthur', 'coalmines', 'nubeena', 'pirateslookout', 'richmond'].filter(on) };
+});
+r.ok('the coastline is drawn', land.subpaths >= 4, String(land.subpaths));
+r.ok('and covers more than the pins do', land.wide);
+r.ok('inland stops fall on land, not in the sea', land.ashore.length === 5, land.ashore.join(' | '));
+
+const nav = await pg.$$eval('#peninsula a[href*="google.com/maps"]', as => ({
+  n: as.length,
+  sample: as.find(a => decodeURIComponent(a.href).includes('Port Arthur Historic Site')) ? 'ok' : 'missing',
+  safe: as.every(a => a.rel.includes('noopener')),
+}));
+r.ok('every option offers Navigate', nav.n >= 28, String(nav.n));
+r.ok('and sends Google the place, not a guess', nav.sample === 'ok');
+r.ok('external links are opened safely', nav.safe);
 r.ok('options are listed', (await pg.locator('#pen-count').textContent()).includes('places'));
 r.ok('starts at the hotel', (await pg.locator('#pen-here').textContent()).includes('ibis'));
 r.ok('clock starts at 08:30', (await pg.locator('#pen-clock').textContent()) === '08:30');

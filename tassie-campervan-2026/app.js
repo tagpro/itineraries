@@ -823,35 +823,35 @@
   var PEN_START = 8 * 60 + 30;
   var PEN_HOME = 18 * 60;
   var PEN_PLACES = [
-    { id:"hotel", n:"ibis Styles, Macquarie St", s:"Hobart", lat:-42.8837, lng:147.3283, stay:0, tags:["start"], note:"Out through Sorell on the A3, then the A9 the whole way. Sealed, all of it." },
-    { id:"sorell", n:"Sorell", s:"Sorell", lat:-42.783, lng:147.567, stay:15, tags:["food", "free"], note:"Last supermarket and the last certain fuel. The peninsula is thin on servos — fill here." },
-    { id:"richmond", n:"Richmond", s:"Richmond", lat:-42.736, lng:147.438, stay:75, tags:["history", "cafe", "free", "photo-spot"], note:"Australia's oldest bridge still in use, and a gaol older than Port Arthur — the earlier system, not more of the same. Only worth it if you clear Port Arthur by 15:00; the village shuts early in low season. Richmond Bakery serves until 18:00, the latest anywhere on this route." },
-    { id:"bluelagoon", n:"Blue Lagoon Oysters, Boomer Bay", s:"Blue Lagoon", lat:-42.855, lng:147.845, stay:25, tags:["food", "local-favourite", "quirky"], note:"A working farm gate, shucked to order. They sell the Angasi — the native Tasmanian oyster — and its season runs late May to late September, so today sits inside it with a fortnight to spare. Wed–Sun 10:00–16:00. Ring ahead for Angasi." },
-    { id:"bangor", n:"Bangor Vineyard Shed, Dunalley", s:"Bangor", lat:-42.885, lng:147.805, stay:75, tags:["food", "cafe", "local-favourite"], note:"Oysters pulled from the bay in front of the building. Seven days 10:00–17:00, kitchen closes 16:00, shut only two days a year — the most weatherproof stop on the route. No booking needed at the bar." },
-    { id:"dunalley", n:"Dunalley", s:"Dunalley", lat:-42.883, lng:147.8, stay:20, tags:["food", "free"], note:"The swing bridge over the Denison Canal. The bakery is known for its scallop pie, though reviews split hard on the coffee. The Fish Market opens at noon, so it is no use outbound." },
-    { id:"pirateslookout", n:"Pirates Bay Lookout", s:"Pirates Bay", lat:-43.005, lng:147.928, stay:20, tags:["must-see", "lookout", "cafe", "free", "photo-spot"], note:"The orientation stop — the whole sweep of the bay, with Cape Hauy and Cape Pillar down the coast. Cubed Espresso is parked on it, a solar-powered 1957 caravan pouring beans roasted on the peninsula. Thursday to Monday from 09:00; sources differ on whether it shuts at 15:00 or 16:00." },
-    { id:"tessellated", n:"Tessellated Pavement", s:"Pavement", lat:-43.0105, lng:147.933, stay:40, tags:["must-see", "short walk", "free", "tide-dependent", "photo-spot"], note:"Not a pavement and not man-made: siltstone fractured into a grid, then etched by salt into hollow pans and domed loaves. Wants LOW tide — the pans hold water and the whole grid reads; at high water you are looking at the sea. Check the tide tonight. East-facing, so it takes morning light. Slippery when wet." },
-    { id:"dogline", n:"The Dog Line & Officers Quarters", s:"Dog Line", lat:-43.0225, lng:147.92, stay:25, tags:["history", "free", "short walk", "wet-weather-ok"], note:"Thirty metres of sand was all that held the peninsula, so they chained a line of dogs across it. The 1832 Officers Quarters behind is said to be the oldest timber military building in Australia — free museum, 09:00–17:00 — and it explains the semaphore relay that carried news of an escape to Hobart faster than a man could run." },
-    { id:"dootown", n:"Doo Town", s:"Doo Town", lat:-43.045, lng:147.945, stay:10, tags:["quirky", "free", "photo-spot"], note:"Thirty-odd shacks, almost all punning on Doo. It started in 1935 when Eric Round nailed up Doo I, his neighbour answered with Doo Me, and a third followed with Doo Us. Gunadoo, Love Me Doo, Rum Doo, Xanadu — and one holdout called Medhust. It is on the way to the Blowhole." },
-    { id:"blowhole", n:"The Blowhole & Doo-lishus", s:"Blowhole", lat:-43.034392, lng:147.947942, stay:30, tags:["food", "lookout", "free", "quirky"], note:"A collapsed sea tunnel, and the van in the car park half of Tasmania will tell you about — scallop pie, venison pie, berry ice cream. Carry cash. Two caveats today: the swell is running west-southwest and this coast faces east, so the blowhole may do nothing; and nobody could confirm the van has reopened for the season. 0437 469 412." },
-    { id:"tasmanarch", n:"Tasman Arch & Devils Kitchen", s:"Tasman Arch", lat:-43.042071, lng:147.950548, stay:0, tags:["closed"], note:"CLOSED 15 April to 29 September for a rebuild, and the extension covers today. The clifftop track to Waterfall Bay is shut from this end too." },
-    { id:"waterfallbay", n:"Waterfall Bay lookout", s:"Waterfall Bay", lat:-43.065, lng:147.96, stay:0, tags:["gravel"], note:"Seven kilometres of gravel to reach it, and the walk-in from Tasman Arch is closed today. Out of reach on both counts. What lies under it: Cathedral Cave, described as the largest sea cave system in Australia." },
-    { id:"taranna", n:"Taranna & the Chocolate Foundry", s:"Taranna", lat:-43.057, lng:147.852, stay:25, tags:["food", "history", "quirky", "wet-weather-ok"], note:"Federation Chocolate has LEFT Taranna for Richmond, though half the official listings still send you here. What is at 3 South Street now is the Tasmanian Chocolate Foundry, 10:00–16:00 daily, with viewing windows onto the floor. Taranna was also the end of Australia's first railway — convicts pushed the carriages to Port Arthur, some in leg irons." },
-    { id:"unzoo", n:"Tasmanian Devil Unzoo", s:"Unzoo", lat:-43.05, lng:147.9, stay:105, tags:["ticketed", "kid-friendly", "wet-weather-ok"], note:"No perimeter fence — the animals come and go. The only place on the route you will reliably see a devil. About $39 each. Reviewers split hard, and the one useful tip is to arrive after 14:00, when something happens every half hour and feeding is around 16:00." },
-    { id:"koonya", n:"Koonya", s:"Koonya", lat:-43.07, lng:147.8, stay:10, tags:["history", "free"], note:"An 1841 probation station whose cell block and officers' quarters were restored in the eighties and stand in plain view from the road. It was called Cascades until 1887, when the name was changed deliberately to scrub off the convict stain." },
-    { id:"premaydena", n:"Premaydena & Impression Bay", s:"Premaydena", lat:-43.03, lng:147.79, stay:20, tags:["history", "free", "tide-dependent", "lookout"], note:"An agricultural station with 445 convicts by 1851, and where the typhus ship Persian was towed in 1857 after Hobart refused her. At low tide the timbers of the original rail jetty show in the bay. Cresting Premaydena Hill on the way gives you Norfolk Bay, the Forestier Peninsula and, on a clear day, Maria Island." },
-    { id:"coalmines", n:"Coal Mines Historic Site", s:"Coal Mines", lat:-42.988141, lng:147.714598, stay:90, tags:["history", "must-see", "short walk", "free", "local-favourite"], note:"Where Port Arthur sent the men it had given up on. Eighteen underground solitary cells, and mine shafts now readable as circular dips in the paddock. Free, unstaffed and usually empty, which after a morning in Port Arthur's crowds is the entire point. Sources disagree on the last few kilometres — two say sealed to the entrance, others report gravel. You will see the seal end if it does." },
-    { id:"nubeena", n:"Nubeena", s:"Nubeena", lat:-43.1, lng:147.75, stay:15, tags:["food", "free"], note:"The peninsula's actual town — two IGAs, a chemist, fuel, toilets. The bakery shuts at 15:00, the earliest closer on the route." },
-    { id:"whitebeach", n:"White Beach", s:"White Beach", lat:-43.11, lng:147.74, stay:15, tags:["beach", "free", "photo-spot"], note:"Two and a half kilometres of white sand on Wedge Bay, small waves, usually the warmest water on the peninsula. You can pull off the road straight onto it, so it costs two minutes." },
-    { id:"roaringbeach", n:"Roaring Beach", s:"Roaring Beach", lat:-43.11, lng:147.71, stay:45, tags:["beach", "short walk", "photo-spot", "free"], note:"The opposite of the sheltered east coast — a wild south-west-facing surf beach, big dunes, 400 m from the car park. Rips are strong and swimming is not recommended; this is a beach to look at. The final approach surface could not be confirmed." },
-    { id:"lavender", n:"Port Arthur Lavender", s:"Lavender", lat:-43.1191, lng:147.86, stay:50, tags:["cafe", "food", "free", "wet-weather-ok"], note:"Eighteen acres of lavender, rainforest and lakes on Long Bay, five minutes short of the Historic Site. April to November it opens 10:00–16:00 — the only place on the route publishing its low-season hours, which is why it is the safest lunch. Be realistic: lavender flowers December to February. Today it is a good café with a view of green rows." },
-    { id:"portarthur", n:"Port Arthur Historic Site", s:"Port Arthur", lat:-43.14639, lng:147.85139, stay:240, tags:["must-see", "history", "ticketed", "long walk", "cafe", "wet-weather-ok"], note:"Thirty-odd buildings across forty hectares above the water. $55 each, valid two consecutive days, including the 20-minute harbour cruise, the audio guide and the free guide talks. Book online tonight — the cruise time is chosen at checkout now, not claimed at the desk. Four hours is fair; you could spend six. The Asylum Café is down on the grounds, 11:30–15:30, so lunch need not cost you the walk back up." },
-    { id:"stewartsbay", n:"Stewarts Bay", s:"Stewarts Bay", lat:-43.14, lng:147.86, stay:30, tags:["beach", "short walk", "free"], note:"Sheltered and clear, with a coastal track linking it to the Historic Site — the place to decompress either side of Port Arthur without getting back in the car. Reviewers warn the track is overgrown in places and snakey, which matters in September." },
-    { id:"safetycove", n:"Safety Cove Beach", s:"Safety Cove", lat:-43.175, lng:147.855, stay:30, tags:["beach", "photo-spot", "free"], note:"Four kilometres south of Port Arthur on the road you are already taking. White sand, usually calm, and the view is out to Tasman Island and the western side of Cape Pillar — the coastline the boat cruise sells you, from a beach, for nothing. The final spur's surface is unconfirmed." },
-    { id:"remarkable", n:"Remarkable Cave & Maingon Blowhole", s:"Remarkable Cave", lat:-43.187245, lng:147.844382, stay:90, tags:["must-see", "short walk", "lookout", "free", "photo-spot"], note:"The stop that rescues the day, and sealed the entire way. A sea cave you look down into past 115 steps, and from the same car park a 3.4 km return walk to the Maingon Blowhole — easy, about an hour, and it hands you the Cape Raoul dolerite columns from a road your hire terms allow. Spring wildflowers start about now. Mt Brown continues from the same track if the legs want it." },
-    { id:"palmers", n:"Palmers Lookout", s:"Palmers", lat:-43.16, lng:147.83, stay:30, tags:["lookout", "free"], note:"Repeatedly named as worth it, and nobody could establish whether you can drive to it or what the access road is made of. Out until someone local says otherwise — the Maingon Blowhole gives comparable views on a road we know is sealed." },
-    { id:"capehauy", n:"Cape Hauy (Fortescue Bay)", s:"Cape Hauy", lat:-43.1307, lng:147.9703, stay:0, tags:["gravel"], note:"Twelve kilometres of gravel to the trailhead, confirmed by Parks and by AllTrails. The finest half-day walk in Tasmania, and the one thing here that matched Mount Amos. Worth a call to Simba: if the exclusion turns on gazetted roads rather than surface, this comes back." },
-    { id:"caperaoul", n:"Cape Raoul", s:"Cape Raoul", lat:-43.195255, lng:147.777145, stay:0, tags:["gravel"], note:"Gravel on Stormlea Road — sources say the last kilometre, or the last nine. Either breaches the terms. The full walk runs about five hours anyway and would not fit beside Port Arthur." }
+    { id:"hotel", n:"ibis Styles, Macquarie St", s:"Hobart", q:"ibis Styles Hobart, 173 Macquarie St, Hobart TAS", lat:-42.8837, lng:147.3283, stay:0, tags:["start"], note:"Out through Sorell on the A3, then the A9 the whole way. Sealed, all of it." },
+    { id:"sorell", n:"Sorell", s:"Sorell", q:"Sorell TAS 7172", lat:-42.783, lng:147.567, stay:15, tags:["food", "free"], note:"Last supermarket and the last certain fuel. The peninsula is thin on servos — fill here." },
+    { id:"richmond", n:"Richmond", s:"Richmond", q:"Richmond Bridge, Richmond TAS", lat:-42.736, lng:147.438, stay:75, tags:["history", "cafe", "free", "photo-spot"], note:"Australia's oldest bridge still in use, and a gaol older than Port Arthur — the earlier system, not more of the same. Only worth it if you clear Port Arthur by 15:00; the village shuts early in low season. Richmond Bakery serves until 18:00, the latest anywhere on this route." },
+    { id:"bluelagoon", n:"Blue Lagoon Oysters, Boomer Bay", s:"Blue Lagoon", q:"Blue Lagoon Oysters, Boomer Bay TAS", lat:-42.855, lng:147.845, stay:25, tags:["food", "local-favourite", "quirky"], note:"A working farm gate, shucked to order. They sell the Angasi — the native Tasmanian oyster — and its season runs late May to late September, so today sits inside it with a fortnight to spare. Wed–Sun 10:00–16:00. Ring ahead for Angasi." },
+    { id:"bangor", n:"Bangor Vineyard Shed, Dunalley", s:"Bangor", q:"Bangor Vineyard Shed, Dunalley TAS", lat:-42.885, lng:147.805, stay:75, tags:["food", "cafe", "local-favourite"], note:"Oysters pulled from the bay in front of the building. Seven days 10:00–17:00, kitchen closes 16:00, shut only two days a year — the most weatherproof stop on the route. No booking needed at the bar." },
+    { id:"dunalley", n:"Dunalley", s:"Dunalley", q:"Dunalley TAS 7177", lat:-42.883, lng:147.8, stay:20, tags:["food", "free"], note:"The swing bridge over the Denison Canal. The bakery is known for its scallop pie, though reviews split hard on the coffee. The Fish Market opens at noon, so it is no use outbound." },
+    { id:"pirateslookout", n:"Pirates Bay Lookout", s:"Pirates Bay", q:"Pirates Bay Lookout, Eaglehawk Neck TAS", lat:-43.005, lng:147.928, stay:20, tags:["must-see", "lookout", "cafe", "free", "photo-spot"], note:"The orientation stop — the whole sweep of the bay, with Cape Hauy and Cape Pillar down the coast. Cubed Espresso is parked on it, a solar-powered 1957 caravan pouring beans roasted on the peninsula. Thursday to Monday from 09:00; sources differ on whether it shuts at 15:00 or 16:00." },
+    { id:"tessellated", n:"Tessellated Pavement", s:"Pavement", q:"Tessellated Pavement, Eaglehawk Neck TAS", lat:-43.0105, lng:147.933, stay:40, tags:["must-see", "short walk", "free", "tide-dependent", "photo-spot"], note:"Not a pavement and not man-made: siltstone fractured into a grid, then etched by salt into hollow pans and domed loaves. Wants LOW tide — the pans hold water and the whole grid reads; at high water you are looking at the sea. Check the tide tonight. East-facing, so it takes morning light. Slippery when wet." },
+    { id:"dogline", n:"The Dog Line & Officers Quarters", s:"Dog Line", q:"Eaglehawk Neck Historic Site, Eaglehawk Neck TAS", lat:-43.0225, lng:147.92, stay:25, tags:["history", "free", "short walk", "wet-weather-ok"], note:"Thirty metres of sand was all that held the peninsula, so they chained a line of dogs across it. The 1832 Officers Quarters behind is said to be the oldest timber military building in Australia — free museum, 09:00–17:00 — and it explains the semaphore relay that carried news of an escape to Hobart faster than a man could run." },
+    { id:"dootown", n:"Doo Town", s:"Doo Town", q:"Doo Town TAS 7179", lat:-43.045, lng:147.945, stay:10, tags:["quirky", "free", "photo-spot"], note:"Thirty-odd shacks, almost all punning on Doo. It started in 1935 when Eric Round nailed up Doo I, his neighbour answered with Doo Me, and a third followed with Doo Us. Gunadoo, Love Me Doo, Rum Doo, Xanadu — and one holdout called Medhust. It is on the way to the Blowhole." },
+    { id:"blowhole", n:"The Blowhole & Doo-lishus", s:"Blowhole", q:"The Blowhole, Doo Town TAS", lat:-43.034392, lng:147.947942, stay:30, tags:["food", "lookout", "free", "quirky"], note:"A collapsed sea tunnel, and the van in the car park half of Tasmania will tell you about — scallop pie, venison pie, berry ice cream. Carry cash. Two caveats today: the swell is running west-southwest and this coast faces east, so the blowhole may do nothing; and nobody could confirm the van has reopened for the season. 0437 469 412." },
+    { id:"tasmanarch", n:"Tasman Arch & Devils Kitchen", s:"Tasman Arch", q:"Tasman Arch, Eaglehawk Neck TAS", lat:-43.042071, lng:147.950548, stay:0, tags:["closed"], note:"CLOSED 15 April to 29 September for a rebuild, and the extension covers today. The clifftop track to Waterfall Bay is shut from this end too." },
+    { id:"waterfallbay", n:"Waterfall Bay lookout", s:"Waterfall Bay", q:"Waterfall Bay Lookout, Eaglehawk Neck TAS", lat:-43.065, lng:147.96, stay:0, tags:["gravel"], note:"Seven kilometres of gravel to reach it, and the walk-in from Tasman Arch is closed today. Out of reach on both counts. What lies under it: Cathedral Cave, described as the largest sea cave system in Australia." },
+    { id:"taranna", n:"Taranna & the Chocolate Foundry", s:"Taranna", q:"Tasmanian Chocolate Foundry, 3 South St, Taranna TAS", lat:-43.057, lng:147.852, stay:25, tags:["food", "history", "quirky", "wet-weather-ok"], note:"Federation Chocolate has LEFT Taranna for Richmond, though half the official listings still send you here. What is at 3 South Street now is the Tasmanian Chocolate Foundry, 10:00–16:00 daily, with viewing windows onto the floor. Taranna was also the end of Australia's first railway — convicts pushed the carriages to Port Arthur, some in leg irons." },
+    { id:"unzoo", n:"Tasmanian Devil Unzoo", s:"Unzoo", q:"Tasmanian Devil Unzoo, Taranna TAS", lat:-43.05, lng:147.9, stay:105, tags:["ticketed", "kid-friendly", "wet-weather-ok"], note:"No perimeter fence — the animals come and go. The only place on the route you will reliably see a devil. About $39 each. Reviewers split hard, and the one useful tip is to arrive after 14:00, when something happens every half hour and feeding is around 16:00." },
+    { id:"koonya", n:"Koonya", s:"Koonya", q:"Koonya TAS 7187", lat:-43.07, lng:147.8, stay:10, tags:["history", "free"], note:"An 1841 probation station whose cell block and officers' quarters were restored in the eighties and stand in plain view from the road. It was called Cascades until 1887, when the name was changed deliberately to scrub off the convict stain." },
+    { id:"premaydena", n:"Premaydena & Impression Bay", s:"Premaydena", q:"Premaydena TAS 7185", lat:-43.03, lng:147.79, stay:20, tags:["history", "free", "tide-dependent", "lookout"], note:"An agricultural station with 445 convicts by 1851, and where the typhus ship Persian was towed in 1857 after Hobart refused her. At low tide the timbers of the original rail jetty show in the bay. Cresting Premaydena Hill on the way gives you Norfolk Bay, the Forestier Peninsula and, on a clear day, Maria Island." },
+    { id:"coalmines", n:"Coal Mines Historic Site", s:"Coal Mines", q:"Coal Mines Historic Site, Saltwater River TAS", lat:-42.988141, lng:147.714598, stay:90, tags:["history", "must-see", "short walk", "free", "local-favourite"], note:"Where Port Arthur sent the men it had given up on. Eighteen underground solitary cells, and mine shafts now readable as circular dips in the paddock. Free, unstaffed and usually empty, which after a morning in Port Arthur's crowds is the entire point. Sources disagree on the last few kilometres — two say sealed to the entrance, others report gravel. You will see the seal end if it does." },
+    { id:"nubeena", n:"Nubeena", s:"Nubeena", q:"Nubeena TAS 7184", lat:-43.1, lng:147.75, stay:15, tags:["food", "free"], note:"The peninsula's actual town — two IGAs, a chemist, fuel, toilets. The bakery shuts at 15:00, the earliest closer on the route." },
+    { id:"whitebeach", n:"White Beach", s:"White Beach", q:"White Beach, Tasman Peninsula TAS", lat:-43.11, lng:147.74, stay:15, tags:["beach", "free", "photo-spot"], note:"Two and a half kilometres of white sand on Wedge Bay, small waves, usually the warmest water on the peninsula. You can pull off the road straight onto it, so it costs two minutes." },
+    { id:"roaringbeach", n:"Roaring Beach", s:"Roaring Beach", q:"Roaring Beach, Nubeena TAS", lat:-43.11, lng:147.71, stay:45, tags:["beach", "short walk", "photo-spot", "free"], note:"The opposite of the sheltered east coast — a wild south-west-facing surf beach, big dunes, 400 m from the car park. Rips are strong and swimming is not recommended; this is a beach to look at. The final approach surface could not be confirmed." },
+    { id:"lavender", n:"Port Arthur Lavender", s:"Lavender", q:"Port Arthur Lavender, 6555 Arthur Hwy, Port Arthur TAS", lat:-43.1191, lng:147.86, stay:50, tags:["cafe", "food", "free", "wet-weather-ok"], note:"Eighteen acres of lavender, rainforest and lakes on Long Bay, five minutes short of the Historic Site. April to November it opens 10:00–16:00 — the only place on the route publishing its low-season hours, which is why it is the safest lunch. Be realistic: lavender flowers December to February. Today it is a good café with a view of green rows." },
+    { id:"portarthur", n:"Port Arthur Historic Site", s:"Port Arthur", q:"Port Arthur Historic Site, 6973 Arthur Hwy, Port Arthur TAS", lat:-43.14639, lng:147.85139, stay:240, tags:["must-see", "history", "ticketed", "long walk", "cafe", "wet-weather-ok"], note:"Thirty-odd buildings across forty hectares above the water. $55 each, valid two consecutive days, including the 20-minute harbour cruise, the audio guide and the free guide talks. Book online tonight — the cruise time is chosen at checkout now, not claimed at the desk. Four hours is fair; you could spend six. The Asylum Café is down on the grounds, 11:30–15:30, so lunch need not cost you the walk back up." },
+    { id:"stewartsbay", n:"Stewarts Bay", s:"Stewarts Bay", q:"Stewarts Bay, Port Arthur TAS", lat:-43.14, lng:147.86, stay:30, tags:["beach", "short walk", "free"], note:"Sheltered and clear, with a coastal track linking it to the Historic Site — the place to decompress either side of Port Arthur without getting back in the car. Reviewers warn the track is overgrown in places and snakey, which matters in September." },
+    { id:"safetycove", n:"Safety Cove Beach", s:"Safety Cove", q:"Safety Cove Beach, Port Arthur TAS", lat:-43.175, lng:147.855, stay:30, tags:["beach", "photo-spot", "free"], note:"Four kilometres south of Port Arthur on the road you are already taking. White sand, usually calm, and the view is out to Tasman Island and the western side of Cape Pillar — the coastline the boat cruise sells you, from a beach, for nothing. The final spur's surface is unconfirmed." },
+    { id:"remarkable", n:"Remarkable Cave & Maingon Blowhole", s:"Remarkable Cave", q:"Remarkable Cave, Safety Cove Rd, Port Arthur TAS", lat:-43.187245, lng:147.844382, stay:90, tags:["must-see", "short walk", "lookout", "free", "photo-spot"], note:"The stop that rescues the day, and sealed the entire way. A sea cave you look down into past 115 steps, and from the same car park a 3.4 km return walk to the Maingon Blowhole — easy, about an hour, and it hands you the Cape Raoul dolerite columns from a road your hire terms allow. Spring wildflowers start about now. Mt Brown continues from the same track if the legs want it." },
+    { id:"palmers", n:"Palmers Lookout", s:"Palmers", q:"Palmers Lookout, Nubeena TAS", lat:-43.16, lng:147.83, stay:30, tags:["lookout", "free"], note:"Repeatedly named as worth it, and nobody could establish whether you can drive to it or what the access road is made of. Out until someone local says otherwise — the Maingon Blowhole gives comparable views on a road we know is sealed." },
+    { id:"capehauy", n:"Cape Hauy (Fortescue Bay)", s:"Cape Hauy", q:"Fortescue Bay, Tasman National Park TAS", lat:-43.1307, lng:147.9703, stay:0, tags:["gravel"], note:"Twelve kilometres of gravel to the trailhead, confirmed by Parks and by AllTrails. The finest half-day walk in Tasmania, and the one thing here that matched Mount Amos. Worth a call to Simba: if the exclusion turns on gazetted roads rather than surface, this comes back." },
+    { id:"caperaoul", n:"Cape Raoul", s:"Cape Raoul", q:"Cape Raoul Track, Stormlea TAS", lat:-43.195255, lng:147.777145, stay:0, tags:["gravel"], note:"Gravel on Stormlea Road — sources say the last kilometre, or the last nine. Either breaches the terms. The full walk runs about five hours anyway and would not fit beside Port Arthur." }
   ];
   var PEN_LEGS = [
     ["hotel","sorell",25],
@@ -978,6 +978,105 @@
     return null;
   }
 
+  /* The coastline, so a pin reads as a place rather than a dot on a blank
+     rectangle. With the water drawn in, the shape of the day explains
+     itself: everything funnels through Eaglehawk Neck, and the Coal Mines
+     are a long way round Norfolk Bay from anywhere you would rather be.
+     Natural Earth 1:10m land polygons, public domain, clipped to the corner
+     of Tasmania this day happens in and rounded to four decimals — about
+     ten metres, finer than anything visible at this scale. Longitude first,
+     then latitude, the order the source gives them in. */
+  var PEN_LAND = [
+    /* tasmania */
+    [147.9985,-43.2304,147.978,-43.2282,147.964,-43.2224,147.9046,-43.1803,147.8949,-43.169,
+     147.8897,-43.1531,147.8879,-43.138,147.8828,-43.1315,147.8675,-43.1417,147.8568,-43.1562,
+     147.8538,-43.1723,147.8574,-43.1882,147.8675,-43.2031,147.8376,-43.2019,147.8215,-43.2143,
+     147.8097,-43.2312,147.7925,-43.2441,147.772,-43.2169,147.7002,-43.1628,147.6956,-43.1342,
+     147.7085,-43.1301,147.7339,-43.1183,147.7479,-43.1057,147.6646,-43.0818,147.6478,-43.0728,
+     147.6382,-43.0613,147.6272,-43.0427,147.6206,-43.0231,147.6243,-43.0082,147.6336,-43.0012,
+     147.666,-42.9894,147.679,-42.9864,147.6826,-42.9846,147.686,-42.9767,147.6849,-42.9719,
+     147.6826,-42.9684,147.6826,-42.9636,147.681,-42.9557,147.677,-42.9469,147.6782,-42.9392,
+     147.6926,-42.9362,147.7152,-42.9374,147.7258,-42.9405,147.7305,-42.9469,147.7308,-42.9768,
+     147.7272,-42.988,147.7168,-43.0051,147.763,-43.0375,147.7858,-43.0486,147.8164,-43.0529,
+     147.8233,-43.0519,147.8338,-43.0475,147.8403,-43.0461,147.841,-43.0462,147.8587,-43.0456,
+     147.8607,-43.0461,147.8755,-43.0409,147.8871,-43.0344,147.9092,-43.0187,147.8792,-43.018,
+     147.8591,-43.0075,147.8451,-42.9887,147.8335,-42.9636,147.8435,-42.964,147.8498,-42.9623,
+     147.8607,-42.9567,147.8607,-42.9505,147.8338,-42.9445,147.8316,-42.9319,147.8389,-42.9166,
+     147.8403,-42.902,147.8269,-42.894,147.7651,-42.902,147.757,-42.8997,147.7399,-42.8913,
+     147.7305,-42.8884,147.7204,-42.8891,147.6895,-42.8953,147.6765,-42.8898,147.6692,-42.8825,
+     147.6636,-42.8747,147.6553,-42.8674,147.6477,-42.8653,147.6282,-42.8639,147.6213,-42.8611,
+     147.6179,-42.8543,147.617,-42.8451,147.6145,-42.8352,147.6069,-42.8263,147.5957,-42.8215,
+     147.5856,-42.8212,147.5335,-42.8366,147.5153,-42.8451,147.5039,-42.8543,147.5029,-42.8821,
+     147.5193,-42.9186,147.5591,-42.9772,147.5398,-43.0043,147.5293,-43.0149,147.5114,-43.025,
+     147.4544,-43.0383,147.4362,-43.0461,147.4261,-43.0387,147.4133,-43.0253,147.4035,-43.0104,
+     147.4021,-42.9982,147.4167,-42.9846,147.4305,-42.9936,147.4429,-43.0099,147.4533,-43.0187,
+     147.469,-43.0113,147.4797,-42.9948,147.4837,-42.9784,147.4803,-42.971,147.4665,-42.9636,
+     147.4661,-42.9459,147.4773,-42.9089,147.4583,-42.9137,147.4382,-42.9235,147.4222,-42.9269,
+     147.4158,-42.9123,147.4097,-42.8881,147.3944,-42.8777,147.3743,-42.872,147.3537,-42.8611,
+     147.2991,-42.7888,147.2942,-42.7786,147.2837,-42.7785,147.273,-42.7826,147.26,-42.7901,
+     147.2681,-42.8,147.2805,-42.8093,147.286,-42.8127,147.3044,-42.8292,147.3196,-42.8469,
+     147.3366,-42.8824,147.3591,-42.9108,147.3602,-42.9252,147.34,-42.9567,147.3308,-42.9786,
+     147.3294,-42.998,147.3332,-43.0427,147.3237,-43.0463,147.303,-43.0344,147.2717,-43.0113,
+     147.2544,-43.0273,147.2629,-43.0442,147.2922,-43.066,147.3013,-43.0831,147.2937,-43.0925,
+     147.2767,-43.1007,147.2576,-43.1144,147.2477,-43.1292,147.2449,-43.1446,147.2468,-43.1603,
+     147.2566,-43.1972,147.2581,-43.215,147.2576,-43.2543,147.2493,-43.2682,147.2302,-43.2805,
+     147.2087,-43.2867,147.1926,-43.2817,147.1849,-43.2765,147.1638,-43.2701,147.1545,-43.2646,
+     147.1541,-43.2574,147.1589,-43.2485,147.1587,-43.241,147.1445,-43.2379,147.103,-43.2387,
+     147.0921,-43.2319,147.1032,-43.2133,147.118,-43.197,147.119,-43.1891,147.1128,-43.1788,
+     147.1066,-43.1547,147.0978,-43.1749,147.0791,-43.1918,147.0606,-43.2016,147.052,-43.1996,
+     147.05,-43.1984,147.05,-43.2468,147.0623,-43.2537,147.0813,-43.2672,147.096,-43.2828,
+     147.0998,-43.2994,147.0944,-43.3066,147.0838,-43.3156,147.0725,-43.3232,147.0651,-43.3266,
+     147.053,-43.3261,147.05,-43.3237,147.05,-43.3462,147.0552,-43.3489,147.0553,-43.3562,147.05,-43.3603,
+     147.05,-42.42,148.0075,-42.42,148.0116,-42.4435,148.0111,-42.4894,148.006,-42.5141,147.9949,-42.5247,
+     147.981,-42.529,147.9657,-42.5483,147.9533,-42.5527,147.9429,-42.5478,147.9279,-42.525,
+     147.9153,-42.5173,147.9158,-42.5297,147.9107,-42.5379,147.9014,-42.5427,147.8887,-42.5451,
+     147.9369,-42.5909,147.9434,-42.6104,147.9424,-42.628,147.9434,-42.6345,147.9463,-42.6406,
+     147.9509,-42.6454,147.9551,-42.649,147.957,-42.6516,147.9574,-42.679,147.9553,-42.6917,
+     147.9496,-42.7028,147.9531,-42.72,147.94,-42.7355,147.9204,-42.7468,147.9054,-42.7512,
+     147.8893,-42.7607,147.8811,-42.7819,147.8809,-42.8049,147.8887,-42.8195,147.8836,-42.8282,
+     147.8799,-42.831,147.8753,-42.8298,147.8675,-42.8263,147.8506,-42.8518,147.8446,-42.8661,
+     147.8472,-42.881,147.8584,-42.8884,147.8778,-42.8928,147.8991,-42.8932,147.9153,-42.8884,
+     147.9153,-42.881,147.8816,-42.8717,147.8931,-42.8502,147.9207,-42.8383,147.9365,-42.8577,
+     147.9393,-42.8723,147.9465,-42.8743,147.9563,-42.8703,147.9673,-42.8674,147.9754,-42.8683,
+     147.9807,-42.8712,147.9834,-42.8764,147.9842,-42.8847,147.987,-42.8932,147.9998,-42.9006,
+     148.0047,-42.9089,148.0028,-42.9138,147.9973,-42.9199,147.9922,-42.9274,147.9911,-42.9362,
+     147.9944,-42.9384,148.0012,-42.9415,148.0081,-42.9454,148.0116,-42.9505,148.0098,-42.9699,
+     148.0007,-42.9775,147.9876,-42.9809,147.974,-42.9877,147.9639,-43.0105,147.9652,-43.0603,
+     147.9496,-43.0728,147.9732,-43.0981,147.9774,-43.1069,147.9784,-43.1183,147.9763,-43.1253,
+     147.9639,-43.1417,147.9863,-43.143,147.9995,-43.1479,148.0034,-43.1581,147.9985,-43.1759,
+     147.9934,-43.1814,147.9863,-43.1855,147.98,-43.1916,147.9774,-43.2031,147.9885,-43.2116,
+     147.9958,-43.22],
+    /* south bruny */
+    [147.3366,-43.3403,147.3376,-43.3445,147.3605,-43.3683,147.364,-43.3793,147.3655,-43.3879,
+     147.3645,-43.3967,147.3605,-43.4086,147.3555,-43.4179,147.3446,-43.4299,147.34,-43.4365,
+     147.335,-43.4477,147.3263,-43.4781,147.3159,-43.5007,147.3039,-43.5089,147.2874,-43.505,
+     147.2643,-43.4918,147.2576,-43.4897,147.2508,-43.4899,147.2444,-43.4894,147.2376,-43.4843,
+     147.2368,-43.4798,147.2378,-43.4734,147.2404,-43.4689,147.2438,-43.47,147.2362,-43.4508,
+     147.23,-43.4443,147.2165,-43.4426,147.2233,-43.4391,147.2319,-43.4324,147.2376,-43.4296,
+     147.2156,-43.4152,147.2046,-43.4257,147.1961,-43.47,147.1849,-43.4898,147.1677,-43.5016,
+     147.1492,-43.5012,147.134,-43.4843,147.1253,-43.4648,147.1096,-43.4508,147.0941,-43.4399,
+     147.0862,-43.4296,147.0907,-43.4109,147.1092,-43.415,147.1616,-43.454,147.1722,-43.4589,
+     147.1792,-43.454,147.1824,-43.4365,147.1804,-43.3972,147.176,-43.3793,147.1681,-43.3683,
+     147.1735,-43.36,147.181,-43.3543,147.1901,-43.3527,147.2,-43.357,147.2157,-43.3775,147.2256,-43.3855,
+     147.2336,-43.3715,147.2393,-43.3648,147.2415,-43.3562,147.2339,-43.344,147.2285,-43.3322,
+     147.2349,-43.323,147.2544,-43.3095,147.286,-43.2756,147.3045,-43.2618,147.3128,-43.2682],
+    /* north bruny */
+    [147.4021,-43.1311,147.4026,-43.1447,147.4046,-43.1554,147.4089,-43.165,147.4158,-43.1759,
+     147.4199,-43.1884,147.4312,-43.214,147.4375,-43.2389,147.426,-43.2503,147.4012,-43.245,
+     147.3919,-43.2441,147.3792,-43.2478,147.3692,-43.2547,147.3608,-43.2579,147.3537,-43.2503,
+     147.3473,-43.228,147.3573,-43.218,147.374,-43.2107,147.3879,-43.1962,147.3689,-43.1829,
+     147.3181,-43.1772,147.2957,-43.1656,147.2918,-43.153,147.3047,-43.1457,147.3542,-43.1394,
+     147.349,-43.1339,147.335,-43.1269,147.3263,-43.1205,147.3303,-43.101,147.3446,-43.0822,
+     147.36,-43.0749,147.3728,-43.1013,147.3967,-43.1171],
+    /* maria island */
+    [148.1419,-42.6038,148.1437,-42.6203,148.1493,-42.6327,148.1598,-42.6419,148.176,-42.6482,
+     148.1496,-42.6664,148.1047,-42.6647,148.073,-42.6668,148.0867,-42.6965,148.1101,-42.7165,
+     148.1048,-42.7195,148.0435,-42.7292,148.0291,-42.7365,148.0183,-42.7512,148.0116,-42.7512,
+     148.0116,-42.7307,148.0243,-42.7193,148.033,-42.7039,148.0452,-42.6687,148.0227,-42.6663,
+     148.0129,-42.6516,148.0137,-42.6318,148.0246,-42.6135,148.0396,-42.6032,148.0676,-42.593,
+     148.0798,-42.5793,148.0964,-42.5844,148.117,-42.5857,148.1345,-42.5901]
+  ];
+
   /* The day's stops are not evenly spread: two dozen sit on the peninsula
      and a handful trail back up the highway to Richmond. Fitting all of
      them squeezes the part you are actually driving into a corner, so the
@@ -1017,8 +1116,18 @@
     var here = penAt(), plan = penPlan(), out = [];
     out.push('<svg id="pen-svg" viewBox="' + penView.x.toFixed(1) + ' ' + penView.y.toFixed(1) + ' ' +
              penView.w.toFixed(1) + ' ' + penView.h.toFixed(1) + '" class="w-full block" ' +
-             'style="background:#eef5f1;touch-action:none" role="img" ' +
+             'style="background:#cddfeb;touch-action:none" role="img" ' +
              'aria-label="Map of the stops between Hobart and Port Arthur">');
+    /* Land goes through the same projection as the pins, so the two stay
+       registered at every zoom. The sea is the element's own background,
+       which no amount of panning can run out of. */
+    out.push('<path d="' + PEN_LAND.map(function(ring){
+      var d = '';
+      for (var i = 0; i < ring.length; i += 2) {
+        d += (i ? 'L' : 'M') + X(ring[i]).toFixed(1) + ' ' + Y(ring[i + 1]).toFixed(1);
+      }
+      return d + 'Z';
+    }).join('') + '" fill="#eef5f1" stroke="#a7c3d4" stroke-width="2.5" stroke-linejoin="round"/>');
     PEN_LEGS.forEach(function(l){
       var a = penById[l[0]], b = penById[l[1]];
       if (!a || !b || a.id === 'hotel' || b.id === 'hotel') return;
@@ -1051,7 +1160,7 @@
       if (spot) {
         out.push('<text x="' + spot.x.toFixed(1) + '" y="' + spot.y.toFixed(1) +
                  '" text-anchor="' + spot.anchor + '" font-size="' + PEN_FS + '" font-weight="600" fill="#0f3d2e"' +
-                 ' stroke="#eef5f1" stroke-width="5" paint-order="stroke">' + p.s + '</text>');
+                 ' stroke="#ffffff" stroke-width="5" paint-order="stroke">' + p.s + '</text>');
       }
       out.push('</g>');
     });
@@ -1156,10 +1265,25 @@
     penSave(list);
   }
 
+  /* Google resolves the name better than my coordinates do — several of
+     those are approximations, and a landmark name lands on the real car
+     park where a pin 400 m out lands in a paddock. dir/?api=1 opens the
+     Google Maps app where it is installed and the web map where it is not. */
+  function penNav(p){
+    var a = bmk('a', 'inline-flex items-center gap-1 text-xs font-semibold bg-white border border-sand-200 text-slate-700 px-3 py-2 rounded-lg hover:bg-sand-50', '\u27A4 Navigate');
+    a.href = 'https://www.google.com/maps/dir/?api=1&travelmode=driving&destination=' + encodeURIComponent(p.q || p.n);
+    a.target = '_blank';
+    a.rel = 'noopener';
+    a.setAttribute('aria-label', 'Navigate to ' + p.n + ' in Google Maps');
+    return a;
+  }
+
   function penRender(){
     var list = penPlan(), here = penAt(), times = penTimes(here), fin = penFinish();
 
     document.getElementById('pen-here').textContent = penById[here].n;
+    var navMount = document.getElementById('pen-nav');
+    if (navMount) { navMount.textContent = ''; navMount.appendChild(penNav(penById[here])); }
     document.getElementById('pen-clock').textContent = penClock(fin.end);
     var homeEl = document.getElementById('pen-home');
     var over = fin.home > PEN_HOME;
@@ -1222,11 +1346,14 @@
       row.appendChild(chips);
       row.appendChild(bmk('p', 'text-[13px] text-slate-600 leading-relaxed mt-1.5', p.note));
 
-      var go = bmk('button', 'mt-2 text-xs font-semibold bg-forest-900 text-white px-3 py-2 rounded-lg hover:bg-forest-800',
+      var go = bmk('button', 'text-xs font-semibold bg-forest-900 text-white px-3 py-2 rounded-lg hover:bg-forest-800',
                    mins === null ? 'Go here' : 'Go here · arrive ' + penClock(fin.end + mins));
       go.type = 'button';
       go.addEventListener('click', function(){ penGo(p.id); });
-      row.appendChild(go);
+      var acts = bmk('div', 'flex flex-wrap gap-2 mt-2');
+      acts.appendChild(go);
+      acts.appendChild(penNav(p));
+      row.appendChild(acts);
       next.appendChild(row);
     });
 

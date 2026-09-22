@@ -1,0 +1,1535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0f3d2e">
+<title>India · Bangalore, Mumbai &amp; Chandigarh · Nov 2026</title>
+
+<meta name="description" content="Five days across India — Delhi and Chandigarh to Bangalore, Mumbai and back. Flights, beds, what to see, budget and checklists, all offline.">
+
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="India">
+<meta name="mobile-web-app-capable" content="yes">
+
+<!-- One stylesheet, no CDN: Tailwind is pre-compiled and both fonts are
+     served from this folder, so the page renders with no network at all. -->
+<link rel="preload" href="fonts/outfit.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="app.css">
+
+<style>
+  html { scroll-behavior: smooth; scroll-padding-top: calc(72px + env(safe-area-inset-top)); }
+  body { -webkit-font-smoothing: antialiased; background: #faf9f6;
+         padding-left: env(safe-area-inset-left); padding-right: env(safe-area-inset-right); }
+
+  /* ── the notch, and the bar along the bottom ─────────────────────
+     viewport-fit=cover with a translucent status bar means an installed
+     copy runs edge to edge: the page starts behind the clock, not below
+     it. So anything pinned to an edge pays the inset back, and anything
+     pinned beneath the header has to know the header just got taller by
+     that same amount. The two numbers are the header's own height (57px)
+     and the budget card's old offset from it. */
+  .appbar    { padding-top: env(safe-area-inset-top); }
+  .daytabs   { position: sticky; top: calc(57px + env(safe-area-inset-top)); }
+  .updatebar { bottom: calc(1rem + env(safe-area-inset-bottom)); }
+  @media (min-width:1024px){
+    .budgetcard { position: sticky; top: calc(77px + env(safe-area-inset-top)); }
+  }
+  .no-sb::-webkit-scrollbar { display:none; }
+  .no-sb { -ms-overflow-style:none; scrollbar-width:none; }
+
+  /* links that jump to another day */
+  .daylink { color:#0f3d2e; font-weight:600; border-bottom:1px dotted rgba(15,61,46,.45); cursor:pointer; }
+  .daylink:hover { border-bottom-style:solid; background:#f0f7f4; }
+
+  /* ── the side menu ──────────────────────────────────────────────
+     The whole plan is one file, but scrolling from the budget back to
+     Friday on a phone is a chore, so one section shows at a time and
+     the menu is how you move between them. A wide screen keeps it open
+     down the left; a phone slides it in over the page. */
+  /* The page is viewport-fit=cover with a translucent status bar, so an
+     installed copy runs full-bleed: without these the top row sits under
+     the clock and the footer under the home indicator. */
+  .menu  { position:fixed; inset:0 auto 0 0; width:16.5rem; z-index:60; display:flex; flex-direction:column;
+           background:#fff; border-right:1px solid #ece7dc;
+           padding-top:env(safe-area-inset-top); padding-bottom:env(safe-area-inset-bottom);
+           transform:translateX(-100%); transition:transform .22s ease; }
+  .menu.open { transform:none; }
+  .scrim { position:fixed; inset:0; z-index:50; background:rgba(15,23,42,.4);
+           opacity:0; pointer-events:none; transition:opacity .22s ease; }
+  .scrim.open { opacity:1; pointer-events:auto; }
+
+  .navrow { display:flex; align-items:center; border-radius:.85rem; transition:background .16s ease; }
+  .navrow:hover { background:#f0f7f4; }
+  .navrow.on { background:#0f3d2e; }
+  .navitem { flex:1 1 auto; min-width:0; padding:.55rem .75rem; font-size:.875rem; font-weight:600; color:#475569; }
+  .navrow:hover .navitem { color:#0f3d2e; }
+  .navrow.on .navitem { color:#fff; }
+
+  /* The star marks the section this phone opens on. It is deliberately
+     not synced — one of you can live in the checklists, the other in
+     the day-by-day. */
+  .pin { flex:0 0 auto; padding:.45rem .6rem; font-size:.95rem; line-height:1; color:#cbd5e1; border-radius:.6rem; }
+  .pin:hover { color:#d97706; }
+  .pin.set { color:#d97706; }
+  .navrow.on .pin { color:rgba(255,255,255,.4); }
+  .navrow.on .pin.set { color:#fbbf24; }
+
+  @media (min-width:1024px){
+    .menu  { transform:none; }
+    .scrim { display:none; }
+    body   { padding-left: calc(16.5rem + env(safe-area-inset-left)); }
+  }
+
+  /* custom checkbox */
+  .chk { appearance:none; -webkit-appearance:none; width:1.35rem; height:1.35rem; flex:0 0 auto;
+         border:2px solid #cbd5e1; border-radius:.45rem; background:#fff; cursor:pointer; position:relative;
+         transition:all .16s ease; margin-top:.06rem; }
+  .chk:hover { border-color:#0f5c43; }
+  .chk:checked { background:#0f5c43; border-color:#0f5c43; }
+  .chk:checked::after { content:''; position:absolute; left:.42rem; top:.16rem; width:.32rem; height:.66rem;
+                        border:solid #fff; border-width:0 2.5px 2.5px 0; transform:rotate(45deg); }
+  .chk:focus-visible { outline:2px solid #0f5c43; outline-offset:2px; }
+  .chk:checked + .chk-label { color:#94a3b8; text-decoration:line-through; text-decoration-color:#cbd5e1; }
+  .chk-label { transition:color .16s ease; }
+
+  /* badges */
+  .badge { display:inline-flex; align-items:center; gap:.3rem; border-radius:9999px; padding:.2rem .6rem;
+           font-size:.7rem; font-weight:700; letter-spacing:.01em; }
+
+  .maprail { aspect-ratio: 16/9; }
+  @media (max-width: 640px){ .maprail { aspect-ratio: 4/3; } }
+
+  details > summary { list-style:none; cursor:pointer; }
+  details > summary::-webkit-details-marker { display:none; }
+  details[open] .chev { transform: rotate(180deg); }
+  .chev { transition: transform .2s ease; }
+
+  .tl::before { content:''; position:absolute; left:0; top:.55rem; bottom:-.4rem; width:2px;
+                background:linear-gradient(#dbeee5,#f4f1ea); }
+  .tl:last-child::before { display:none; }
+
+  .hidden { display:none !important; }
+
+  /* On paper there is no menu, so every section prints. */
+  @media print {
+    .menu, .scrim, #menu-btn { display:none !important; }
+    body { padding-left:0; }
+    .pane { display:block !important; }
+  }
+
+  input[type=number]::-webkit-outer-spin-button, input[type=number]::-webkit-inner-spin-button { -webkit-appearance:none; margin:0; }
+  input[type=number] { -moz-appearance:textfield; }
+</style>
+</head>
+<body class="font-sans text-slate-800 antialiased">
+<header class="appbar sticky top-0 z-40 bg-sand-50/95 backdrop-blur-xl border-b border-sand-200">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6">
+    <div class="flex items-center justify-between h-14">
+      <div class="flex items-center gap-2.5 min-w-0">
+        <button id="menu-btn" type="button" class="lg:hidden -ml-2 px-2 py-1 text-2xl leading-none text-forest-900 rounded-xl hover:bg-sand-100" aria-label="Sections" aria-controls="menu" aria-expanded="false">&#9776;</button>
+        <span class="text-xl">✈️</span>
+        <div class="min-w-0">
+          <div class="font-bold text-[15px] leading-tight text-forest-900 truncate">India · Nov 2026</div>
+          <div class="text-[11px] text-slate-500 leading-tight">2–6 Nov 2026 · four of us</div>
+        </div>
+      </div>
+      <div class="flex items-center gap-2.5 shrink-0">
+        <span id="net-pill" class="hidden badge bg-amber-100 text-amber-800">offline · cached</span>
+        <button id="install-btn" class="hidden text-xs font-semibold bg-forest-900 text-white px-3 py-1.5 rounded-xl hover:bg-forest-800">Install</button>
+        <div id="countdown" class="text-right">
+          <div id="cd-num" class="font-display text-xl leading-none text-forest-800">—</div>
+          <div class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold">days to go</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+<div id="scrim" class="scrim"></div>
+<aside id="menu" class="menu" aria-label="Sections">
+  <div class="flex items-center px-4 pt-4 pb-2">
+    <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Sections</span>
+    <button id="menu-close" type="button" class="lg:hidden ml-auto -mr-1 px-2 py-1 text-slate-400 hover:text-slate-700" aria-label="Close menu">&#10005;</button>
+  </div>
+  <nav class="flex-1 overflow-y-auto no-sb px-2.5 pb-2 space-y-0.5">
+      <div class="navrow" data-sec="overview">
+        <a href="#overview" class="navitem">Overview</a>
+        <button type="button" class="pin" aria-pressed="false">&#9734;</button>
+      </div>
+      <div class="navrow" data-sec="logistics">
+        <a href="#logistics" class="navitem">Logistics</a>
+        <button type="button" class="pin" aria-pressed="false">&#9734;</button>
+      </div>
+      <div class="navrow" data-sec="itinerary">
+        <a href="#itinerary" class="navitem">Day by day</a>
+        <button type="button" class="pin" aria-pressed="false">&#9734;</button>
+      </div>
+      <div class="navrow" data-sec="eat">
+        <a href="#eat" class="navitem">Where to eat</a>
+        <button type="button" class="pin" aria-pressed="false">&#9734;</button>
+      </div>
+      <div class="navrow" data-sec="stays">
+        <a href="#stays" class="navitem">Where you sleep</a>
+        <button type="button" class="pin" aria-pressed="false">&#9734;</button>
+      </div>
+      <div class="navrow" data-sec="planb">
+        <a href="#planb" class="navitem">Plan B</a>
+        <button type="button" class="pin" aria-pressed="false">&#9734;</button>
+      </div>
+      <div class="navrow" data-sec="checklists">
+        <a href="#checklists" class="navitem">Checklists</a>
+        <button type="button" class="pin" aria-pressed="false">&#9734;</button>
+      </div>
+      <div class="navrow" data-sec="budget">
+        <a href="#budget" class="navitem">Budget</a>
+        <button type="button" class="pin" aria-pressed="false">&#9734;</button>
+      </div>
+      <div class="navrow" data-sec="unconfirmed">
+        <a href="#unconfirmed" class="navitem">Not confirmed</a>
+        <button type="button" class="pin" aria-pressed="false">&#9734;</button>
+      </div>
+      <div class="navrow" data-sec="sync">
+        <a href="#sync" class="navitem">Sync between phones</a>
+        <button type="button" class="pin" aria-pressed="false">&#9734;</button>
+      </div>
+  </nav>
+  <div class="border-t border-sand-200 px-4 py-3">
+    <p class="text-[11px] leading-snug text-slate-500">Opens on <strong id="home-name" class="text-slate-700">Overview</strong>. Tap a star to change it &mdash; on this phone only.</p>
+  </div>
+</aside>
+<main class="max-w-5xl mx-auto px-4 sm:px-6 pb-24">
+
+<div id="ios-install" class="hidden mt-4 flex items-start gap-3 rounded-2xl bg-sky-50 border border-sky-200 p-4">
+  <span class="text-lg leading-none mt-0.5">&#128241;</span>
+  <p class="flex-1 text-[13px] leading-relaxed text-sky-900">
+    <strong>Put this on your home screen</strong> &mdash; that is what makes it work with no signal.
+    Tap <strong>Share</strong>, then <strong>Add to Home Screen</strong>.
+    If your browser does not offer it, Safari will.
+  </p>
+  <button id="ios-install-x" type="button" class="shrink-0 px-1 text-lg leading-none text-sky-700 hover:text-sky-900" aria-label="Dismiss">&#10005;</button>
+</div>
+
+
+<section id="overview" class="pane pt-8">
+  <div class="relative overflow-hidden rounded-3xl bg-forest-900 text-white p-6 sm:p-9 shadow-soft">
+    <div class="absolute -right-14 -top-14 w-56 h-56 rounded-full bg-white/5"></div>
+    <div class="absolute -right-4 top-24 w-32 h-32 rounded-full bg-white/5"></div>
+    <div class="relative">
+      <p class="text-[11px] uppercase tracking-[.18em] text-forest-100/70 font-semibold">5 Days · 4 Flights · Two cities, then family</p>
+      <h1 class="font-display text-3xl sm:text-5xl mt-2 leading-[1.05]">Two cities,<br class="hidden sm:block"> four of us, five days</h1>
+      <p class="mt-3 text-forest-100/80 text-sm sm:text-base max-w-xl">
+        You and your wife out of Delhi, your parents out of Chandigarh, converging in Bangalore
+        within five minutes of each other. Two nights there, two in Mumbai, then everyone back to
+        Chandigarh together. <strong class="text-white">Four flights</strong>, <strong class="text-white">five hotel nights</strong>,
+        and <strong class="text-white">one full day in Mumbai</strong> spent almost entirely on eating.
+      </p>
+      <div class="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <div class="bg-white/10 rounded-2xl p-3"><div class="text-[10px] uppercase tracking-wider text-forest-100/60 font-semibold">You fly</div><div class="font-semibold mt-0.5 text-sm">Mon 08:20</div><div class="text-[11px] text-forest-100/70">6E 873 · DEL → BLR</div></div>
+        <div class="bg-white/10 rounded-2xl p-3"><div class="text-[10px] uppercase tracking-wider text-forest-100/60 font-semibold">Parents fly</div><div class="font-semibold mt-0.5 text-sm">Mon 08:15</div><div class="text-[11px] text-forest-100/70">6E 6634 · IXC → BLR</div></div>
+        <div class="bg-white/10 rounded-2xl p-3"><div class="text-[10px] uppercase tracking-wider text-forest-100/60 font-semibold">Meet at</div><div class="font-semibold mt-0.5 text-sm">Mon 11:15</div><div class="text-[11px] text-forest-100/70">BLR arrivals, 5 min apart</div></div>
+        <div class="bg-white/10 rounded-2xl p-3"><div class="text-[10px] uppercase tracking-wider text-forest-100/60 font-semibold">To Mumbai</div><div class="font-semibold mt-0.5 text-sm">Wed 15:25</div><div class="text-[11px] text-forest-100/70">6E 5351 · BLR → BOM</div></div>
+        <div class="bg-white/10 rounded-2xl p-3"><div class="text-[10px] uppercase tracking-wider text-forest-100/60 font-semibold">The big lunch</div><div class="font-semibold mt-0.5 text-sm">Thu 12:00</div><div class="text-[11px] text-forest-100/70">Britannia &amp; Co · lunch only</div></div>
+        <div class="bg-white/10 rounded-2xl p-3"><div class="text-[10px] uppercase tracking-wider text-forest-100/60 font-semibold">Home leg</div><div class="font-semibold mt-0.5 text-sm">Fri 14:45</div><div class="text-[11px] text-forest-100/70">AI 2659 · BOM → IXC</div></div>
+        <div class="bg-white/10 rounded-2xl p-3"><div class="text-[10px] uppercase tracking-wider text-forest-100/60 font-semibold">Beds</div><div class="font-semibold mt-0.5 text-sm">5 nights</div><div class="text-[11px] text-forest-100/70">none booked yet</div></div>
+        <div class="bg-white/10 rounded-2xl p-3"><div class="text-[10px] uppercase tracking-wider text-forest-100/60 font-semibold">Earliest start</div><div class="font-semibold mt-0.5 text-sm">09:00</div><div class="text-[11px] text-forest-100/70">your rule, and it holds</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-4 rounded-2xl bg-white border-2 border-forest-700 p-5 shadow-soft">
+    <div class="badge bg-forest-100 text-forest-800 mb-2">THE SHAPE OF THE WEEK</div>
+    <h2 class="font-display text-xl text-forest-900">Why it runs this way round</h2>
+    <p class="text-sm text-slate-600 mt-2">One rule — <strong>nothing starts before 09:00</strong> — and one priority: the food. That turns out to be the easier trip to build, because the best rooms in both cities keep short, awkward hours, and a day not spent travelling to a monument is a day that can meet them.</p>
+    <ul class="text-sm text-slate-600 mt-3 space-y-2">
+      <li class="flex gap-2.5"><span class="text-forest-700 font-bold shrink-0">✓</span><span><strong>Your parents skip Delhi entirely.</strong> Flying Chandigarh → Bangalore direct saves them a backtrack through Delhi and a night in a hotel — and since the trip ends in Chandigarh anyway, they finish where they started.</span></li>
+      <li class="flex gap-2.5"><span class="text-forest-700 font-bold shrink-0">✓</span><span><strong>Both Monday flights land within five minutes.</strong> 11:10 and 11:15. You clear baggage together and travel into the city as one group, with the whole afternoon still ahead.</span></li>
+      <li class="flex gap-2.5"><span class="text-forest-700 font-bold shrink-0">✓</span><span><strong>Both travel days keep their mornings.</strong> Wednesday's flight is 15:25 and Friday's is 14:45, so neither costs you a morning. That is what makes a five-day trip with two city changes feel like more than airports.</span></li>
+      <li class="flex gap-2.5"><span class="text-forest-700 font-bold shrink-0">✓</span><span><strong>Thursday is the eating day.</strong> The only full day in Mumbai, and the only one Britannia &amp; Co opens for you — it serves lunch, 12:00–16:00, Monday to Saturday. Everything else that day arranges itself around noon.</span></li>
+      <li class="flex gap-2.5"><span class="text-forest-700 font-bold shrink-0">✓</span><span><strong>Bangalore is the cheap city and Mumbai is the dear one.</strong> Two nights in South Mumbai cost more than everything else you sleep in put together, so that is the one bed decision worth arguing about.</span></li>
+    </ul>
+    <div class="mt-4 pt-4 border-t border-sand-100 grid sm:grid-cols-3 gap-3 text-center">
+      <div><div class="font-display text-2xl text-forest-800">4 flights</div><div class="text-[10px] uppercase tracking-wider text-slate-400 font-bold">all booked</div></div>
+      <div><div class="font-display text-2xl text-forest-800">5 nights</div><div class="text-[10px] uppercase tracking-wider text-slate-400 font-bold">none booked</div></div>
+      <div><div class="font-display text-2xl text-forest-800">09:00</div><div class="text-[10px] uppercase tracking-wider text-slate-400 font-bold">earliest start · every day</div></div>
+    </div>
+  </div>
+
+  <h2 class="font-display text-2xl mt-10 mb-1 text-forest-900">Read this first</h2>
+  <p class="text-sm text-slate-500 mb-4">The flights are booked. <strong>Nothing else is</strong> &mdash; and the first two below are jobs for this week, not for India.</p>
+
+  <div class="space-y-3">
+
+    <details class="group bg-white rounded-2xl border border-amber-200 shadow-soft overflow-hidden" open>
+      <summary class="flex items-start gap-3 p-4 sm:p-5">
+        <span class="badge bg-amber-100 text-amber-800 mt-0.5">1 · BOOK THIS WEEK</span>
+        <div class="flex-1 min-w-0">
+          <div class="font-semibold text-[15px] text-slate-900">Three hotels, and Mumbai is the one that matters</div>
+          <div class="text-xs text-slate-500 mt-0.5">Same two nights, same square mile, and a tenfold spread in price</div>
+        </div>
+        <svg class="chev w-4 h-4 text-slate-400 mt-1 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+      </summary>
+      <div class="px-4 sm:px-5 pb-5 -mt-1 text-sm text-slate-600 space-y-2.5 border-t border-amber-100 pt-4">
+        <p>Two rooms for two nights in South Mumbai ranged from <strong>&#8377;16,958 to &#8377;179,360</strong> when I searched Booking.com on 22 Sep. That is the same two nights, walking distance apart. Bangalore and Delhi barely move the total by comparison.</p>
+        <p class="font-medium text-slate-800">The shape of the Mumbai market is the useful finding: <strong>the middle is poor value</strong>. Hotel Marine Plaza asks &#8377;23,871 a room and scores 8.2 across 710 reviews; Residency Hotel Fort asks &#8377;9,882 and scores <strong>8.7 across 2,451</strong>. You pay 2.4&times; for a lower score on a quarter of the evidence. Either stay at Residency Fort or skip the middle entirely for Trident Nariman Point &mdash; 9.0 across 4,132 reviews &mdash; and nothing in between.</p>
+        <p>You said value, well-reviewed, so <a href="#stays" class="daylink">Where you sleep</a> recommends <strong>Residency Hotel Fort</strong>, and the budget is built on it. Fort is a 15-minute walk from the Gateway, which is where Thursday starts.</p>
+        <p class="text-[13px] text-slate-500">Prices are live Booking.com rates for your exact dates and party, read on 22 Sep 2026. Indian hotel rates move inside the last eight weeks &mdash; treat them as the shape of the market, not a quote.</p>
+      </div>
+    </details>
+
+    <details class="group bg-white rounded-2xl border border-amber-200 shadow-soft overflow-hidden">
+      <summary class="flex items-start gap-3 p-4 sm:p-5">
+        <span class="badge bg-amber-100 text-amber-800 mt-0.5">2 · BOOK THIS WEEK</span>
+        <div class="flex-1 min-w-0">
+          <div class="font-semibold text-[15px] text-slate-900">No flight confirmation ever reached this inbox</div>
+          <div class="text-xs text-slate-500 mt-0.5">The flights are booked — but nothing on this page can cite a reference</div>
+        </div>
+        <svg class="chev w-4 h-4 text-slate-400 mt-1 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+      </summary>
+      <div class="px-4 sm:px-5 pb-5 -mt-1 text-sm text-slate-600 space-y-2.5 border-t border-amber-100 pt-4">
+        <p>I searched findjsk@gmail.com four ways &mdash; the reservations and purchases categories, a sweep of the booking window, by operator name for IndiGo and Air India, and by subject for itineraries and e-tickets. <strong>Nothing for India came back.</strong> Every confirmation in that inbox is Tasmania or domestic Australia.</p>
+        <p class="font-medium text-slate-800">So the flight numbers and times here came from you, not from a confirmation, and this page cannot cite a PNR for any of them. Put the four references into <a href="#logistics" class="daylink">Logistics</a> when you have them &mdash; at a counter, the airline's own reference is the one that works.</p>
+        <p>If they were booked on a different email or through an agent, forward them to yourself. Four separate tickets across two airlines is four things to produce at four check-in desks.</p>
+      </div>
+    </details>
+
+    <details class="group bg-white rounded-2xl border border-amber-200 shadow-soft overflow-hidden">
+      <summary class="flex items-start gap-3 p-4 sm:p-5">
+        <span class="badge bg-amber-100 text-amber-800 mt-0.5">3 · CHECK BEFORE YOU GO</span>
+        <div class="flex-1 min-w-0">
+          <div class="font-semibold text-[15px] text-slate-900">Every one of your four flights shows 10–20 minutes earlier in live schedules</div>
+          <div class="text-xs text-slate-500 mt-0.5">Consistent across all four, which points at the source rather than an error</div>
+        </div>
+        <svg class="chev w-4 h-4 text-slate-400 mt-1 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+      </summary>
+      <div class="px-4 sm:px-5 pb-5 -mt-1 text-sm text-slate-600 space-y-2.5 border-t border-amber-100 pt-4">
+        <p>Checked against Expedia's live inventory on 22 Sep 2026, all four exist and run non-stop on your dates. But each is listed a little earlier than the time you have:</p>
+        <ul class="text-[13px] text-slate-600 space-y-1 pl-1">
+          <li>· <strong>6E 873</strong> &mdash; you have 08:20→11:10, live shows <strong>08:00→10:55</strong></li>
+          <li>· <strong>6E 6634</strong> &mdash; you have 08:15→11:15, live shows <strong>08:00→11:05</strong></li>
+          <li>· <strong>6E 5351</strong> &mdash; you have 15:25→17:25, live shows <strong>15:15→17:15</strong></li>
+          <li>· <strong>AI 2659</strong> &mdash; you have 14:45→17:15, live shows <strong>14:35→17:05</strong></li>
+        </ul>
+        <p class="font-medium text-slate-800">All four drift the same direction by a similar amount, which usually means two sources rather than a schedule change. It does not change any advice on this page. But the day-by-day times are built on <em>your</em> figures, so reconcile them against the airline before you book taxis to the airport.</p>
+      </div>
+    </details>
+
+    <details class="group bg-white rounded-2xl border border-forest-200 shadow-soft overflow-hidden">
+      <summary class="flex items-start gap-3 p-4 sm:p-5">
+        <span class="badge bg-forest-100 text-forest-800 mt-0.5">4 · THURSDAY</span>
+        <div class="flex-1 min-w-0">
+          <div class="font-semibold text-[15px] text-slate-900">Skipping Elephanta bought you the two best meals in Mumbai</div>
+          <div class="text-xs text-slate-500 mt-0.5">Both were flatly impossible against a ferry day</div>
+        </div>
+        <svg class="chev w-4 h-4 text-slate-400 mt-1 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+      </summary>
+      <div class="px-4 sm:px-5 pb-5 -mt-1 text-sm text-slate-600 space-y-2.5 border-t border-forest-100 pt-4">
+        <p><strong>Britannia &amp; Co</strong> serves <strong>lunch only, 12:00&ndash;16:00, Monday to Saturday</strong>, and is closed Sundays. Wednesday you land at 17:25; Friday you leave at 11:15. Thursday was the single sitting available to you all week — and an Elephanta ferry day would have had you mid-harbour at noon. The berry pulao is the reason people rank it the best Parsi room in the country.</p>
+        <p><strong>Sardar Pav Bhaji</strong> had the same problem from the other end. It opens at 11:00 and carries a 30&ndash;45 minute queue, so it needs an unhurried evening. Returning from Elephanta at 16:00 and then walking Marine Drive left no room for it.</p>
+        <p class="font-medium text-slate-800">Both now fit in one day, with the sunset walk between them. <a href="#itinerary" data-goto="4" class="daylink">Thursday</a> has the shape.</p>
+        <p class="text-[13px] text-slate-500">Elephanta is not gone — the research for it is on <a href="#planb" class="daylink">Plan B</a>, with the ferry times, the 120 steps and the carrying chair, if you change your mind.</p>
+      </div>
+    </details>
+
+    <details class="group bg-white rounded-2xl border border-amber-200 shadow-soft overflow-hidden">
+      <summary class="flex items-start gap-3 p-4 sm:p-5">
+        <span class="badge bg-amber-100 text-amber-800 mt-0.5">5 · MONDAY</span>
+        <div class="flex-1 min-w-0">
+          <div class="font-semibold text-[15px] text-slate-900">MTR is shut on Mondays, and Monday is your first night</div>
+          <div class="text-xs text-slate-500 mt-0.5">One of Bangalore's two great breakfast rooms, closed on the day you land</div>
+        </div>
+        <svg class="chev w-4 h-4 text-slate-400 mt-1 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+      </summary>
+      <div class="px-4 sm:px-5 pb-5 -mt-1 text-sm text-slate-600 space-y-2.5 border-t border-amber-100 pt-4">
+        <p>Mavalli Tiffin Room on Lalbagh Road has been serving since 1924 and is <strong>closed Mondays</strong>. It also shuts between 11:00 and 12:30 and closes at 21:00, so it is a late-breakfast or early-dinner place rather than somewhere to end a night.</p>
+        <p class="font-medium text-slate-800">That leaves Tuesday as your only window, and <a href="#itinerary" data-goto="2" class="daylink">Tuesday</a> puts it there. Monday evening goes to <strong>Taaza Thindi</strong> instead, which runs a second session 16:30&ndash;21:30 &mdash; so landing at 11:15 you can still eat the thing Bangalore is actually for, on your first night.</p>
+      </div>
+    </details>
+
+  </div>
+</section>
+
+<section id="logistics" class="pane pt-8">
+  <h2 class="font-display text-2xl mb-1 text-forest-900">Logistics</h2>
+  <p class="text-sm text-slate-500 mb-4">Four tickets across two airlines, so four things to produce at four desks. <strong class="text-ember-600">No reference numbers yet</strong> &mdash; add them here the moment you have them.</p>
+
+  <div class="grid sm:grid-cols-2 gap-4">
+
+    <div class="bg-white rounded-2xl border border-sand-200 p-5 shadow-soft">
+      <div class="flex items-center gap-2 mb-3"><span class="text-lg">✈️</span><h3 class="font-semibold text-slate-900">Mon 2 Nov · you &amp; your wife</h3></div>
+      <dl class="text-sm space-y-2">
+        <div class="flex justify-between gap-3"><dt class="text-slate-500">Flight</dt><dd class="font-medium text-right">IndiGo 6E 873</dd></div>
+        <div class="flex justify-between gap-3"><dt class="text-slate-500">Route</dt><dd class="font-medium text-right">Delhi T1 → Bengaluru</dd></div>
+        <div class="flex justify-between gap-3"><dt class="text-slate-500">Times</dt><dd class="font-medium text-right">08:20 → 11:10 · 2 h 50</dd></div>
+        <div class="flex justify-between gap-3"><dt class="text-slate-500">Seats</dt><dd class="font-medium text-right">2 · ₹12,619 each</dd></div>
+        <div class="flex justify-between gap-3"><dt class="text-slate-500">Reference</dt><dd class="font-medium text-right text-ember-600">add your PNR</dd></div>
+        <div class="flex justify-between gap-3"><dt class="text-slate-500">Bags</dt><dd class="font-medium text-right">1 checked included</dd></div>
+      </dl>
+      <p class="text-xs text-slate-500 mt-3">Bag drop closes 45 minutes before departure. From Aerocity that means leaving the hotel about <strong>06:20</strong> &mdash; the one pre-09:00 start of the week, and unavoidable.</p>
+    </div>
+
+    <div class="bg-white rounded-2xl border border-sand-200 p-5 shadow-soft">
+      <div class="flex items-center gap-2 mb-3"><span class="text-lg">✈️</span><h3 class="font-semibold text-slate-900">Mon 2 Nov · your parents</h3></div>
+      <dl class="text-sm space-y-2">
+        <div class="flex justify-between gap-3"><dt class="text-slate-500">Flight</dt><dd class="font-medium text-right">IndiGo 6E 6634</dd></div>
+        <div class="flex justify-between gap-3"><dt class="text-slate-500">Route</dt><dd class="font-medium text-right">Chandigarh → Bengaluru</dd></div>
+        <div class="flex justify-between gap-3"><dt class="text-slate-500">Times</dt><dd class="font-medium text-right">08:15 → 11:15 · 3 h 00</dd></div>
+        <div class="flex justify-between gap-3"><dt class="text-slate-500">Seats</dt><dd class="font-medium text-right">2 · ₹10,898 each</dd></div>
+        <div class="flex justify-between gap-3"><dt class="text-slate-500">Reference</dt><dd class="font-medium text-right text-ember-600">add your PNR</dd></div>
+        <div class="flex justify-between gap-3"><dt class="text-slate-500">Non-stop?</dt><dd class="font-medium text-right">yes — one of five</dd></div>
+      </dl>
+      <p class="text-xs text-slate-500 mt-3">The direct saves them a Delhi backtrack entirely. Five non-stops run this route; theirs is the earliest and the cheapest.</p>
+    </div>
+
+    <div class="bg-white rounded-2xl border border-sand-200 p-5 shadow-soft">
+      <div class="flex items-center gap-2 mb-3"><span class="text-lg">✈️</span><h3 class="font-semibold text-slate-900">Wed 4 Nov · all four</h3></div>
+      <dl class="text-sm space-y-2">
+        <div class="flex justify-between gap-3"><dt class="text-slate-500">Flight</dt><dd class="font-medium text-right">IndiGo 6E 5351</dd></div>
+        <div class="flex justify-between gap-3"><dt class="text-slate-500">Route</dt><dd class="font-medium text-right">Bengaluru → Mumbai T2</dd></div>
+        <div class="flex justify-between gap-3"><dt class="text-slate-500">Times</dt><dd class="font-medium text-right">15:25 → 17:25 · 2 h 00</dd></div>
+        <div class="flex justify-between gap-3"><dt class="text-slate-500">Seats</dt><dd class="font-medium text-right">4 · ₹9,942 each</dd></div>
+        <div class="flex justify-between gap-3"><dt class="text-slate-500">Reference</dt><dd class="font-medium text-right text-ember-600">add your PNR</dd></div>
+        <div class="flex justify-between gap-3"><dt class="text-slate-500">Arrives</dt><dd class="font-medium text-right">BOM, not Navi Mumbai</dd></div>
+      </dl>
+      <p class="text-xs text-slate-500 mt-3">Worth knowing: some Bangalore&ndash;Mumbai flights land at <strong>Navi Mumbai (NMI)</strong>, which is roughly 90 minutes from Colaba. Yours does not. Check the airport code on the boarding pass anyway.</p>
+    </div>
+
+    <div class="bg-white rounded-2xl border border-sand-200 p-5 shadow-soft">
+      <div class="flex items-center gap-2 mb-3"><span class="text-lg">✈️</span><h3 class="font-semibold text-slate-900">Fri 6 Nov · all four</h3></div>
+      <dl class="text-sm space-y-2">
+        <div class="flex justify-between gap-3"><dt class="text-slate-500">Flight</dt><dd class="font-medium text-right">Air India AI 2659</dd></div>
+        <div class="flex justify-between gap-3"><dt class="text-slate-500">Route</dt><dd class="font-medium text-right">Mumbai T2 → Chandigarh</dd></div>
+        <div class="flex justify-between gap-3"><dt class="text-slate-500">Times</dt><dd class="font-medium text-right">14:45 → 17:15 · 2 h 30</dd></div>
+        <div class="flex justify-between gap-3"><dt class="text-slate-500">Seats</dt><dd class="font-medium text-right">4 · ₹16,462 each</dd></div>
+        <div class="flex justify-between gap-3"><dt class="text-slate-500">Reference</dt><dd class="font-medium text-right text-ember-600">add your PNR</dd></div>
+        <div class="flex justify-between gap-3"><dt class="text-slate-500">Fare type</dt><dd class="font-medium text-right">changeable, fee applies</dd></div>
+      </dl>
+      <p class="text-xs text-slate-500 mt-3">The dearest leg of the week at <strong>₹65,849</strong> for the four of you &mdash; more than the other three flights put together minus one. Air India fares here are changeable for a fee, which the IndiGo saver fares are not.</p>
+    </div>
+  </div>
+
+  <div class="mt-4 grid sm:grid-cols-2 gap-4">
+    <div class="bg-white rounded-2xl border border-sand-200 p-5 shadow-soft">
+      <div class="flex items-center gap-2 mb-3"><span class="text-lg">🚕</span><h3 class="font-semibold text-slate-900">Airport runs — four of them</h3></div>
+      <p class="text-sm text-slate-600">Four people with luggage, four times. These are the transfers the days are built on:</p>
+      <ul class="text-sm text-slate-600 mt-3 space-y-1.5">
+        <li>· <strong>Mon, Aerocity → Delhi T1</strong>, ~06:20. The hotel's own pickup runs the other way; ask at check-in whether they also run drops.</li>
+        <li>· <strong>Mon, BLR → Indiranagar</strong>, about 40 km. This one is long — see Monday.</li>
+        <li>· <strong>Wed, Indiranagar → BLR</strong>, leaving <strong>12:00</strong> for a 15:25 flight — 38–42 km, and the run regularly exceeds an hour.</li>
+        <li>· <strong>Fri, Fort → BOM T2</strong>, leaving <strong>11:15</strong> for 14:45 — earlier than it looks, because it is Dhanteras.</li>
+      </ul>
+      <div class="mt-3 rounded-xl bg-sky-50 border border-sky-200 p-3 text-[13px] text-sky-900">
+        Book cabs through the hotel or an app rather than at the kerb. With two rooms you are likely two cars each time, so agree that before you are standing outside with the bags.
+      </div>
+    </div>
+
+    <div class="bg-white rounded-2xl border border-sand-200 p-5 shadow-soft">
+      <div class="flex items-center gap-2 mb-3"><span class="text-lg">💳</span><h3 class="font-semibold text-slate-900">Money, and what still needs cash</h3></div>
+      <p class="text-sm text-slate-600">UPI runs almost everything now, but it needs an Indian bank account &mdash; so on an Australian phone, assume cards at hotels and restaurants and <strong>cash everywhere else</strong>.</p>
+      <ul class="text-sm text-slate-600 mt-3 space-y-1.5">
+        <li>· <strong>Taaza Thindi, CTR, Vidyarthi Bhavan</strong> — counter-service tiffin rooms. Carry notes.</li>
+        <li>· <strong>Street food in Mumbai</strong> — Elco, Sardar, Aaram, the Chowpatty stalls. All cash.</li>
+        <li>· <strong>Muhammad Ali Road and Chowpatty</strong> — every stall on both. Small notes.</li>
+        <li>· Autos and older taxis. Uber and Ola take cards in-app.</li>
+      </ul>
+      <p class="text-xs text-slate-500 mt-3">Budget figures on this page are in rupees. Flight fares were quoted in US dollars and converted at <strong>₹95.6 to the dollar</strong>, the rate on 17 Aug 2026 — so treat them as indicative rather than exact.</p>
+    </div>
+  </div>
+</section>
+
+<section id="itinerary" class="pane pt-8">
+  <h2 class="font-display text-2xl sm:text-3xl text-forest-900">Day by day</h2>
+  <p class="text-sm text-slate-500 mt-1 mb-4">Two nights in Bangalore, two in Mumbai. Times are the plan; <span class="text-ember-600 font-semibold">amber notes</span> are where something is tight or could close.</p>
+
+  <div class="daytabs flex gap-2 overflow-x-auto no-sb pb-3 -mx-1 px-1 z-30 bg-sand-50/95 backdrop-blur-md pt-1">
+    <button data-day="1" class="daytab on shrink-0 px-4 py-2.5 rounded-2xl text-left border transition-all"><div class="text-[10px] uppercase tracking-wider font-bold opacity-60">Mon 2</div><div class="text-sm font-semibold">Everyone to Bangalore</div></button>
+    <button data-day="2" class="daytab shrink-0 px-4 py-2.5 rounded-2xl text-left border transition-all"><div class="text-[10px] uppercase tracking-wider font-bold opacity-60">Tue 3</div><div class="text-sm font-semibold">Bangalore, all of it</div></button>
+    <button data-day="3" class="daytab shrink-0 px-4 py-2.5 rounded-2xl text-left border transition-all"><div class="text-[10px] uppercase tracking-wider font-bold opacity-60">Wed 4</div><div class="text-sm font-semibold">Dosa, then Mumbai</div></button>
+    <button data-day="4" class="daytab shrink-0 px-4 py-2.5 rounded-2xl text-left border transition-all"><div class="text-[10px] uppercase tracking-wider font-bold opacity-60">Thu 5</div><div class="text-sm font-semibold">The eating day</div></button>
+    <button data-day="5" class="daytab shrink-0 px-4 py-2.5 rounded-2xl text-left border transition-all"><div class="text-[10px] uppercase tracking-wider font-bold opacity-60">Fri 6</div><div class="text-sm font-semibold">Last morning, then home</div></button>
+  </div>
+
+  <!-- DAY 1 -->
+  <div class="daypanel" data-day="1">
+    <div class="bg-white rounded-3xl border border-sand-200 shadow-soft overflow-hidden">
+      <div class="p-5 sm:p-6 border-b border-sand-100">
+        <div class="flex flex-wrap items-center gap-2 mb-2">
+          <span class="badge bg-forest-100 text-forest-800">DAY 1 · MON 2 NOV</span>
+          <span class="badge bg-slate-100 text-slate-600">✈️ two flights, one arrival</span>
+          <span class="badge bg-amber-100 text-amber-800">06:20 start — the only one</span>
+        </div>
+        <h3 class="font-display text-2xl text-forest-900">Delhi and Chandigarh → Bangalore</h3>
+        <p class="text-sm text-slate-500 mt-1">Aerocity · Delhi T1 · Bengaluru · Indiranagar</p>
+      </div>
+
+      <div class="px-4 sm:px-5 py-4 bg-sand-50 border-b border-sand-100">
+        <div class="text-[10px] uppercase tracking-[.14em] text-slate-400 font-bold mb-3">Today's legs · two origins, converging</div>
+        <div class="rounded-2xl bg-white border border-sand-200 p-3.5">
+          <div class="flex items-stretch overflow-x-auto no-sb">
+            <div class="flex flex-col items-center shrink-0 w-[74px]"><span class="w-2.5 h-2.5 rounded-full bg-ember-500"></span><div class="text-[11px] font-semibold text-slate-700 text-center leading-tight mt-1.5">Delhi<br>08:20</div></div>
+            <div class="flex flex-col items-center justify-center px-1 shrink-0"><div class="text-[10px] text-slate-400">6E 873</div><div class="text-slate-300 text-xs leading-none mt-0.5">──▸</div></div>
+            <div class="flex flex-col items-center shrink-0 w-[74px]"><span class="w-2.5 h-2.5 rounded-full bg-sky-500"></span><div class="text-[11px] font-semibold text-slate-700 text-center leading-tight mt-1.5">BLR<br>11:10</div></div>
+            <div class="flex flex-col items-center justify-center px-1 shrink-0"><div class="text-[10px] text-transparent">·</div><div class="text-slate-300 text-xs leading-none mt-0.5">──▸</div></div>
+            <div class="flex flex-col items-center shrink-0 w-[74px]"><span class="w-2.5 h-2.5 rounded-full bg-ember-500"></span><div class="text-[11px] font-semibold text-slate-700 text-center leading-tight mt-1.5">Indiranagar<br>~13:15</div></div>
+          </div>
+          <div class="flex items-stretch overflow-x-auto no-sb mt-3 pt-3 border-t border-sand-100">
+            <div class="flex flex-col items-center shrink-0 w-[74px]"><span class="w-2.5 h-2.5 rounded-full bg-ember-500"></span><div class="text-[11px] font-semibold text-slate-700 text-center leading-tight mt-1.5">Chandigarh<br>08:15</div></div>
+            <div class="flex flex-col items-center justify-center px-1 shrink-0"><div class="text-[10px] text-slate-400">6E 6634</div><div class="text-slate-300 text-xs leading-none mt-0.5">──▸</div></div>
+            <div class="flex flex-col items-center shrink-0 w-[74px]"><span class="w-2.5 h-2.5 rounded-full bg-sky-500"></span><div class="text-[11px] font-semibold text-slate-700 text-center leading-tight mt-1.5">BLR<br>11:15</div></div>
+            <div class="flex flex-col items-center justify-center px-1 shrink-0"><div class="text-[10px] text-transparent">·</div><div class="text-slate-300 text-xs leading-none mt-0.5">──▸</div></div>
+            <div class="flex flex-col items-center shrink-0 w-[74px]"><span class="w-2.5 h-2.5 rounded-full bg-ember-500"></span><div class="text-[11px] font-semibold text-slate-700 text-center leading-tight mt-1.5">together<br>~12:00</div></div>
+          </div>
+          <p class="text-[11px] text-slate-500 mt-2 leading-relaxed">Five minutes apart is close enough that nobody waits. Agree a meeting point <em>before</em> you fly &mdash; baggage reclaim, not "outside" &mdash; because two parties landing at the same airport at the same time still manage to miss each other.</p>
+        </div>
+        <div class="flex flex-wrap items-center gap-x-4 gap-y-1 mt-3 text-[10px] text-slate-400 font-semibold uppercase tracking-wider"><span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-ember-500"></span>you get out here</span><span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-sky-500"></span>in the air</span></div>
+      </div>
+
+      <div class="p-5 sm:p-6">
+        <div class="tl relative pl-6 pb-5">
+          <span class="absolute left-[-4px] top-1.5 w-2.5 h-2.5 rounded-full bg-ember-500 ring-4 ring-amber-100"></span>
+          <div class="text-xs font-bold text-ember-600 tracking-wide">06:20 · LEAVE AEROCITY</div>
+          <div class="font-semibold text-[15px] mt-0.5">Out of the hotel, over to Delhi T1</div>
+          <p class="text-sm text-slate-600 mt-0.5">IndiGo closes bag drop <strong>45 minutes before departure</strong>. This is the one morning the 09:00 rule does not survive &mdash; and there is no way around it short of rebooking.</p>
+          <p class="text-[13px] text-slate-500 mt-1.5">Arrange the car the night before. Both Aerocity hotels on the shortlist run free airport pickup; ask at check-in whether they also do drops, because at 06:20 you do not want to be negotiating.</p>
+        </div>
+
+        <div class="tl relative pl-6 pb-5">
+          <span class="absolute left-[-4px] top-1.5 w-2.5 h-2.5 rounded-full bg-sky-500 ring-4 ring-sky-100"></span>
+          <div class="text-xs font-bold text-sky-700 tracking-wide">08:20 → 11:10 · 6E 873</div>
+          <div class="font-semibold text-[15px] mt-0.5">Delhi → Bengaluru, non-stop</div>
+          <p class="text-sm text-slate-600 mt-0.5">Two hours fifty. Your parents are in the air at the same time on <strong>6E 6634</strong> out of Chandigarh, landing five minutes behind you.</p>
+        </div>
+
+        <div class="tl relative pl-6 pb-5">
+          <span class="absolute left-[-4px] top-1.5 w-2.5 h-2.5 rounded-full bg-ember-500 ring-4 ring-amber-100"></span>
+          <div class="text-xs font-bold text-ember-600 tracking-wide">~12:00 – 13:15 · THE LONG TRANSFER</div>
+          <div class="font-semibold text-[15px] mt-0.5">Bengaluru airport → Indiranagar</div>
+          <p class="text-sm text-slate-600 mt-0.5">Kempegowda sits about <strong>40 km north of the city</strong> and the run into Indiranagar regularly takes over an hour. This is the longest single transfer of the trip and the one most likely to surprise you.</p>
+          <div class="mt-2 rounded-xl bg-amber-50 border border-amber-200 p-3 text-[13px] text-amber-900">
+            <strong>Two rooms means two cars, or one large one.</strong> Four adults and four bags do not fit a hatchback. Sort this at the airport taxi desk rather than in an app queue with luggage.
+          </div>
+        </div>
+
+        <div class="tl relative pl-6 pb-5">
+          <span class="absolute left-[-4px] top-1.5 w-2.5 h-2.5 rounded-full bg-forest-700 ring-4 ring-forest-100"></span>
+          <div class="text-xs font-bold text-forest-700 tracking-wide">13:15 – 16:00 · CHECK IN, THEN NOTHING</div>
+          <div class="font-semibold text-[15px] mt-0.5">Deliberately empty</div>
+          <p class="text-sm text-slate-600 mt-0.5">Everyone has been up since before six and your parents have flown three hours. The afternoon is left open on purpose &mdash; sleep, or walk ten minutes of Indiranagar and come back.</p>
+          <p class="text-[13px] text-slate-500 mt-1.5">If anyone has energy: <strong>Lalbagh</strong> is open 06:00&ndash;19:00 every day including Mondays, has benches throughout, and runs <strong>battery buggies from ₹100 a head</strong> &mdash; which makes it the one big site your parents can do on a travel day without it costing them anything.</p>
+          <div class="mt-2 rounded-xl bg-amber-50 border border-amber-200 p-3 text-[13px] text-amber-900"><strong>Don't count on Cubbon Park today.</strong> Sources split three ways on whether it closes Mondays &mdash; some say Monday and the second Tuesday, some say never, one says Sundays. The closure probably belongs to the aquarium and the State Central Library inside it rather than the park, but no primary source could be reached to settle it. It is on <a href="#itinerary" data-goto="2" class="daylink">Tuesday</a> instead, where the question does not arise.</div>
+        </div>
+
+        <div class="tl relative pl-6 pb-5">
+          <span class="absolute left-[-4px] top-1.5 w-2.5 h-2.5 rounded-full bg-ember-500 ring-4 ring-amber-100"></span>
+          <div class="text-xs font-bold text-ember-600 tracking-wide">17:00 – 19:00 · DINNER</div>
+          <div class="font-semibold text-[15px] mt-0.5">Taaza Thindi, Jayanagar 4th Block</div>
+          <p class="text-sm text-slate-600 mt-0.5">The thing Bangalore is actually for, and it runs a <strong>second session 16:30&ndash;21:30</strong> &mdash; so you get it on night one without a dawn start. Masala dosa, idli-vada, chow chow bath with kesari bath, filter coffee. About <strong>₹80 a head</strong> for two dishes.</p>
+          <div class="flex flex-wrap gap-1.5 mt-2"><span class="badge bg-slate-100 text-slate-600">counter service</span><span class="badge bg-amber-100 text-amber-800">cash</span><span class="badge bg-slate-100 text-slate-600">standing room</span></div>
+          <div class="mt-2 rounded-xl bg-amber-50 border border-amber-200 p-3 text-[13px] text-amber-900">
+            <strong>MTR is closed today.</strong> Mavalli Tiffin Room shuts on Mondays, which is why it sits on <a href="#itinerary" data-goto="2" class="daylink">Tuesday</a> instead. Do not walk there tonight.
+          </div>
+        </div>
+
+        <div class="tl relative pl-6">
+          <span class="absolute left-[-4px] top-1.5 w-2.5 h-2.5 rounded-full bg-forest-700 ring-4 ring-forest-100"></span>
+          <div class="text-xs font-bold text-forest-700 tracking-wide">EVENING · OPTIONAL</div>
+          <div class="font-semibold text-[15px] mt-0.5">Toit, if anyone is still going</div>
+          <p class="text-sm text-slate-600 mt-0.5">The Indiranagar microbrewery, walking distance from the hotel. No reservations and the wait after 19:00 is real &mdash; which on night one is a reason to skip it rather than queue.</p>
+        </div>
+
+        <details class="mt-4 rounded-2xl bg-sand-50 border border-sand-200 p-4">
+          <summary class="text-sm font-semibold text-slate-700 cursor-pointer">If you're running behind</summary>
+          <div class="text-[13px] text-slate-600 mt-2 space-y-1.5">
+            <p>· <strong>Cut Cubbon Park first.</strong> It costs nothing to skip and you pass it again on Tuesday.</p>
+            <p>· <strong>Taaza Thindi runs to 21:30</strong>, so a late arrival still makes it. It is the last thing to give up, not the first.</p>
+            <p>· If the transfer from the airport goes badly wrong, eat near the hotel and move Taaza Thindi to Wednesday morning &mdash; it opens at 07:00 and Wednesday's flight is not until 15:25.</p>
+          </div>
+        </details>
+      </div>
+    </div>
+  </div>
+
+  <!-- DAY 2 -->
+  <div class="daypanel hidden" data-day="2">
+    <div class="bg-white rounded-3xl border border-sand-200 shadow-soft overflow-hidden">
+      <div class="p-5 sm:p-6 border-b border-sand-100">
+        <div class="flex flex-wrap items-center gap-2 mb-2">
+          <span class="badge bg-forest-100 text-forest-800">DAY 2 · TUE 3 NOV</span>
+          <span class="badge bg-slate-100 text-slate-600">🚗 no flights</span>
+          <span class="badge bg-forest-100 text-forest-800">the only full Bangalore day</span>
+        </div>
+        <h3 class="font-display text-2xl text-forest-900">Bangalore, all of it</h3>
+        <p class="text-sm text-slate-500 mt-1">Lalbagh · MTR · Bangalore Palace · Indiranagar</p>
+      </div>
+
+      <div class="p-5 sm:p-6">
+        <div class="tl relative pl-6 pb-5">
+          <span class="absolute left-[-4px] top-1.5 w-2.5 h-2.5 rounded-full bg-ember-500 ring-4 ring-amber-100"></span>
+          <div class="text-xs font-bold text-ember-600 tracking-wide">09:30 – 11:30 · STOP 1</div>
+          <div class="font-semibold text-[15px] mt-0.5">Lalbagh Botanical Garden</div>
+          <p class="text-sm text-slate-600 mt-0.5">240 acres, a Victorian glass house, and a rock outcrop that predates almost everything else you will stand on. Open from 06:00, so a 09:30 arrival is unhurried and the light is still good.</p>
+          <div class="flex flex-wrap gap-1.5 mt-2"><span class="badge bg-forest-100 text-forest-800">flat, wide paths</span><span class="badge bg-forest-100 text-forest-800">benches throughout</span><span class="badge bg-forest-100 text-forest-800">buggies ₹100 a head</span><span class="badge bg-slate-100 text-slate-600">₹30 entry</span></div>
+          <p class="text-[13px] text-slate-500 mt-1.5">Best site of the week for your parents: level, shaded, benches everywhere, toilets and drinking water &mdash; and <strong>battery-operated buggies from ₹100 per person</strong> if 240 acres on foot is too much. Skip the Kempegowda Tower rock, which is a genuine climb. The glass house may or may not be open to walk into &mdash; it has its own ticket during flower shows and none falls in November; ask at the gate.</p>
+        </div>
+
+        <div class="tl relative pl-6 pb-5">
+          <span class="absolute left-[-4px] top-1.5 w-2.5 h-2.5 rounded-full bg-ember-500 ring-4 ring-amber-100"></span>
+          <div class="text-xs font-bold text-ember-600 tracking-wide">12:40 – 14:00 · LUNCH</div>
+          <div class="font-semibold text-[15px] mt-0.5">MTR — Mavalli Tiffin Room, Lalbagh Road</div>
+          <p class="text-sm text-slate-600 mt-0.5">Serving since 1924, and a two-minute move from Lalbagh's gate. This is the day it is open &mdash; it closes Mondays and shuts again 11:00&ndash;12:30, so <strong>12:40 is the window</strong>.</p>
+          <p class="text-[13px] text-slate-500 mt-1.5">Order the rava idli, which was invented here during wartime rice rationing, or the unlimited set lunch thali &mdash; about <strong>₹250&ndash;400 a head</strong>. Expect roughly a 30-minute wait, paid in advance for a token. It has <strong>a seated waiting area</strong>, which almost nothing else on this list does, so the queue is not a problem for your parents. Cards accepted.</p>
+          <div class="flex flex-wrap gap-1.5 mt-2"><span class="badge bg-amber-100 text-amber-800">closed Mondays</span><span class="badge bg-slate-100 text-slate-600">seated, indoors</span></div>
+        </div>
+
+        <div class="tl relative pl-6 pb-5">
+          <span class="absolute left-[-4px] top-1.5 w-2.5 h-2.5 rounded-full bg-ember-500 ring-4 ring-amber-100"></span>
+          <div class="text-xs font-bold text-ember-600 tracking-wide">15:00 – 17:00 · STOP 2</div>
+          <div class="font-semibold text-[15px] mt-0.5">Bangalore Palace</div>
+          <p class="text-sm text-slate-600 mt-0.5">Tudor revival, built by the Wodeyars, and open <strong>10:00&ndash;17:30</strong>. The audio guide is genuinely good and the interiors are the reason to come.</p>
+          <div class="mt-2 rounded-xl bg-amber-50 border border-amber-200 p-3 text-[13px] text-amber-900">
+            <strong>This is the least accessible thing on the trip.</strong> No lift &mdash; there was one, now shut to the public &mdash; stairs to the upper floor, and a walking circuit with little to sit on. If your parents have had enough by this point in the day, this is the stop to trade away rather than push through.
+          </div>
+          <p class="text-[13px] text-slate-500 mt-1.5">Entry runs about <strong>₹230&ndash;270</strong> a head for Indian nationals and roughly double that for foreign passports; sources disagree by about 17%, so carry more than you expect. The <strong>camera fee is separate and steep</strong> &mdash; around ₹285&ndash;300 for a phone. Decide at the gate who is actually photographing rather than paying four times out of habit. The palace also closes without notice for weddings and private events.</p>
+        </div>
+
+        <div class="tl relative pl-6 pb-5">
+          <span class="absolute left-[-4px] top-1.5 w-2.5 h-2.5 rounded-full bg-forest-700 ring-4 ring-forest-100"></span>
+          <div class="text-xs font-bold text-forest-700 tracking-wide">17:30 · BACK, OR ONE MORE</div>
+          <div class="font-semibold text-[15px] mt-0.5">Commercial Street, if there is appetite</div>
+          <p class="text-sm text-slate-600 mt-0.5">Textiles, silver and street shopping, and close to the palace. Skip it without regret if the day has been enough &mdash; this is filler, not a highlight.</p>
+        </div>
+
+        <div class="tl relative pl-6">
+          <span class="absolute left-[-4px] top-1.5 w-2.5 h-2.5 rounded-full bg-ember-500 ring-4 ring-amber-100"></span>
+          <div class="text-xs font-bold text-ember-600 tracking-wide">19:30 · DINNER</div>
+          <div class="font-semibold text-[15px] mt-0.5">Toit, Indiranagar</div>
+          <p class="text-sm text-slate-600 mt-0.5">Walking distance from the hotel, which after a full day is most of the argument. No reservations &mdash; go at 19:00 rather than 20:30, or eat elsewhere on the same street.</p>
+        </div>
+
+        <details class="mt-4 rounded-2xl bg-sand-50 border border-sand-200 p-4">
+          <summary class="text-sm font-semibold text-slate-700 cursor-pointer">If you're running behind</summary>
+          <div class="text-[13px] text-slate-600 mt-2 space-y-1.5">
+            <p>· <strong>Cut Commercial Street.</strong> It is the only thing here that buys you nothing.</p>
+            <p>· <strong>Then cut Bangalore Palace</strong>, which is the expensive one and the one with stairs. Lalbagh and MTR are the day's spine.</p>
+            <p>· <strong>Never cut MTR.</strong> Today is the only day it opens for you all week.</p>
+            <p>· This is the day that gives way if something slips, because <a href="#itinerary" data-goto="4" class="daylink">Thursday</a> cannot.</p>
+          </div>
+        </details>
+      </div>
+    </div>
+  </div>
+
+  <!-- DAY 3 -->
+  <div class="daypanel hidden" data-day="3">
+    <div class="bg-white rounded-3xl border border-sand-200 shadow-soft overflow-hidden">
+      <div class="p-5 sm:p-6 border-b border-sand-100">
+        <div class="flex flex-wrap items-center gap-2 mb-2">
+          <span class="badge bg-forest-100 text-forest-800">DAY 3 · WED 4 NOV</span>
+          <span class="badge bg-slate-100 text-slate-600">✈️ 15:25 → 17:25</span>
+          <span class="badge bg-forest-100 text-forest-800">morning stays yours</span>
+        </div>
+        <h3 class="font-display text-2xl text-forest-900">Dosa, then Mumbai</h3>
+        <p class="text-sm text-slate-500 mt-1">Jayanagar · Bengaluru · Mumbai T2 · Fort</p>
+      </div>
+
+      <div class="p-5 sm:p-6">
+        <div class="tl relative pl-6 pb-5">
+          <span class="absolute left-[-4px] top-1.5 w-2.5 h-2.5 rounded-full bg-ember-500 ring-4 ring-amber-100"></span>
+          <div class="text-xs font-bold text-ember-600 tracking-wide">09:30 – 11:00 · BREAKFAST</div>
+          <div class="font-semibold text-[15px] mt-0.5">Taaza Thindi again, or CTR for the benne dosa</div>
+          <p class="text-sm text-slate-600 mt-0.5">The 15:25 flight is what buys you this. Taaza Thindi opens at <strong>07:00</strong> and <strong>shuts at 12:00 sharp</strong>, so a 09:30 arrival is comfortable and an 11:30 one is not &mdash; locals treat it as a daily habit and going twice is the correct move.</p>
+          <p class="text-[13px] text-slate-500 mt-1.5">If you would rather mix it up: <strong>Shri Sagar (CTR)</strong> in Malleshwaram for the benne masala dosa &mdash; butter-drenched, crisp-edged, and the one dish that might beat Taaza Thindi. Open 07:30&ndash;12:30, cards accepted, and about 40&ndash;60 minutes from Indiranagar each way. On this morning that is most of your margin, so pick one or the other, not both.</p>
+        </div>
+
+        <div class="tl relative pl-6 pb-5">
+          <span class="absolute left-[-4px] top-1.5 w-2.5 h-2.5 rounded-full bg-forest-700 ring-4 ring-forest-100"></span>
+          <div class="text-xs font-bold text-forest-700 tracking-wide">11:15 – 12:00 · PACK AND OUT</div>
+          <div class="font-semibold text-[15px] mt-0.5">Back to the hotel, check out</div>
+          <p class="text-sm text-slate-600 mt-0.5">Most Indian hotels check out at noon, which lines up exactly with when you need to be moving. Be back from breakfast by 11:15.</p>
+        </div>
+
+        <div class="tl relative pl-6 pb-5">
+          <span class="absolute left-[-4px] top-1.5 w-2.5 h-2.5 rounded-full bg-ember-500 ring-4 ring-amber-100"></span>
+          <div class="text-xs font-bold text-ember-600 tracking-wide">12:00 · LEAVE FOR THE AIRPORT</div>
+          <div class="font-semibold text-[15px] mt-0.5">Indiranagar → BLR, for a 15:25 departure</div>
+          <div class="mt-2 rounded-xl bg-amber-50 border border-amber-200 p-3 text-[13px] text-amber-900">
+            <strong>Noon, and this is the number to argue with rather than the breakfast.</strong> Kempegowda is <strong>38&ndash;42 km</strong> north of Indiranagar; the run takes <strong>50&ndash;75 minutes on a good day</strong> and Bengaluru is the world's second-most-congested city, averaging 13.9&ndash;16.6 km/h at peak (TomTom Traffic Index 2025). BLR's own guidance is to arrive two hours before a domestic departure, and bag drop closes 45&ndash;60 minutes out.
+          </div>
+          <p class="text-[13px] text-slate-500 mt-1.5">Leaving at noon puts you there about 13:15 &mdash; roughly two hours clear. An earlier draft of this page said 13:00, which would have arrived with 70&ndash;85 minutes in hand and no room for a bad run. Pre-booked sedans start around ₹950 all-in; an app car is ₹700&ndash;900 plus ₹130&ndash;200 airport toll, more with surge.</p>
+        </div>
+
+        <div class="tl relative pl-6 pb-5">
+          <span class="absolute left-[-4px] top-1.5 w-2.5 h-2.5 rounded-full bg-sky-500 ring-4 ring-sky-100"></span>
+          <div class="text-xs font-bold text-sky-700 tracking-wide">15:25 → 17:25 · 6E 5351</div>
+          <div class="font-semibold text-[15px] mt-0.5">Bengaluru → Mumbai, non-stop</div>
+          <p class="text-sm text-slate-600 mt-0.5">Two hours, into <strong>Terminal 2</strong>. Confirm on the boarding pass that it says BOM and not NMI &mdash; Navi Mumbai is a different airport and 90 minutes from where you are sleeping.</p>
+        </div>
+
+        <div class="tl relative pl-6 pb-5">
+          <span class="absolute left-[-4px] top-1.5 w-2.5 h-2.5 rounded-full bg-ember-500 ring-4 ring-amber-100"></span>
+          <div class="text-xs font-bold text-ember-600 tracking-wide">~18:00 – 19:30 · INTO TOWN</div>
+          <div class="font-semibold text-[15px] mt-0.5">Mumbai T2 → Fort</div>
+          <p class="text-sm text-slate-600 mt-0.5">Domestic, so no immigration &mdash; bags and out by about 18:00. The road run is <strong>60&ndash;110 minutes</strong> at that hour; a cab company quoting its own Colaba&ndash;T2 route says "1 hour to 1 h 50 depending on traffic". <strong>Plan on reaching the hotel about 19:30</strong> and treat 19:00 as the good case.</p>
+          <p class="text-[13px] text-slate-500 mt-1.5">Prepaid taxi from the counter in arrivals is ₹700&ndash;900 to Colaba; an app car is similar but can surge to ₹1,100+ at that hour. With four people and bags, the prepaid desk is the calmer option.</p>
+          <div class="mt-2 rounded-xl bg-sky-50 border border-sky-200 p-3 text-[13px] text-sky-900"><strong>If you want Elco Pani Puri at all, tonight is the only sensible night.</strong> It is in Bandra, open until 23:30, and broadly on the road from the airport into town &mdash; so it costs you a stop rather than a dedicated 40 km round trip. Any other day it is an expedition.</div>
+        </div>
+
+        <div class="tl relative pl-6">
+          <span class="absolute left-[-4px] top-1.5 w-2.5 h-2.5 rounded-full bg-ember-500 ring-4 ring-amber-100"></span>
+          <div class="text-xs font-bold text-ember-600 tracking-wide">20:15 – 22:00 · THE EVENING</div>
+          <div class="font-semibold text-[15px] mt-0.5">Gateway lit up, the Causeway, then Bademiya</div>
+          <p class="text-sm text-slate-600 mt-0.5">All flat, all within about 1.5 km, and it ends sitting down. The <strong>Gateway of India</strong> is open around the clock and free, and looks best <strong>20:00&ndash;22:30</strong> with the Taj facade lit beside it. <strong>Colaba Causeway</strong> and the market stalls run to about 21:30.</p>
+          <p class="text-[13px] text-slate-500 mt-1.5">If anyone wants a drink and a chair rather than a walk, <strong>Leopold Cafe</strong> is on the Causeway &mdash; open since 1871, permanently full of travellers, and about as famous as a café gets. It is a landmark you sit in rather than a great meal; go for the room.</p>
+          <p class="text-[13px] text-slate-500 mt-1.5">Then <strong>Bademiya</strong> &mdash; seekh kebabs and rolls cooked on the street behind the Taj, <strong>19:00 to 03:00, every day</strong>. Exactly right for a night you arrive tired and want to eat without a plan.</p>
+          <div class="mt-2 rounded-xl bg-sky-50 border border-sky-200 p-3 text-[13px] text-sky-900">
+            <strong>You will miss the Marine Drive sunset tonight</strong> &mdash; it goes around 18:05 and you are still in a car. It moves to <a href="#itinerary" data-goto="4" class="daylink">Thursday</a>, which works out better anyway.
+          </div>
+        </div>
+
+        <details class="mt-4 rounded-2xl bg-sand-50 border border-sand-200 p-4">
+          <summary class="text-sm font-semibold text-slate-700 cursor-pointer">If you're running behind</summary>
+          <div class="text-[13px] text-slate-600 mt-2 space-y-1.5">
+            <p>· <strong>Nothing about this morning is compulsory.</strong> If everyone wants a lie-in, take it &mdash; the flight is the only fixed point.</p>
+            <p>· <strong>Do not compress the noon departure</strong> to buy breakfast time. That is the one number on this day with no slack in it, and Bangalore traffic is the reason.</p>
+            <p>· Arriving late in Mumbai costs you dinner, not sightseeing. Room service and an early night is a legitimate answer to a travel day.</p>
+          </div>
+        </details>
+      </div>
+    </div>
+  </div>
+
+  <!-- DAY 4 -->
+  <div class="daypanel hidden" data-day="4">
+    <div class="bg-white rounded-3xl border border-forest-300 shadow-soft overflow-hidden">
+      <div class="p-5 sm:p-6 border-b border-sand-100 bg-forest-50">
+        <div class="flex flex-wrap items-center gap-2 mb-2">
+          <span class="badge bg-forest-700 text-white">DAY 4 · THU 5 NOV</span>
+          <span class="badge bg-forest-100 text-forest-800">the eating day</span>
+          <span class="badge bg-slate-100 text-slate-600">five stops, all flat</span>
+        </div>
+        <h3 class="font-display text-2xl text-forest-900">Irani bakery to Muhammad Ali Road</h3>
+        <p class="text-sm text-slate-500 mt-1">Fort · Crawford Market · Ballard Estate · Marine Drive · Bhendi Bazaar</p>
+        <p class="text-sm text-forest-800 mt-2 font-medium">Your only full day in Mumbai, and it runs on food from 09:30 to about 21:00. Nothing needs a boat, a climb or an early alarm — and you can sit down at every single stop.</p>
+      </div>
+
+      <div class="p-5 sm:p-6">
+        <div class="rounded-2xl bg-forest-50 border border-forest-200 p-4 mb-5 text-[13px] text-forest-900">
+          <strong>Dropping Elephanta bought you this.</strong> Britannia serves lunch only, 12:00&ndash;16:00, Monday to Saturday — against a ferry day it was flatly impossible. Muhammad Ali Road needs an unhurried evening, which a 16:00 return from the island would not have left. Both fit now.
+        </div>
+
+        <div class="tl relative pl-6 pb-5">
+          <span class="absolute left-[-4px] top-1.5 w-2.5 h-2.5 rounded-full bg-ember-500 ring-4 ring-amber-100"></span>
+          <div class="text-xs font-bold text-ember-600 tracking-wide">09:30 · BREAKFAST</div>
+          <div class="font-semibold text-[15px] mt-0.5">Yazdani Restaurant &amp; Bakery, Fort</div>
+          <p class="text-sm text-slate-600 mt-0.5">An Irani bakery in a creaking wooden-galleried building a few minutes' walk from the hotel &mdash; which is most of why it opens the day. <strong>Brun maska</strong>, the hard-crusted bun split and buttered, dunked in chai. Add the ginger biscuits and an apple pie if it is out.</p>
+          <div class="flex flex-wrap gap-1.5 mt-2"><span class="badge bg-forest-100 text-forest-800">walkable from Fort</span><span class="badge bg-forest-100 text-forest-800">proper tables</span><span class="badge bg-amber-100 text-amber-800">cash</span></div>
+          <p class="text-[13px] text-slate-500 mt-1.5">Shared benches, no ceremony, and the tea comes fast. Irani cafés generally shut on Sundays and keep short afternoon hours &mdash; Thursday morning is squarely in their best window.</p>
+        </div>
+
+        <div class="tl relative pl-6 pb-5">
+          <span class="absolute left-[-4px] top-1.5 w-2.5 h-2.5 rounded-full bg-ember-500 ring-4 ring-amber-100"></span>
+          <div class="text-xs font-bold text-ember-600 tracking-wide">10:45 – 11:45 · WALK IT OFF</div>
+          <div class="font-semibold text-[15px] mt-0.5">Crawford Market</div>
+          <p class="text-sm text-slate-600 mt-0.5">A ten-minute ride north. Built 1869, and still the city's produce market &mdash; fruit stacked in pyramids, spice sacks, and Norman Lockwood Kipling's reliefs over the entrance.</p>
+          <p class="text-[13px] text-slate-500 mt-1.5">This is a look-and-smell stop, not an eating one &mdash; lunch is an hour away and you want room for it. Busy, uneven underfoot, and worth keeping to thirty or forty minutes. <strong>Rajabai Clock Tower</strong> and the university buildings are back toward Fort if you would rather something calmer.</p>
+        </div>
+
+        <div class="tl relative pl-6 pb-5">
+          <span class="absolute left-[-4px] top-1.5 w-2.5 h-2.5 rounded-full bg-ember-500 ring-4 ring-amber-100"></span>
+          <div class="text-xs font-bold text-ember-600 tracking-wide">12:00 · LUNCH — THE ONE TO GET RIGHT</div>
+          <div class="font-semibold text-[15px] mt-0.5">Britannia &amp; Co, Ballard Estate</div>
+          <p class="text-sm text-slate-600 mt-0.5">Parsi, in a corner of Wakefield House, serving since 1923. The order is the <strong>berry pulao</strong> &mdash; chicken, mutton or vegetable, under Iranian barberries — with a Parsi omelette and pav, and caramel custard after.</p>
+          <div class="flex flex-wrap gap-1.5 mt-2"><span class="badge bg-amber-100 text-amber-800">12:00–16:00 only</span><span class="badge bg-amber-100 text-amber-800">closed Sundays</span><span class="badge bg-slate-100 text-slate-600">~₹500–800 a head</span></div>
+          <div class="mt-2 rounded-xl bg-amber-50 border border-amber-200 p-3 text-[13px] text-amber-900">
+            <strong>Arrive at 12:00, not 13:00.</strong> The kitchen shuts at 16:00 and it fills. Ballard Estate is about 1.5 km from the Gateway — twenty minutes flat on foot, seven in a cab. This is the only sitting available to you all week.
+          </div>
+        </div>
+
+        <div class="tl relative pl-6 pb-5">
+          <span class="absolute left-[-4px] top-1.5 w-2.5 h-2.5 rounded-full bg-forest-700 ring-4 ring-forest-100"></span>
+          <div class="text-xs font-bold text-forest-700 tracking-wide">14:00 – 16:30 · STOP</div>
+          <div class="font-semibold text-[15px] mt-0.5">Back to the hotel, or the museum</div>
+          <p class="text-sm text-slate-600 mt-0.5">You have eaten a berry pulao and there are two more stops tonight. Lie down, or sit in the air conditioning at the <strong>Chhatrapati Shivaji Maharaj Vastu Sangrahalaya</strong> — the old Prince of Wales Museum, ten minutes away and the best indoor hour in the city.</p>
+        </div>
+
+        <div class="tl relative pl-6 pb-5">
+          <span class="absolute left-[-4px] top-1.5 w-2.5 h-2.5 rounded-full bg-ember-500 ring-4 ring-amber-100"></span>
+          <div class="text-xs font-bold text-ember-600 tracking-wide">16:45 · ICE CREAM, THEN THE SEA</div>
+          <div class="font-semibold text-[15px] mt-0.5">K. Rustom &amp; Co, Churchgate</div>
+          <p class="text-sm text-slate-600 mt-0.5">A counter in a wall, since 1953, selling ice-cream sandwiches &mdash; a slab pressed between two wafers, handed over in paper. No seating, no fuss, about a minute of your life. Take it and walk.</p>
+          <p class="text-[13px] text-slate-500 mt-1.5">It is a few minutes from the north end of <strong>Marine Drive</strong>, which is the point: you eat it on the seawall.</p>
+        </div>
+
+        <div class="tl relative pl-6 pb-5">
+          <span class="absolute left-[-4px] top-1.5 w-2.5 h-2.5 rounded-full bg-sky-500 ring-4 ring-sky-100"></span>
+          <div class="text-xs font-bold text-sky-700 tracking-wide">17:10 – 18:30 · THE WALK</div>
+          <div class="font-semibold text-[15px] mt-0.5">Marine Drive, south to north, into the sunset</div>
+          <p class="text-sm text-slate-600 mt-0.5">Sunset is <strong>18:04</strong>, civil dusk <strong>18:27</strong> &mdash; about 23 minutes of usable light after the sun goes, which is when the Queen's Necklace lights come up along the bay.</p>
+          <p class="text-[13px] text-slate-500 mt-1.5">The full promenade is <strong>3.6 km</strong> and more than your parents need. Walk twenty or thirty minutes of it and stop &mdash; there is a continuous sitting parapet the whole length, so you can quit anywhere.</p>
+        </div>
+
+        <div class="tl relative pl-6 pb-5">
+          <span class="absolute left-[-4px] top-1.5 w-2.5 h-2.5 rounded-full bg-ember-500 ring-4 ring-amber-100"></span>
+          <div class="text-xs font-bold text-ember-600 tracking-wide">19:15 – 21:00 · DINNER, STANDING UP</div>
+          <div class="font-semibold text-[15px] mt-0.5">Muhammad Ali Road</div>
+          <p class="text-sm text-slate-600 mt-0.5">The best street eating in Mumbai, and it is an evening thing &mdash; the grills come out after dark. Do it as a crawl rather than a meal:</p>
+          <ul class="text-[13px] text-slate-600 mt-2 space-y-1.5">
+            <li>· <strong>Shaan Juice Center</strong> — start here. Fresh juices and cold falooda, and somewhere to stand while you work out the lie of the land.</li>
+            <li>· <strong>Haji Seekh Corner</strong> — seekh kebabs off the coals. This is the main event.</li>
+            <li>· <strong>Shabbir's Tawakkal Sweets</strong> — finish on malpua and the famous <em>aflatoon</em>. Dense, syrupy, and one portion between two is plenty.</li>
+          </ul>
+          <div class="mt-2 rounded-xl bg-amber-50 border border-amber-200 p-3 text-[13px] text-amber-900">
+            <strong>Two honest caveats.</strong> This strip is at its most spectacular during Ramadan, which November is not &mdash; expect it busy and good rather than the wall of food you may have seen. And it is standing, crowded and uneven: if your parents want a chair, eat here lightly and keep <strong>Bademiya</strong> in Colaba, open to 03:00, as the sit-down finish on the way home.
+          </div>
+        </div>
+
+        <div class="tl relative pl-6">
+          <span class="absolute left-[-4px] top-1.5 w-2.5 h-2.5 rounded-full bg-forest-700 ring-4 ring-forest-100"></span>
+          <div class="text-xs font-bold text-forest-700 tracking-wide">THE SWAP, IF YOU WANT ONE</div>
+          <div class="font-semibold text-[15px] mt-0.5">Sardar Pav Bhaji instead of Muhammad Ali Road</div>
+          <p class="text-sm text-slate-600 mt-0.5">Tardeo, since 1966, and the pav bhaji everything else is measured against. Open <strong>11:00&ndash;02:00</strong>, with a <strong>30&ndash;45 minute queue</strong>. It is ~3 km inland from the north end of Marine Drive, so finishing the walk and going straight there works well &mdash; home by about 20:30.</p>
+          <p class="text-[13px] text-slate-500 mt-1.5">Sardar if you want one great dish sitting down; Muhammad Ali Road if you want six small ones standing up. You cannot do both in an evening.</p>
+        </div>
+
+        <details class="mt-4 rounded-2xl bg-sand-50 border border-sand-200 p-4">
+          <summary class="text-sm font-semibold text-slate-700 cursor-pointer">Levers, and the Elephanta option if you change your mind</summary>
+          <div class="text-[13px] text-slate-600 mt-2 space-y-1.5">
+            <p>· <strong>Britannia at noon is the only hard deadline.</strong> 16:00 and the kitchen is shut, and no other day this week opens for you.</p>
+            <p>· <strong>Cut Crawford Market first</strong>, then the museum. Both are padding between meals.</p>
+            <p>· <strong>If Britannia is shut or full</strong>, Ideal Corner and Jimmy Boy are the Parsi alternatives near Fort — hours unchecked, so ring first.</p>
+            <p>· <strong>Too much walking?</strong> Cut the Marine Drive walk to ten minutes and cab straight to dinner. The sunset is the bit worth keeping, not the distance.</p>
+            <p>· <strong>Elephanta is still there.</strong> Ferries 09:00 to at least 14:00 from the Gateway, an hour each way, ~₹260 return plus ₹40 entry and a ₹10 village fee, ~120 steps up from the jetty and 7¼ hours door to door. Doing it costs you Britannia, the sunset and the evening crawl — the whole of this day. <a href="#planb" class="daylink">Plan B</a> has the detail.</p>
+          </div>
+        </details>
+      </div>
+    </div>
+  </div>
+
+  <!-- DAY 5 -->
+  <div class="daypanel hidden" data-day="5">
+    <div class="bg-white rounded-3xl border border-sand-200 shadow-soft overflow-hidden">
+      <div class="p-5 sm:p-6 border-b border-sand-100">
+        <div class="flex flex-wrap items-center gap-2 mb-2">
+          <span class="badge bg-forest-100 text-forest-800">DAY 5 · FRI 6 NOV</span>
+          <span class="badge bg-slate-100 text-slate-600">✈️ 14:45 → 17:15</span>
+          <span class="badge bg-amber-100 text-amber-800">Dhanteras — busy city</span>
+        </div>
+        <h3 class="font-display text-2xl text-forest-900">Last morning, then home</h3>
+        <p class="text-sm text-slate-500 mt-1">Colaba · Mumbai T2 · Chandigarh</p>
+      </div>
+
+      <div class="p-5 sm:p-6">
+        <div class="tl relative pl-6 pb-5">
+          <span class="absolute left-[-4px] top-1.5 w-2.5 h-2.5 rounded-full bg-ember-500 ring-4 ring-amber-100"></span>
+          <div class="text-xs font-bold text-ember-600 tracking-wide">09:30 – 11:15 · ONE LAST THING</div>
+          <div class="font-semibold text-[15px] mt-0.5">Colaba Causeway, and the Gateway in daylight</div>
+          <p class="text-sm text-slate-600 mt-0.5">The 14:45 flight gives you a morning, but a shorter one than the clock suggests &mdash; see the departure note below. Stay close to the hotel; this is emphatically not the morning to cross the city.</p>
+          <div class="mt-2 rounded-xl bg-amber-50 border border-amber-200 p-3 text-[13px] text-amber-900"><strong>Today is Dhanteras</strong>, the opening day of Diwali &mdash; the traditional day for buying gold and household goods, with main Diwali on Sunday 8 Nov. Expect the shopping districts, and the roads through them, to be substantially busier than a normal Friday. It makes Colaba Causeway livelier and the airport run slower, in that order of importance.</div>
+          <p class="text-[13px] text-slate-500 mt-1.5">Options, all within a short walk: <strong>Colaba Causeway</strong> for last shopping, the <strong>Gateway</strong> without Thursday's ferry queue, or <strong>Chhatrapati Shivaji Maharaj Terminus</strong> from across the road &mdash; UNESCO-listed, and still a working commuter station.</p>
+        </div>
+
+        <div class="tl relative pl-6 pb-5">
+          <span class="absolute left-[-4px] top-1.5 w-2.5 h-2.5 rounded-full bg-ember-500 ring-4 ring-amber-100"></span>
+          <div class="text-xs font-bold text-ember-600 tracking-wide">11:15 · LAST FOOD STOP</div>
+          <div class="font-semibold text-[15px] mt-0.5">Aaram Vada Pav, opposite CST</div>
+          <p class="text-sm text-slate-600 mt-0.5">The classic vada pav, about as quick as food gets, and right by the terminus &mdash; so it folds into the morning rather than costing it anything.</p>
+          <div class="flex flex-wrap gap-1.5 mt-2"><span class="badge bg-amber-100 text-amber-800">cash</span><span class="badge bg-slate-100 text-slate-600">standing</span></div>
+        </div>
+
+        <div class="tl relative pl-6 pb-5">
+          <span class="absolute left-[-4px] top-1.5 w-2.5 h-2.5 rounded-full bg-ember-500 ring-4 ring-amber-100"></span>
+          <div class="text-xs font-bold text-ember-600 tracking-wide">11:15 · LEAVE FOR THE AIRPORT</div>
+          <div class="font-semibold text-[15px] mt-0.5">Fort → Mumbai T2, for 14:45</div>
+          <div class="mt-2 rounded-xl bg-amber-50 border border-amber-200 p-3 text-[13px] text-amber-900">
+            <strong>Earlier than feels necessary, and Dhanteras is why.</strong> The road run is <strong>60&ndash;110 minutes</strong> on an ordinary day, and the northbound route passes the worst of the Dhanteras shopping. Leaving at noon could put you at T2 with under an hour in hand. Leave <strong>11:15</strong> and the bad case still works.
+          </div>
+          <div class="mt-2 rounded-xl bg-forest-50 border border-forest-200 p-3 text-[13px] text-forest-900"><strong>The traffic hedge: Metro Line 3.</strong> The Aqua Line runs <strong>entirely underground</strong> from Cuffe Parade to the airport, so Dhanteras cannot touch it. <strong>₹50</strong> a head, trains every 8&ndash;10 minutes off-peak, and the T2 station has a dedicated <strong>118 m step-free walk</strong> straight into the terminal. Board at CSMT or Hutatma Chowk from Fort. Sources disagree on the end-to-end time &mdash; 45 minutes or 69 &mdash; so plan on the longer one; from Fort you are a few stops closer than either figure assumes.</div>
+          <p class="text-[13px] text-slate-500 mt-1.5">A car for Wednesday's arrival and the Metro for Friday's departure is the sensible split: the car handles tired people, bags and the dark; the Metro handles the day when traffic is the real risk.</p>
+        </div>
+
+        <div class="tl relative pl-6 pb-5">
+          <span class="absolute left-[-4px] top-1.5 w-2.5 h-2.5 rounded-full bg-sky-500 ring-4 ring-sky-100"></span>
+          <div class="text-xs font-bold text-sky-700 tracking-wide">14:45 → 17:15 · AI 2659</div>
+          <div class="font-semibold text-[15px] mt-0.5">Mumbai → Chandigarh, non-stop</div>
+          <p class="text-sm text-slate-600 mt-0.5">Two and a half hours, and the last flight of the trip. Lands in time for dinner with family.</p>
+        </div>
+
+        <div class="tl relative pl-6">
+          <span class="absolute left-[-4px] top-1.5 w-2.5 h-2.5 rounded-full bg-forest-700 ring-4 ring-forest-100"></span>
+          <div class="text-xs font-bold text-forest-700 tracking-wide">17:15 · CHANDIGARH</div>
+          <div class="font-semibold text-[15px] mt-0.5">This page stops here</div>
+          <p class="text-sm text-slate-600 mt-0.5">Everything after this is family time and nothing on this page is planning it. Nine days, no fixed points, and no bed to book.</p>
+        </div>
+
+        <details class="mt-4 rounded-2xl bg-sand-50 border border-sand-200 p-4">
+          <summary class="text-sm font-semibold text-slate-700 cursor-pointer">If you're running behind</summary>
+          <div class="text-[13px] text-slate-600 mt-2 space-y-1.5">
+            <p>· <strong>Cut the morning entirely</strong> if anyone is tired. Nothing in it is unmissable and Thursday was the day that mattered.</p>
+            <p>· <strong>Do not move the 11:15 departure.</strong> It is the last flight of the trip and there is no later one that gets you to Chandigarh tonight — and Dhanteras is the one day of your week when Mumbai traffic has a reason to be unusually bad.</p>
+            <p>· <strong>If the roads look wrong, take the Metro.</strong> It is the one option whose journey time the festival cannot inflate.</p>
+          </div>
+        </details>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="eat" class="pane pt-8">
+  <h2 class="font-display text-2xl sm:text-3xl text-forest-900">Where to eat</h2>
+  <p class="text-sm text-slate-500 mt-1 mb-4">The reason the trip is shaped the way it is. Hours checked against the weekdays you are actually there &mdash; but read the note below on which ones could be checked at all.</p>
+
+  <div class="rounded-2xl bg-amber-50 border-2 border-amber-300 p-4 mb-5 text-[13px] text-amber-900">
+    <strong>Two tiers of confidence here, and they are marked.</strong> Places tagged <span class="badge bg-forest-100 text-forest-800">hours checked</span> had their opening times and closing days corroborated across several sources. Places tagged <span class="badge bg-amber-100 text-amber-800">unverified hours</span> came from your video and could not be checked &mdash; the network blocked every listing site. They are almost certainly good; their <em>hours</em> are the unknown. Ring, or go early.
+  </div>
+
+  <h3 class="font-display text-xl text-forest-900 mt-2 mb-3">Mumbai &middot; the three that decide the days</h3>
+  <div class="grid sm:grid-cols-2 gap-4">
+
+    <div class="bg-white rounded-2xl border-2 border-forest-700 p-5 shadow-soft">
+      <div class="flex items-start justify-between gap-3">
+        <h4 class="font-semibold text-slate-900">Britannia &amp; Co</h4>
+        <span class="badge bg-forest-100 text-forest-800 shrink-0">hours checked</span>
+      </div>
+      <div class="flex flex-wrap gap-1.5 mt-2"><span class="badge bg-amber-100 text-amber-800">12:00–16:00</span><span class="badge bg-amber-100 text-amber-800">closed Sundays</span><span class="badge bg-slate-100 text-slate-600">~₹500–800</span></div>
+      <p class="text-sm text-slate-600 mt-2.5">Ballard Estate, Parsi, since 1923. Berry pulao under Iranian barberries, Parsi omelette with pav, caramel custard. <strong>The single meal this whole week is built around</strong> &mdash; lunch-only hours mean Thursday is the only sitting you get.</p>
+      <p class="text-[13px] text-slate-500 mt-2">Arrive at opening. One source claims Saturday runs to 22:00; every other says 12:00–16:00 flat.</p>
+    </div>
+
+    <div class="bg-white rounded-2xl border border-sand-200 p-5 shadow-soft">
+      <div class="flex items-start justify-between gap-3">
+        <h4 class="font-semibold text-slate-900">Muhammad Ali Road</h4>
+        <span class="badge bg-amber-100 text-amber-800 shrink-0">unverified hours</span>
+      </div>
+      <div class="flex flex-wrap gap-1.5 mt-2"><span class="badge bg-slate-100 text-slate-600">evenings</span><span class="badge bg-amber-100 text-amber-800">standing</span><span class="badge bg-amber-100 text-amber-800">cash</span></div>
+      <p class="text-sm text-slate-600 mt-2.5">Bhendi Bazaar after dark, as a crawl: <strong>Shaan Juice Center</strong> for falooda, <strong>Haji Seekh Corner</strong> for kebabs off the coals, <strong>Shabbir's Tawakkal Sweets</strong> for malpua and aflatoon.</p>
+      <p class="text-[13px] text-slate-500 mt-2">Its legendary version is Ramadan, which November is not — expect busy and very good rather than overwhelming. Crowded and uneven underfoot.</p>
+    </div>
+
+    <div class="bg-white rounded-2xl border border-sand-200 p-5 shadow-soft">
+      <div class="flex items-start justify-between gap-3">
+        <h4 class="font-semibold text-slate-900">Yazdani Restaurant &amp; Bakery</h4>
+        <span class="badge bg-amber-100 text-amber-800 shrink-0">unverified hours</span>
+      </div>
+      <div class="flex flex-wrap gap-1.5 mt-2"><span class="badge bg-forest-100 text-forest-800">walkable from Fort</span><span class="badge bg-forest-100 text-forest-800">tables</span><span class="badge bg-amber-100 text-amber-800">cash</span></div>
+      <p class="text-sm text-slate-600 mt-2.5">Irani bakery in a wooden-galleried building minutes from the hotel. <strong>Brun maska</strong> and chai, ginger biscuits, apple pie. The reason Thursday can start at 09:30 and still start well.</p>
+      <p class="text-[13px] text-slate-500 mt-2">Irani cafés typically shut Sundays and keep odd afternoon hours; a Thursday morning is their best window.</p>
+    </div>
+
+    <div class="bg-white rounded-2xl border border-sand-200 p-5 shadow-soft">
+      <div class="flex items-start justify-between gap-3">
+        <h4 class="font-semibold text-slate-900">Sardar Pav Bhaji</h4>
+        <span class="badge bg-forest-100 text-forest-800 shrink-0">hours checked</span>
+      </div>
+      <div class="flex flex-wrap gap-1.5 mt-2"><span class="badge bg-slate-100 text-slate-600">11:00–02:00</span><span class="badge bg-amber-100 text-amber-800">30–45 min queue</span></div>
+      <p class="text-sm text-slate-600 mt-2.5">Tardeo, since 1966. The pav bhaji everything else is measured against, and the butter is not a rumour. <strong>The Thursday-evening alternative to Muhammad Ali Road</strong> — one great dish sitting down instead of six standing up.</p>
+      <p class="text-[13px] text-slate-500 mt-2">~3 km inland from the north end of Marine Drive, so it pairs naturally with finishing the sunset walk there.</p>
+    </div>
+  </div>
+
+  <h3 class="font-display text-xl text-forest-900 mt-8 mb-3">Mumbai &middot; the ones that slot into gaps</h3>
+  <div class="grid sm:grid-cols-2 gap-4">
+    <div class="bg-white rounded-2xl border border-sand-200 p-5 shadow-soft">
+      <div class="flex items-start justify-between gap-3"><h4 class="font-semibold text-slate-900">Bademiya, Colaba</h4><span class="badge bg-forest-100 text-forest-800 shrink-0">hours checked</span></div>
+      <p class="text-sm text-slate-600 mt-2.5"><strong>19:00–03:00, every day.</strong> Seekh kebabs and rolls in rumali roti, cooked on the street behind the Taj since 1946. ~₹200 a head. The Wednesday-night answer, and the safety net any night.</p>
+      <p class="text-[13px] text-slate-500 mt-2"><strong>There are two of them.</strong> The Tulloch Road stall is the spectacle — folding chairs, neon, eat standing. The Fort/Kala Ghoda branch has real seating. Go to the stall <strong>around 20:00</strong>, before it peaks at 21:00, or take your parents to the restaurant.</p>
+    </div>
+    <div class="bg-white rounded-2xl border border-sand-200 p-5 shadow-soft">
+      <div class="flex items-start justify-between gap-3"><h4 class="font-semibold text-slate-900">Aaram Vada Pav, opposite CST</h4><span class="badge bg-forest-100 text-forest-800 shrink-0">hours checked</span></div>
+      <p class="text-sm text-slate-600 mt-2.5"><strong>08:30–20:30, every day</strong> — the only stop on this page open before 09:00. Vada pav with the garlic chutney, ~₹100 a head. Serving since 1939.</p>
+      <p class="text-[13px] text-slate-500 mt-2">300 m from CSMT metro station, which is why it is the <a href="#itinerary" data-goto="5" class="daylink">Friday</a> stop: eat, then take Metro Line 3 to the airport.</p>
+    </div>
+    <div class="bg-white rounded-2xl border border-sand-200 p-5 shadow-soft">
+      <div class="flex items-start justify-between gap-3"><h4 class="font-semibold text-slate-900">K. Rustom &amp; Co, Churchgate</h4><span class="badge bg-amber-100 text-amber-800 shrink-0">unverified hours</span></div>
+      <p class="text-sm text-slate-600 mt-2.5">A counter in a wall since 1953, selling ice-cream sandwiches in paper. No seating, about a minute of your time, and a few minutes from Marine Drive — so you eat it on the seawall before the sunset walk.</p>
+    </div>
+    <div class="bg-white rounded-2xl border border-sand-200 p-5 shadow-soft">
+      <div class="flex items-start justify-between gap-3"><h4 class="font-semibold text-slate-900">Girgaon Chowpatty</h4><span class="badge bg-forest-100 text-forest-800 shrink-0">hours checked</span></div>
+      <p class="text-sm text-slate-600 mt-2.5">The north end of Marine Drive. Bhelpuri, sevpuri, pav bhaji at the Punjabi Pav Bhaji stall, barf gola, milk kulfi. <strong>₹100–200</strong> for several plates. Crowded, sandy, patchily lit — graze rather than dine.</p>
+    </div>
+    <div class="bg-white rounded-2xl border border-sand-200 p-5 shadow-soft">
+      <div class="flex items-start justify-between gap-3"><h4 class="font-semibold text-slate-900">Leopold Cafe, Colaba</h4><span class="badge bg-amber-100 text-amber-800 shrink-0">unverified hours</span></div>
+      <p class="text-sm text-slate-600 mt-2.5">Open since 1871 and permanently full. A landmark you sit in rather than a great meal — worth it on the Wednesday evening when you want a chair and a cold drink, not a queue.</p>
+    </div>
+    <div class="bg-white rounded-2xl border border-sand-200 p-5 shadow-soft">
+      <div class="flex items-start justify-between gap-3"><h4 class="font-semibold text-slate-900">Elco Pani Puri, Bandra</h4><span class="badge bg-forest-100 text-forest-800 shrink-0">hours checked</span></div>
+      <p class="text-sm text-slate-600 mt-2.5"><strong>09:30–23:30, every day.</strong> Pani puri from ₹50, ragda patties, sev puri — and a proper sit-down restaurant, not a stall, so cards work.</p>
+      <p class="text-[13px] text-slate-500 mt-2"><strong>20 km from Colaba.</strong> The only version that works is stopping on the way in from the airport on Wednesday, since Bandra sits on that road. Otherwise drop it.</p>
+    </div>
+  </div>
+
+  <details class="mt-4 rounded-2xl bg-sand-50 border border-sand-200 p-4">
+    <summary class="text-sm font-semibold text-slate-700 cursor-pointer">From the video, but they don't fit a day and a half</summary>
+    <div class="text-[13px] text-slate-600 mt-2 space-y-1.5">
+      <p>· <strong>Sassoon Dock</strong> — the fish auction runs at dawn, roughly 05:00–08:00. Straight into your 09:00 rule, and the one genuinely unfixable clash.</p>
+      <p>· <strong>B. Merwan &amp; Co</strong>, Grant Road — mawa cakes, and a better-known Irani café than Yazdani. Yazdani wins only because it is walkable from the hotel and B. Merwan is a trip north.</p>
+      <p>· <strong>The Bombay Canteen</strong>, Lower Parel — modern Indian, and the best restaurant on the video's list. It needs a booking, a long lunch or dinner, and 8 km each way. With two evenings, it displaces Muhammad Ali Road <em>and</em> Bademiya.</p>
+      <p>· <strong>Prakash Shakahari</strong>, Dadar — Maharashtrian, piyush and thalipeeth. A dedicated trip north.</p>
+      <p>· <strong>Jaihind, Linking Road</strong> — Konkan seafood, in Bandra. Same geography problem as Elco.</p>
+      <p>· <strong>Haji Ali Dargah and the juice centre</strong>, and <strong>Dhobi Ghat</strong> — both on the video's day three, both a half-day loop you do not have.</p>
+      <p class="pt-1">If you wanted one of these badly enough, the honest swap is Thursday's Crawford Market and museum for a trip north — it costs you the slow afternoon, which after a berry pulao you may want.</p>
+    </div>
+  </details>
+
+  <h3 class="font-display text-xl text-forest-900 mt-8 mb-3">Bangalore</h3>
+  <div class="grid sm:grid-cols-2 gap-4">
+    <div class="bg-white rounded-2xl border-2 border-forest-700 p-5 shadow-soft">
+      <div class="flex items-start justify-between gap-3"><h4 class="font-semibold text-slate-900">Taaza Thindi, Jayanagar</h4><span class="badge bg-forest-100 text-forest-800 shrink-0">hours checked</span></div>
+      <div class="flex flex-wrap gap-1.5 mt-2"><span class="badge bg-slate-100 text-slate-600">07:00–12:00</span><span class="badge bg-slate-100 text-slate-600">16:30–21:30</span><span class="badge bg-amber-100 text-amber-800">standing only</span></div>
+      <p class="text-sm text-slate-600 mt-2.5">Masala dosa, idli-vada, khara bhath, filter coffee, <strong>~₹75–100 a head</strong>. Three or four minutes to order. The two sessions are what let you eat here on Monday evening <em>and</em> Wednesday morning.</p>
+      <p class="text-[13px] text-slate-500 mt-2">It shuts at <strong>12:00 sharp</strong> — this cannot be a lunch. Carry cash.</p>
+    </div>
+    <div class="bg-white rounded-2xl border border-sand-200 p-5 shadow-soft">
+      <div class="flex items-start justify-between gap-3"><h4 class="font-semibold text-slate-900">MTR, Lalbagh Road</h4><span class="badge bg-forest-100 text-forest-800 shrink-0">hours checked</span></div>
+      <div class="flex flex-wrap gap-1.5 mt-2"><span class="badge bg-red-100 text-red-800">closed Mondays</span><span class="badge bg-slate-100 text-slate-600">12:30–14:30 lunch</span><span class="badge bg-forest-100 text-forest-800">seated waiting</span></div>
+      <p class="text-sm text-slate-600 mt-2.5">Since 1924. Rava idli, invented here during wartime rice rationing, or the unlimited set thali at <strong>₹250–400</strong>. A ~30 minute wait, paid in advance for a token — but it has <strong>a seated waiting area</strong>, almost unique on this list.</p>
+      <p class="text-[13px] text-slate-500 mt-2">Tuesday is your only window. Cards accepted.</p>
+    </div>
+    <div class="bg-white rounded-2xl border border-sand-200 p-5 shadow-soft">
+      <div class="flex items-start justify-between gap-3"><h4 class="font-semibold text-slate-900">Shri Sagar (CTR), Malleshwaram</h4><span class="badge bg-forest-100 text-forest-800 shrink-0">hours checked</span></div>
+      <p class="text-sm text-slate-600 mt-2.5"><strong>07:30–12:30, 16:00–21:00.</strong> The <strong>benne masale dose</strong> — butter-drenched, crisp-edged, and the one dish that might beat Taaza Thindi. ~₹75–150. Cards fine.</p>
+      <p class="text-[13px] text-slate-500 mt-2">40–60 minutes from Indiranagar each way, which on Wednesday morning is most of your margin. Pick this <em>or</em> Taaza Thindi, not both.</p>
+    </div>
+    <div class="bg-white rounded-2xl border border-sand-200 p-5 shadow-soft">
+      <div class="flex items-start justify-between gap-3"><h4 class="font-semibold text-slate-900">Toit &amp; Truffles</h4><span class="badge bg-forest-100 text-forest-800 shrink-0">hours checked</span></div>
+      <p class="text-sm text-slate-600 mt-2.5"><strong>Toit</strong> is the Indiranagar microbrewery, walkable from the hotel, no reservations, and a 20-minute-to-an-hour wait after 19:00 — so go at 18:30. <strong>Truffles</strong> in Koramangala does the burgers, ~₹400–600, and a weekday lunch is its quietest hour.</p>
+      <p class="text-[13px] text-slate-500 mt-2">Neither is why you came, but both are close and easy on a night nobody wants a project.</p>
+    </div>
+  </div>
+
+  <div class="mt-4 rounded-2xl bg-white border border-sand-200 p-5 shadow-soft">
+    <h4 class="font-semibold text-slate-900">What you're not eating, and why</h4>
+    <ul class="text-[13px] text-slate-600 mt-2 space-y-1">
+      <li>· <strong>Vidyarthi Bhavan</strong>, Gandhi Bazaar — the ghee dosa rivals anything in Bangalore, but the queue is standing, on a pavement, worst 08:00–10:30. A poor fit for a 09:00 start and two people who need to sit. Its 14:00 reopening is the workaround if you want it badly.</li>
+      <li>· <strong>Anything requiring a dawn start</strong> — which in Bangalore is most of the famous tiffin rooms at their best hour.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="stays" class="pane pt-8">
+  <h2 class="font-display text-2xl sm:text-3xl text-forest-900">Where you sleep</h2>
+  <p class="text-sm text-slate-500 mt-1 mb-4">Five nights, three cities, <strong class="text-ember-600">and not one of them booked</strong>. Rates are live Booking.com prices for your exact dates and party, read on <strong>22 Sep 2026</strong>. Everything listed scored 8.0+ with real review volume unless it says otherwise.</p>
+
+  <div class="rounded-2xl bg-amber-50 border border-amber-200 p-4 mb-5 text-[13px] text-amber-900">
+    <strong>Book Mumbai first, then Bangalore, then Delhi.</strong> Mumbai is the scarce, expensive one and the choice that moves your total more than everything else combined. The Delhi airport night can be booked a week out without penalty.
+  </div>
+
+  <h3 class="font-display text-xl text-forest-900 mt-2 mb-3">Delhi &middot; Sun 1 Nov &middot; the night before</h3>
+  <p class="text-sm text-slate-500 mb-3">One night, one room, two people. You are in at about 21:30 and out at <strong>06:20</strong> &mdash; so the free airport pickup matters more than the brand.</p>
+  <div class="grid sm:grid-cols-2 gap-4">
+    <div class="bg-white rounded-2xl border-2 border-forest-700 p-5 shadow-soft">
+      <div class="flex items-start justify-between gap-3">
+        <h4 class="font-semibold text-slate-900"><a class="underline decoration-sand-300" href="https://www.booking.com/hotel/in/sos.html?checkin=2026-11-01&amp;checkout=2026-11-02&amp;no_rooms=1&amp;group_adults=2&amp;selected_currency=INR" target="_blank" rel="noopener">The Elevate Hotel, T3</a></h4>
+        <span class="badge bg-forest-700 text-white shrink-0">pick</span>
+      </div>
+      <dl class="text-sm space-y-1.5 mt-3">
+        <div class="flex justify-between gap-3"><dt class="text-slate-500">Score</dt><dd class="font-medium">8.4 · 1,066 reviews</dd></div>
+        <div class="flex justify-between gap-3"><dt class="text-slate-500">The night</dt><dd class="font-medium">₹5,579</dd></div>
+        <div class="flex justify-between gap-3"><dt class="text-slate-500">Pickup</dt><dd class="font-medium text-forest-700">free from the airport</dd></div>
+      </dl>
+      <p class="text-[13px] text-slate-500 mt-2.5">Proven at volume, free pickup, and five minutes from the terminal. Ask at check-in whether they also run the 06:20 drop.</p>
+    </div>
+    <div class="bg-white rounded-2xl border border-sand-200 p-5 shadow-soft">
+      <h4 class="font-semibold text-slate-900"><a class="underline decoration-sand-300" href="https://www.booking.com/hotel/in/vibe-suite.html?checkin=2026-11-01&amp;checkout=2026-11-02&amp;no_rooms=1&amp;group_adults=2&amp;selected_currency=INR" target="_blank" rel="noopener">Airport NH Skye Suites, T3</a></h4>
+      <dl class="text-sm space-y-1.5 mt-3">
+        <div class="flex justify-between gap-3"><dt class="text-slate-500">Score</dt><dd class="font-medium">8.5 · 339 reviews</dd></div>
+        <div class="flex justify-between gap-3"><dt class="text-slate-500">The night</dt><dd class="font-medium">₹5,890</dd></div>
+      </dl>
+      <p class="text-[13px] text-slate-500 mt-2.5">A shade better rated on a third of the evidence, also with free pickup. Either is fine.</p>
+    </div>
+  </div>
+  <details class="mt-3 rounded-2xl bg-sand-50 border border-sand-200 p-4">
+    <summary class="text-sm font-semibold text-slate-700 cursor-pointer">The rest of Aerocity, and the one to avoid</summary>
+    <div class="text-[13px] text-slate-600 mt-2 space-y-1.5">
+      <p>· <strong>FairMounts Plaza Inns</strong> — 8.7 across 271, <strong>₹2,385</strong>. Cheapest with a credible sample.</p>
+      <p>· <strong>Hotel Seven Star Inn</strong> — 9.4 across only 53, ₹3,118. Great score, thin evidence.</p>
+      <p>· <strong>Aloft by Marriott</strong> — 8.5 across 3,175, ₹17,700. The splurge, and the best-evidenced score in Aerocity.</p>
+      <p>· <strong>Andaz Delhi by Hyatt</strong> — 8.6 across 1,652, ₹21,240. <strong>JW Marriott</strong> — 8.8 across 940, ₹33,040.</p>
+      <p>· <strong>Holiday Inn Express T3 — avoid.</strong> ₹32,672 on a <strong>7.0</strong> across 1,122 reviews. Luxury money for the worst score in the search.</p>
+      <p class="pt-1">The ₹2,000–3,000 places score 9.0–9.4 but on 53–137 reviews. For a night you arrive at wrecked and cannot afford to gamble on, that is thin.</p>
+    </div>
+  </details>
+
+  <h3 class="font-display text-xl text-forest-900 mt-8 mb-3">Bangalore &middot; Mon 2 &ndash; Wed 4 Nov</h3>
+  <p class="text-sm text-slate-500 mb-3">Two nights, two rooms, four people, in Indiranagar &mdash; walking distance to Toit and the cheapest city of the trip by a distance.</p>
+  <div class="grid sm:grid-cols-2 gap-4">
+    <div class="bg-white rounded-2xl border-2 border-forest-700 p-5 shadow-soft">
+      <div class="flex items-start justify-between gap-3">
+        <h4 class="font-semibold text-slate-900"><a class="underline decoration-sand-300" href="https://www.booking.com/hotel/in/the-himalayan-inn.html?checkin=2026-11-02&amp;checkout=2026-11-04&amp;no_rooms=2&amp;group_adults=4&amp;selected_currency=INR" target="_blank" rel="noopener">Olive Zip Indiranagar Metro</a></h4>
+        <span class="badge bg-forest-700 text-white shrink-0">pick</span>
+      </div>
+      <dl class="text-sm space-y-1.5 mt-3">
+        <div class="flex justify-between gap-3"><dt class="text-slate-500">Score</dt><dd class="font-medium">9.0 · 439 reviews</dd></div>
+        <div class="flex justify-between gap-3"><dt class="text-slate-500">Per room/night</dt><dd class="font-medium">₹3,527</dd></div>
+        <div class="flex justify-between gap-3"><dt class="text-slate-500">Both rooms, both nights</dt><dd class="font-medium">₹14,106</dd></div>
+      </dl>
+      <p class="text-[13px] text-slate-500 mt-2.5">The best score-to-price ratio anywhere in this sheet, and by the Metro &mdash; which matters, because the Purple Line runs direct to Cubbon Park and sidesteps the traffic entirely.</p>
+    </div>
+    <div class="bg-white rounded-2xl border border-sand-200 p-5 shadow-soft">
+      <h4 class="font-semibold text-slate-900"><a class="underline decoration-sand-300" href="https://www.booking.com/hotel/in/noble-nook.html?checkin=2026-11-02&amp;checkout=2026-11-04&amp;no_rooms=2&amp;group_adults=4&amp;selected_currency=INR" target="_blank" rel="noopener">Hotel Noble Nook</a></h4>
+      <dl class="text-sm space-y-1.5 mt-3">
+        <div class="flex justify-between gap-3"><dt class="text-slate-500">Score</dt><dd class="font-medium">8.7 · 170 reviews</dd></div>
+        <div class="flex justify-between gap-3"><dt class="text-slate-500">Both rooms, both nights</dt><dd class="font-medium">₹13,608</dd></div>
+      </dl>
+      <p class="text-[13px] text-slate-500 mt-2.5">₹500 cheaper across the stay on a lower score and a smaller sample. Effectively a tie — pick on the photos.</p>
+    </div>
+  </div>
+  <details class="mt-3 rounded-2xl bg-sand-50 border border-sand-200 p-4">
+    <summary class="text-sm font-semibold text-slate-700 cursor-pointer">The rest of Indiranagar</summary>
+    <div class="text-[13px] text-slate-600 mt-2 space-y-1.5">
+      <p>· <strong>Thyme the Transit</strong> — 8.6 across 86, ₹13,566 the stay.</p>
+      <p>· <strong>Sanctum Suites</strong> — 8.1 across 99, ₹15,960. <strong>Tristar Serviced Apartments</strong> — 8.2 across 132, ₹21,238.</p>
+      <p>· <strong>Hotel City Centre Residency</strong> — 8.1 across only 28, ₹22,152.</p>
+      <p>· <strong>Bloom Hotel Indiranagar</strong> — 8.3 across 267, <strong>₹40,819</strong>. Nearly three times Olive Zip for a lower score, and it is <strong>adults-only</strong>, which rules it out for a trip with parents anyway.</p>
+    </div>
+  </details>
+
+  <h3 class="font-display text-xl text-forest-900 mt-8 mb-3">Mumbai &middot; Wed 4 &ndash; Fri 6 Nov</h3>
+  <p class="text-sm text-slate-500 mb-3">Two nights, two rooms, four people. You arrive about 19:30 Wednesday and leave at 11:15 Friday, so the location has one full day to earn its price. Fort puts you walking distance from Thursday's breakfast, its lunch and the Gateway.</p>
+  <div class="grid sm:grid-cols-2 gap-4">
+    <div class="bg-white rounded-2xl border-2 border-forest-700 p-5 shadow-soft">
+      <div class="flex items-start justify-between gap-3">
+        <h4 class="font-semibold text-slate-900"><a class="underline decoration-sand-300" href="https://www.booking.com/hotel/in/residency-mumbai.html?checkin=2026-11-04&amp;checkout=2026-11-06&amp;no_rooms=2&amp;group_adults=4&amp;selected_currency=INR" target="_blank" rel="noopener">Residency Hotel Fort</a></h4>
+        <span class="badge bg-forest-700 text-white shrink-0">pick</span>
+      </div>
+      <dl class="text-sm space-y-1.5 mt-3">
+        <div class="flex justify-between gap-3"><dt class="text-slate-500">Score</dt><dd class="font-medium">8.7 · 2,451 reviews</dd></div>
+        <div class="flex justify-between gap-3"><dt class="text-slate-500">Per room/night</dt><dd class="font-medium">₹9,882</dd></div>
+        <div class="flex justify-between gap-3"><dt class="text-slate-500">Both rooms, both nights</dt><dd class="font-medium">₹39,528</dd></div>
+        <div class="flex justify-between gap-3"><dt class="text-slate-500">To the Gateway</dt><dd class="font-medium">~15 min on foot</dd></div>
+      </dl>
+      <p class="text-[13px] text-slate-500 mt-2.5">You asked for value and well-reviewed, and this is that: the highest review count of anything under ₹10,000 a room, in Fort, fifteen minutes from where Thursday starts.</p>
+    </div>
+    <div class="bg-white rounded-2xl border border-sand-200 p-5 shadow-soft">
+      <h4 class="font-semibold text-slate-900"><a class="underline decoration-sand-300" href="https://www.booking.com/hotel/in/bed-and-breakfast-at-colaba.html?checkin=2026-11-04&amp;checkout=2026-11-06&amp;no_rooms=2&amp;group_adults=4&amp;selected_currency=INR" target="_blank" rel="noopener">Bed and Breakfast at Colaba</a></h4>
+      <dl class="text-sm space-y-1.5 mt-3">
+        <div class="flex justify-between gap-3"><dt class="text-slate-500">Score</dt><dd class="font-medium">8.1 · 840 reviews</dd></div>
+        <div class="flex justify-between gap-3"><dt class="text-slate-500">Both rooms, both nights</dt><dd class="font-medium">₹16,958</dd></div>
+      </dl>
+      <p class="text-[13px] text-slate-500 mt-2.5">Saves ₹22,570 against the pick, on a score that is still credible across 840 reviews. Location over comfort — worth a look at the photos before you dismiss it.</p>
+    </div>
+  </div>
+
+  <div class="mt-4 rounded-2xl bg-white border-2 border-amber-300 p-5 shadow-soft">
+    <div class="badge bg-amber-100 text-amber-800 mb-2">THE SHAPE OF THE MUMBAI MARKET</div>
+    <h4 class="font-semibold text-slate-900">The middle is the worst value on the page</h4>
+    <p class="text-sm text-slate-600 mt-2">Same two nights, same square mile, and the price does not track the score:</p>
+    <div class="overflow-x-auto mt-3">
+      <table class="w-full text-[13px]">
+        <thead><tr class="text-left text-slate-400 text-[10px] uppercase tracking-wider"><th class="pb-2">Hotel</th><th class="pb-2">Score</th><th class="pb-2 text-right">Per room/night</th></tr></thead>
+        <tbody class="divide-y divide-sand-100">
+          <tr><td class="py-1.5">Bed and Breakfast at Colaba</td><td>8.1 · 840</td><td class="text-right font-semibold">₹4,239</td></tr>
+          <tr><td class="py-1.5 font-semibold text-forest-800">Residency Hotel Fort</td><td>8.7 · 2,451</td><td class="text-right font-semibold text-forest-800">₹9,882</td></tr>
+          <tr><td class="py-1.5">Hotel Suba Palace</td><td>8.6 · 1,246</td><td class="text-right font-semibold">₹13,828</td></tr>
+          <tr class="text-amber-800"><td class="py-1.5">Hotel Marine Plaza</td><td>8.2 · 710</td><td class="text-right font-semibold">₹23,871</td></tr>
+          <tr class="text-amber-800"><td class="py-1.5">President — IHCL SeleQtions</td><td>8.4 · 1,671</td><td class="text-right font-semibold">₹25,644</td></tr>
+          <tr class="text-amber-800"><td class="py-1.5">InterContinental Marine Drive</td><td>8.5 · 536</td><td class="text-right font-semibold">₹28,608</td></tr>
+          <tr><td class="py-1.5">Trident Nariman Point</td><td>9.0 · 4,132</td><td class="text-right font-semibold">₹29,205</td></tr>
+          <tr><td class="py-1.5">Taj Mahal Tower</td><td>9.3 · 4,929</td><td class="text-right font-semibold">₹35,754</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="text-sm text-slate-600 mt-3"><strong>Marine Plaza costs 2.4&times; Residency Fort and scores lower</strong>, on a quarter of the reviews. The President and the InterContinental tell the same story. Either stay at Residency Fort, or skip the amber band entirely for <strong>Trident Nariman Point</strong> &mdash; 9.0 across 4,132 reviews, and barely more than the InterContinental. There is no good reason to be in the middle.</p>
+  </div>
+</section>
+
+<section id="planb" class="pane pt-8">
+  <h2 class="font-display text-2xl sm:text-3xl text-forest-900">Plan B</h2>
+  <p class="text-sm text-slate-500 mt-1 mb-4">What to do when the thing you planned is shut, cancelled or under water.</p>
+
+  <div class="space-y-4">
+    <div class="bg-white rounded-2xl border-2 border-amber-300 p-5 shadow-soft">
+      <div class="badge bg-amber-100 text-amber-800 mb-2">THE ONE THAT WOULD HURT</div>
+      <h3 class="font-semibold text-slate-900">Britannia is shut, full, or you miss the 16:00 kitchen</h3>
+      <p class="text-sm text-slate-600 mt-2">It serves lunch only, 12:00&ndash;16:00, Monday to Saturday, and Thursday is the one sitting your week contains. Wednesday you land at 17:25; Friday you leave at 11:15. There is no recovery inside the trip.</p>
+      <p class="text-sm text-slate-600 mt-2 font-medium">Nearest substitutes, both Parsi and both near Fort: <strong>Ideal Corner</strong> and <strong>Jimmy Boy</strong>. I have not checked either one's hours and cannot vouch for them &mdash; ring before you walk. Failing that, <strong>Sardar Pav Bhaji</strong> opens at 11:00 and becomes the day's big meal instead, which frees the evening for Muhammad Ali Road after all.</p>
+      <p class="text-[13px] text-slate-500 mt-2">The cheap insurance is a phone call before you fly, and arriving at noon rather than one o'clock. <a href="#itinerary" data-goto="4" class="daylink">Thursday</a> has the shape of the day around it.</p>
+    </div>
+
+    <div class="bg-white rounded-2xl border border-sand-200 p-5 shadow-soft">
+      <h3 class="font-semibold text-slate-900">If you change your mind about Elephanta</h3>
+      <p class="text-sm text-slate-600 mt-2">It is a genuinely great half-day and the research holds, so here it is rather than deleted. <strong>Ferries from the Gateway 09:00 to at least 14:00</strong> &mdash; sources split on whether the last outbound is 14:00 or 15:30 &mdash; about an hour each way, returns until roughly 17:30, <strong>closed Mondays</strong>. Deluxe tickets ~₹260 return and the cheap booth has the long queue. Entry ₹40 for Indian passports, ₹600 for foreign, plus a ₹10 village fee.</p>
+      <p class="text-sm text-slate-600 mt-2"><strong>The climb is the part to plan:</strong> about 120 steps from the jetty, wide and not steep by most accounts, lined with stalls you can sit at. The toy train is ₹10 and covers the flat 600 m to the <em>bottom</em> of the steps &mdash; none of the climb. A carrying chair waits at the base at ₹1,500&ndash;2,000 a person, cash, but nothing confirms carriers will be there on a given weekday.</p>
+      <p class="text-sm text-slate-600 mt-2">Budget <strong>7¼ hours door to door</strong> from a 09:30 start, and know what it costs: Britannia, the Marine Drive sunset and the evening crawl. That is the whole of <a href="#itinerary" data-goto="4" class="daylink">Thursday</a>.</p>
+      <p class="text-[13px] text-slate-500 mt-2">Life jackets have been compulsory on all Gateway sailings since the <em>Neel Kamal</em> collision of 18 December 2024, in which fifteen people died. Hot, and not optional.</p>
+    </div>
+
+    <div class="bg-white rounded-2xl border border-sand-200 p-5 shadow-soft">
+      <h3 class="font-semibold text-slate-900">Bangalore Palace is shut for an event</h3>
+      <p class="text-sm text-slate-600 mt-2">It closes without notice for weddings and private functions, and it is the one Tuesday item with a real chance of being unavailable. <strong>ISKCON Rajajinagar</strong> is the swap — free, and the only site on the list with a lift and ramps, which makes it the better choice for your parents anyway. Go before 13:15 or after 16:15; it shuts in between.</p>
+      <p class="text-sm text-slate-600 mt-2">Closer to hand and cheaper still: more of <strong>Lalbagh</strong>, which is 240 acres and you will not have seen most of it on <a href="#itinerary" data-goto="2" class="daylink">Tuesday</a> morning.</p>
+    </div>
+
+    <div class="bg-white rounded-2xl border border-sand-200 p-5 shadow-soft">
+      <h3 class="font-semibold text-slate-900">Rain</h3>
+      <p class="text-sm text-slate-600 mt-2"><strong>Bangalore:</strong> the retreating north-east monsoon still throws short, heavy late-afternoon showers in early November — roughly one day in four. Put the indoor things late: MTR, the palace interiors, ISKCON. Carry an umbrella.</p>
+      <p class="text-sm text-slate-600 mt-2"><strong>Mumbai:</strong> essentially dry. November is the pleasantest month there, humidity at its annual low of 62–65% and one to two rain days in the whole month. Sources disagree on monthly rainfall by a factor of six, but they agree on the rain-day count, which is the number that matters to you.</p>
+    </div>
+
+    <div class="bg-white rounded-2xl border border-sand-200 p-5 shadow-soft">
+      <h3 class="font-semibold text-slate-900">Traffic eats a flight</h3>
+      <p class="text-sm text-slate-600 mt-2">Two of the four airport runs have real exposure. <strong><a href="#itinerary" data-goto="3" class="daylink">Wednesday</a> in Bangalore:</strong> 38–42 km to Kempegowda in the world's second-most-congested city — leave at noon, and if you are late leaving, skip breakfast rather than shaving the transfer.</p>
+      <p class="text-sm text-slate-600 mt-2"><strong><a href="#itinerary" data-goto="5" class="daylink">Friday</a> in Mumbai, on Dhanteras:</strong> take <strong>Metro Line 3</strong>. It is entirely underground, ₹50, and the one option a festival cannot slow down. Board at CSMT or Hutatma Chowk; the airport end has a 118 m step-free walk into T2.</p>
+    </div>
+  </div>
+</section>
+
+<section id="checklists" class="pane pt-8">
+  <div class="flex items-start justify-between gap-3 mb-4">
+    <div><h2 class="font-display text-2xl sm:text-3xl text-forest-900">Checklists</h2><p class="text-sm text-slate-500 mt-1">Yours to edit. Add your own items, delete them, tick them off — everything is stored on this device and works with no signal.</p><p id="store-note" class="hidden text-[12px] mt-2"></p></div>
+    <button id="reset-checks" class="text-xs font-semibold bg-white border border-sand-200 text-slate-600 px-3 py-2 rounded-xl hover:bg-sand-50 shrink-0">Clear all</button>
+  </div>
+
+  <div class="grid sm:grid-cols-2 gap-4">
+
+    <div class="bg-white rounded-2xl border border-amber-200 shadow-soft overflow-hidden" data-list="before">
+      <div class="p-5 border-b border-sand-100 flex items-start gap-3">
+        <div class="flex-1"><h3 class="font-semibold text-[17px] text-slate-900">Before you fly</h3><p class="text-xs text-slate-500 mt-0.5">The flights are booked. Nothing else is</p></div>
+        <span class="text-xs font-bold text-forest-800 progress-text shrink-0">0/11</span>
+      </div>
+      <div class="h-1 bg-sand-100"><div class="progress-bar h-1 bg-forest-700 transition-all" style="width:0%"></div></div>
+      <div class="p-5 space-y-3">
+        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="b1"><span class="chk-label text-sm"><strong>Book the Mumbai hotel first</strong> — it moves the total more than everything else combined</span></label>
+        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="b2"><span class="chk-label text-sm">Book Bangalore, then the Delhi airport night</span></label>
+        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="b3"><span class="chk-label text-sm"><strong>Find the four flight PNRs</strong> and put them in Logistics — none reached this inbox</span></label>
+        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="b4"><span class="chk-label text-sm">Reconcile the four flight times against the airline — live schedules show all four <strong>10–20 min earlier</strong></span></label>
+        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="b5"><span class="chk-label text-sm">Ring <strong>Yazdani</strong> and <strong>Britannia</strong> to confirm Thursday hours — neither could be verified</span></label>
+        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="b6"><span class="chk-label text-sm">Decide Thursday dinner: <strong>Muhammad Ali Road</strong> or <strong>Sardar Pav Bhaji</strong> — you cannot do both</span></label>
+        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="b7"><span class="chk-label text-sm">Ring <strong>Bangalore Palace</strong> and <strong>MTR Lalbagh</strong> to settle their opening days</span></label>
+        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="b8"><span class="chk-label text-sm">Agree the <strong>Bangalore arrivals meeting point</strong> with your parents — baggage reclaim, not &ldquo;outside&rdquo;</span></label>
+        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="b9"><span class="chk-label text-sm">Download offline maps for Bangalore and Mumbai</span></label>
+        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="b10"><span class="chk-label text-sm">Get <strong>cash, in small notes</strong> — ferries, tiffin rooms and street food are all cash</span></label>
+        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="b11"><span class="chk-label text-sm">Book <strong>Britannia &amp; Co</strong> for Thursday lunch if they take bookings — it is lunch-only and it fills</span></label>
+        <div class="custom-mount space-y-3"></div>
+      </div>
+      <div class="px-5 pb-4 pt-1 border-t border-sand-100">
+        <form class="add-form flex gap-2" data-add="before">
+          <input type="text" class="add-input flex-1 min-w-0 bg-sand-50 border border-sand-200 rounded-xl px-3 py-2 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-forest-700/30" placeholder="Add your own…" maxlength="120" autocomplete="off">
+          <button type="submit" class="text-xs font-semibold bg-forest-900 text-white px-3 py-2 rounded-xl hover:bg-forest-800 shrink-0">Add</button>
+        </form>
+        <div class="flex items-center justify-between gap-3 mt-2.5">
+          <button data-reset="before" class="text-xs text-slate-400 hover:text-slate-600">Clear ticks</button>
+          <span class="text-[11px] text-slate-400 custom-count" data-count="before"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-2xl border border-sand-200 shadow-soft overflow-hidden" data-list="aerocity">
+      <div class="p-5 border-b border-sand-100 flex items-start gap-3">
+        <div class="flex-1"><h3 class="font-semibold text-[17px] text-slate-900">Sunday night, Aerocity</h3><p class="text-xs text-slate-500 mt-0.5">You are up at 06:00 — do these before bed</p></div>
+        <span class="text-xs font-bold text-forest-800 progress-text shrink-0">0/6</span>
+      </div>
+      <div class="h-1 bg-sand-100"><div class="progress-bar h-1 bg-forest-700 transition-all" style="width:0%"></div></div>
+      <div class="p-5 space-y-3">
+        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="d1"><span class="chk-label text-sm"><strong>Book the 06:20 car</strong> at reception — do not leave it to the morning</span></label>
+        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="d2"><span class="chk-label text-sm">Web check-in for <strong>6E 873</strong>, and confirm your parents have done <strong>6E 6634</strong></span></label>
+        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="d3"><span class="chk-label text-sm">Confirm the flight leaves from <strong>Terminal 1</strong>, not T3</span></label>
+        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="d4"><span class="chk-label text-sm">Bags packed and by the door — bag drop closes <strong>45 min before</strong></span></label>
+        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="d5"><span class="chk-label text-sm">Message your parents the Bangalore meeting point one more time</span></label>
+        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="d6"><span class="chk-label text-sm">Alarm for <strong>05:30</strong>. It is the only early one all week</span></label>
+        <div class="custom-mount space-y-3"></div>
+      </div>
+      <div class="px-5 pb-4 pt-1 border-t border-sand-100">
+        <form class="add-form flex gap-2" data-add="aerocity">
+          <input type="text" class="add-input flex-1 min-w-0 bg-sand-50 border border-sand-200 rounded-xl px-3 py-2 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-forest-700/30" placeholder="Add your own…" maxlength="120" autocomplete="off">
+          <button type="submit" class="text-xs font-semibold bg-forest-900 text-white px-3 py-2 rounded-xl hover:bg-forest-800 shrink-0">Add</button>
+        </form>
+        <div class="flex items-center justify-between gap-3 mt-2.5">
+          <button data-reset="aerocity" class="text-xs text-slate-400 hover:text-slate-600">Clear ticks</button>
+          <span class="text-[11px] text-slate-400 custom-count" data-count="aerocity"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-2xl border border-sand-200 shadow-soft overflow-hidden" data-list="airport">
+      <div class="p-5 border-b border-sand-100 flex items-start gap-3">
+        <div class="flex-1"><h3 class="font-semibold text-[17px] text-slate-900">Every airport run — four times</h3><p class="text-xs text-slate-500 mt-0.5">Same list Monday, Wednesday and Friday</p></div>
+        <span class="text-xs font-bold text-forest-800 progress-text shrink-0">0/6</span>
+      </div>
+      <div class="h-1 bg-sand-100"><div class="progress-bar h-1 bg-forest-700 transition-all" style="width:0%"></div></div>
+      <div class="p-5 space-y-3">
+        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="a1"><span class="chk-label text-sm">Cars booked the night before, and <strong>two of them</strong> if the bags don't fit one</span></label>
+        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="a2"><span class="chk-label text-sm">Everyone has their own ID — four tickets, two airlines, four desks</span></label>
+        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="a3"><span class="chk-label text-sm">Leaving with <strong>two hours</strong> in hand, not ninety minutes</span></label>
+        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="a4"><span class="chk-label text-sm">Boarding pass says the airport you expect — <strong>BOM, not NMI</strong></span></label>
+        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="a5"><span class="chk-label text-sm">Phones charged, offline maps loaded</span></label>
+        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="a6"><span class="chk-label text-sm">Nothing left in the hotel safe</span></label>
+        <div class="custom-mount space-y-3"></div>
+      </div>
+      <div class="px-5 pb-4 pt-1 border-t border-sand-100">
+        <form class="add-form flex gap-2" data-add="airport">
+          <input type="text" class="add-input flex-1 min-w-0 bg-sand-50 border border-sand-200 rounded-xl px-3 py-2 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-forest-700/30" placeholder="Add your own…" maxlength="120" autocomplete="off">
+          <button type="submit" class="text-xs font-semibold bg-forest-900 text-white px-3 py-2 rounded-xl hover:bg-forest-800 shrink-0">Add</button>
+        </form>
+        <div class="flex items-center justify-between gap-3 mt-2.5">
+          <button data-reset="airport" class="text-xs text-slate-400 hover:text-slate-600">Clear ticks</button>
+          <span class="text-[11px] text-slate-400 custom-count" data-count="airport"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-2xl border border-forest-200 shadow-soft overflow-hidden" data-list="elephanta">
+      <div class="p-5 border-b border-sand-100 flex items-start gap-3">
+        <div class="flex-1"><h3 class="font-semibold text-[17px] text-slate-900">Thursday, before you leave for the jetty</h3><p class="text-xs text-slate-500 mt-0.5">The day the whole trip is built around</p></div>
+        <span class="text-xs font-bold text-forest-800 progress-text shrink-0">0/7</span>
+      </div>
+      <div class="h-1 bg-sand-100"><div class="progress-bar h-1 bg-forest-700 transition-all" style="width:0%"></div></div>
+      <div class="p-5 space-y-3">
+        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="e1"><span class="chk-label text-sm">Check <strong>sailings are running</strong> before you walk down</span></label>
+        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="e2"><span class="chk-label text-sm"><strong>Cash</strong> — ferry, ₹40 entry each, ₹10 village fee each, toy train, and the chair if needed</span></label>
+        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="e3"><span class="chk-label text-sm">Hats, sunscreen, and <strong>water bought before the climb</strong></span></label>
+        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="e4"><span class="chk-label text-sm">Toilets at the Gateway before boarding — the island's are poor</span></label>
+        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="e5"><span class="chk-label text-sm">Buy the <strong>deluxe ticket</strong> — the cheap booth has the long queue</span></label>
+        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="e6"><span class="chk-label text-sm">Agree before you sail: nobody rushes the steps, and stopping is fine</span></label>
+        <label class="flex gap-3 items-start cursor-pointer"><input type="checkbox" class="chk" data-k="e7"><span class="chk-label text-sm">Back on a boat by <strong>15:30</strong> to keep the sunset walk</span></label>
+        <div class="custom-mount space-y-3"></div>
+      </div>
+      <div class="px-5 pb-4 pt-1 border-t border-sand-100">
+        <form class="add-form flex gap-2" data-add="elephanta">
+          <input type="text" class="add-input flex-1 min-w-0 bg-sand-50 border border-sand-200 rounded-xl px-3 py-2 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-forest-700/30" placeholder="Add your own…" maxlength="120" autocomplete="off">
+          <button type="submit" class="text-xs font-semibold bg-forest-900 text-white px-3 py-2 rounded-xl hover:bg-forest-800 shrink-0">Add</button>
+        </form>
+        <div class="flex items-center justify-between gap-3 mt-2.5">
+          <button data-reset="elephanta" class="text-xs text-slate-400 hover:text-slate-600">Clear ticks</button>
+          <span class="text-[11px] text-slate-400 custom-count" data-count="elephanta"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="budget" class="pane pt-8">
+  <h2 class="font-display text-2xl sm:text-3xl text-forest-900">Budget tracker</h2>
+  <p class="text-sm text-slate-500 mt-1 mb-4">Every row is yours &mdash; change it, add one, delete one. <strong>Plan</strong> is what the figure was before you left; <strong>spent</strong> is what it actually came to. The total follows the real number wherever you have entered one, and all of it syncs to the other phones. Flight fares were quoted in US dollars and converted at <strong>&#8377;95.6</strong>; bed rates are live Booking.com prices read on 22 Sep 2026.</p>
+
+  <div class="grid lg:grid-cols-3 gap-4">
+    <div class="lg:col-span-2 space-y-4">
+      <div class="bg-white rounded-2xl border border-sand-200 shadow-soft overflow-hidden">
+        <div class="px-5 py-3.5 border-b border-sand-100 bg-sand-50/60 flex items-center justify-between"><h3 class="font-semibold text-sm text-slate-900">Flights &mdash; booked</h3><span class="text-sm font-bold text-forest-800" data-subtotal="flights">₹0</span></div>
+        <div class="divide-y divide-sand-100" data-brows="flights"></div>
+        <form class="flex flex-wrap items-center gap-2 px-5 py-3 border-t border-sand-100 bg-sand-50/40" data-badd="flights">
+          <input type="text" class="flex-1 min-w-[7rem] bg-white border border-sand-200 rounded-lg px-2.5 py-1.5 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-forest-700/30" placeholder="Add a cost" maxlength="80" required aria-label="What you paid for">
+          <span class="text-slate-400 text-sm">₹</span>
+          <input type="number" step="0.01" inputmode="decimal" class="w-20 bg-white border border-sand-200 rounded-lg px-2 py-1.5 text-right text-sm focus:outline-none focus:ring-2 focus:ring-forest-700/30" placeholder="0" aria-label="Amount">
+          <button type="submit" class="text-xs font-semibold bg-forest-900 text-white px-3 py-2 rounded-lg hover:bg-forest-800">Add</button>
+        </form>
+      </div>
+      <div class="bg-white rounded-2xl border border-sand-200 shadow-soft overflow-hidden">
+        <div class="px-5 py-3.5 border-b border-sand-100 bg-sand-50/60 flex items-center justify-between"><h3 class="font-semibold text-sm text-slate-900">Beds &mdash; still to book</h3><span class="text-sm font-bold text-forest-800" data-subtotal="stays">₹0</span></div>
+        <div class="divide-y divide-sand-100" data-brows="stays"></div>
+        <form class="flex flex-wrap items-center gap-2 px-5 py-3 border-t border-sand-100 bg-sand-50/40" data-badd="stays">
+          <input type="text" class="flex-1 min-w-[7rem] bg-white border border-sand-200 rounded-lg px-2.5 py-1.5 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-forest-700/30" placeholder="Add a cost" maxlength="80" required aria-label="What you paid for">
+          <span class="text-slate-400 text-sm">₹</span>
+          <input type="number" step="0.01" inputmode="decimal" class="w-20 bg-white border border-sand-200 rounded-lg px-2 py-1.5 text-right text-sm focus:outline-none focus:ring-2 focus:ring-forest-700/30" placeholder="0" aria-label="Amount">
+          <button type="submit" class="text-xs font-semibold bg-forest-900 text-white px-3 py-2 rounded-lg hover:bg-forest-800">Add</button>
+        </form>
+      </div>
+      <div class="bg-white rounded-2xl border border-sand-200 shadow-soft overflow-hidden">
+        <div class="px-5 py-3.5 border-b border-sand-100 bg-sand-50/60 flex items-center justify-between"><h3 class="font-semibold text-sm text-slate-900">Food, cabs &amp; extras</h3><span class="text-sm font-bold text-forest-800" data-subtotal="food">₹0</span></div>
+        <div class="divide-y divide-sand-100" data-brows="food"></div>
+        <form class="flex flex-wrap items-center gap-2 px-5 py-3 border-t border-sand-100 bg-sand-50/40" data-badd="food">
+          <input type="text" class="flex-1 min-w-[7rem] bg-white border border-sand-200 rounded-lg px-2.5 py-1.5 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-forest-700/30" placeholder="Add a cost" maxlength="80" required aria-label="What you paid for">
+          <span class="text-slate-400 text-sm">₹</span>
+          <input type="number" step="0.01" inputmode="decimal" class="w-20 bg-white border border-sand-200 rounded-lg px-2 py-1.5 text-right text-sm focus:outline-none focus:ring-2 focus:ring-forest-700/30" placeholder="0" aria-label="Amount">
+          <button type="submit" class="text-xs font-semibold bg-forest-900 text-white px-3 py-2 rounded-lg hover:bg-forest-800">Add</button>
+        </form>
+      </div>
+      <div class="bg-white rounded-2xl border border-sky-200 shadow-soft overflow-hidden">
+        <div class="px-5 py-3.5 border-b border-sand-100 bg-sky-50/60 flex items-center justify-between"><h3 class="font-semibold text-sm text-slate-900">Tickets &amp; entries</h3><span class="text-sm font-bold text-forest-800" data-subtotal="sights">₹0</span></div>
+        <div class="divide-y divide-sand-100" data-brows="sights"></div>
+        <form class="flex flex-wrap items-center gap-2 px-5 py-3 border-t border-sand-100 bg-sand-50/40" data-badd="sights">
+          <input type="text" class="flex-1 min-w-[7rem] bg-white border border-sand-200 rounded-lg px-2.5 py-1.5 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-forest-700/30" placeholder="Add a cost" maxlength="80" required aria-label="What you paid for">
+          <span class="text-slate-400 text-sm">₹</span>
+          <input type="number" step="0.01" inputmode="decimal" class="w-20 bg-white border border-sand-200 rounded-lg px-2 py-1.5 text-right text-sm focus:outline-none focus:ring-2 focus:ring-forest-700/30" placeholder="0" aria-label="Amount">
+          <button type="submit" class="text-xs font-semibold bg-forest-900 text-white px-3 py-2 rounded-lg hover:bg-forest-800">Add</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="lg:col-span-1">
+      <div class="budgetcard bg-forest-900 rounded-3xl p-6 text-white shadow-soft">
+        <div class="text-[11px] uppercase tracking-[.16em] text-forest-100/60 font-semibold">Trip total</div>
+        <div class="font-display text-5xl mt-1" id="grand-total">₹0</div>
+        <div class="text-sm text-forest-100/70 mt-1" id="per-person">&mdash; per person</div>
+        <p class="text-[11px] text-forest-100/50 mt-2 leading-relaxed">Where it stands now: the real figure where you have entered one, the plan where you have not.</p>
+
+        <div class="mt-5 pt-4 border-t border-white/15 space-y-2 text-sm">
+          <div class="flex justify-between"><span class="text-forest-100/70">Planned</span><span class="font-semibold" id="bud-planned">₹0</span></div>
+          <div class="flex justify-between"><span class="text-forest-100/70">Spent so far</span><span class="font-semibold" id="bud-spent">₹0</span></div>
+          <div class="flex justify-between"><span class="text-forest-100/70">Against the plan</span><span class="font-semibold" id="bud-vs">&mdash;</span></div>
+        </div>
+
+        <div class="mt-5 pt-4 border-t border-white/15 space-y-2.5 text-sm">
+          <div class="flex justify-between"><span class="text-forest-100/70">Fixed</span><span class="font-semibold" data-summary="flights">₹0</span></div>
+          <div class="flex justify-between"><span class="text-forest-100/70">Camping</span><span class="font-semibold" data-summary="stays">₹0</span></div>
+          <div class="flex justify-between"><span class="text-forest-100/70">Food &amp; extras</span><span class="font-semibold" data-summary="food">₹0</span></div>
+          <div class="flex justify-between"><span class="text-forest-100/70">Tickets</span><span class="font-semibold" data-summary="sights">₹0</span></div>
+          <div class="flex justify-between"><span class="text-forest-100/70">Per day, over 5</span><span class="font-semibold" id="per-day">₹0</span></div>
+        </div>
+
+        <button id="reset-budget" class="mt-5 w-full text-xs font-semibold bg-white/10 hover:bg-white/20 px-3 py-2.5 rounded-xl">Put the original plan back</button>
+        <p class="text-[11px] text-forest-100/50 mt-2 leading-relaxed">That restores the figures this page shipped with and clears what has been spent against them. Rows you added yourself are left alone.</p>
+        <p class="text-[11px] text-forest-100/50 mt-3 leading-relaxed">Flights are included and booked; the five hotel nights are included and are not. Everything is in rupees. The Delhi night sits a day outside the 2&ndash;6 Nov window but is counted, because the 08:20 departure depends on it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer id="unconfirmed" class="pane pt-8">
+  <h2 class="font-display text-2xl sm:text-3xl text-forest-900">What couldn&rsquo;t be confirmed</h2>
+  <p class="text-sm text-slate-500 mt-1 mb-4">Written before the trip, and the most useful part of this page. Each item says what is open, why, and what would settle it.</p>
+
+  <div class="rounded-2xl bg-amber-50 border-2 border-amber-300 p-5 shadow-soft mb-4">
+    <div class="badge bg-amber-100 text-amber-800 mb-2">READ THIS BEFORE TRUSTING ANY NUMBER HERE</div>
+    <h3 class="font-semibold text-slate-900">No primary source could be reached</h3>
+    <p class="text-sm text-slate-700 mt-2">The network this page was researched on <strong>blocked every official site</strong> &mdash; the Archaeological Survey of India, Maharashtra Tourism, Karnataka Tourism, the ISKCON and MTR sites, UNESCO, Wikipedia, and the meteorological services. Everything on this page therefore comes from <strong>search-engine summaries that attribute content to those sources</strong>, not from the sources themselves.</p>
+    <p class="text-sm text-slate-700 mt-2">What that costs you: almost nothing here carries a verified publication date, so a price quoted below may be years stale without saying so. The structure of the plan &mdash; which day, which order, what is closed on a Monday &mdash; is well corroborated and I would stand behind it. <strong>The individual numbers are indicative.</strong> Two phone calls, listed below, close most of the gap.</p>
+  </div>
+
+  <div class="space-y-3">
+
+    <div class="bg-white rounded-2xl border border-sand-200 p-5 shadow-soft">
+      <h3 class="font-semibold text-slate-900">The flights, which are the spine of everything</h3>
+      <ul class="text-sm text-slate-600 mt-2 space-y-2">
+        <li>· <strong>No confirmation email exists in the inbox searched.</strong> Four passes over findjsk@gmail.com &mdash; the reservations and purchases categories, a window sweep, by operator name, and by subject &mdash; returned nothing for India. The flight numbers and times here came from you. <strong>Settles when:</strong> you forward the confirmations or add the PNRs to Logistics.</li>
+        <li>· <strong>All four times disagree with live schedules by 10&ndash;20 minutes</strong>, consistently earlier. Probably two sources rather than a change, but every departure time on this page is built on your figures. <strong>Settles when:</strong> you check the airline's own app.</li>
+      </ul>
+    </div>
+
+    <div class="bg-white rounded-2xl border border-sand-200 p-5 shadow-soft">
+      <h3 class="font-semibold text-slate-900">Elephanta &mdash; researched, then dropped</h3>
+      <p class="text-[13px] text-slate-500 mt-1">Not on the plan any more, but the open questions are kept in case you reinstate it.</p>
+      <ul class="text-sm text-slate-600 mt-2 space-y-2">
+        <li>· <strong>The last outbound ferry is either 14:00 or 15:30.</strong> Sources contradict each other flatly. It does not bite on a 09:30 start, but it is the difference between a recoverable late morning and a lost day. <strong>Settles with:</strong> one call to the Gateway ferry office.</li>
+        <li>· <strong>Whether the carrying chair will be there.</strong> This is the biggest hole on the page and it sits exactly on your parents' constraint. Every account describes the <em>doli</em> in the present tense and none reports it stopped &mdash; but nothing addresses how many carriers turn up on a given weekday. <strong>Settles with:</strong> asking a Mumbai operator whether one can be pre-arranged for the 5th.</li>
+        <li>· <strong>What it costs.</strong> Quotes range from ₹500 (a 2017 blog &mdash; discard it) to ₹1,500 to ₹2,000 per person one way. Budget ₹1,500&ndash;2,000, cash, negotiable.</li>
+        <li>· <strong>Which jetty the ferries leave from.</strong> A new passenger jetty at Radio Club, 500 m from the Gateway, is nearing completion and reporting contradicts itself on whether it will take over all Elephanta traffic or serve only private yachts. <strong>Settles with:</strong> the same phone call, a week before you travel.</li>
+        <li>· <strong>The ferry fare structure</strong> &mdash; ₹150, ₹200 and ₹260 all appear, and it is unclear whether that is two tiers or three.</li>
+        <li>· <strong>Cave opening hours</strong> &mdash; 09:00&ndash;17:00 (best-sourced), 09:00&ndash;17:30, or 09:30&ndash;17:30. The last return ferry constrains your day before the gate does, so this matters less than it looks.</li>
+        <li>· <strong>Entry for Indian nationals</strong> &mdash; ₹35 or ₹40. Immaterial to the budget; a useful signal of how stale these pages are.</li>
+        <li>· <strong>Whether the toy train is still running in 2026.</strong> Almost certainly yes; no 2026 confirmation found.</li>
+        <li>· <strong>Shade on the staircase.</strong> Accounts directly contradict &mdash; "polythene canopy over the entire staircase" against "limited shade". Probably varies with which stallholders set up. Plan for sun.</li>
+        <li>· <strong>Whether Elephanta closes for any Diwali date.</strong> Your Thursday precedes the festival window, so it likely does not matter. Unverified.</li>
+      </ul>
+    </div>
+
+    <div class="bg-white rounded-2xl border border-amber-200 p-5 shadow-soft">
+      <h3 class="font-semibold text-slate-900">Bangalore opening days</h3>
+      <ul class="text-sm text-slate-600 mt-2 space-y-2">
+        <li>· <strong>Whether Cubbon Park itself closes on Mondays.</strong> Three incompatible claims: closed Monday and the second Tuesday; open every day; closed Sundays. The closure most likely belongs to the aquarium and the State Central Library inside the park. It is on Tuesday 3 Nov, the <em>first</em> Tuesday, so the question does not bite &mdash; but Monday is genuinely unknown.</li>
+        <li>· <strong>Whether Bangalore Palace opens on Mondays.</strong> "All days", "except Mondays" and "except Sundays" all appear; the two dissenters contradict each other, which is itself a signal. It sits on Tuesday regardless. <strong>Settles with:</strong> a phone call.</li>
+        <li>· <strong>What Bangalore Palace costs.</strong> ₹230, ₹250 or ₹270 for Indian nationals; ₹460 or ₹500 for foreign. A 17% spread, no dated source.</li>
+        <li>· <strong>Whether you can walk into the Lalbagh glass house</strong> outside a flower show, and what it costs if so. No source says.</li>
+        <li>· <strong>Lalbagh's actual closing time</strong> &mdash; 18:00 or 19:00 &mdash; and its free-entry windows, where every combination appears somewhere.</li>
+        <li>· <strong>MTR's afternoon pattern</strong> &mdash; 12:30&ndash;14:30 then 15:30&ndash;20:30, or continuous to 21:00. Tuesday lunch works either way.</li>
+        <li>· <strong>Whether Taaza Thindi is really cash-only.</strong> Asserted once. UPI is near-universal in Bangalore now, so this may be stale &mdash; carry cash anyway.</li>
+      </ul>
+    </div>
+
+    <div class="bg-white rounded-2xl border border-amber-200 p-5 shadow-soft">
+      <h3 class="font-semibold text-slate-900">The food, which is now the point of the trip</h3>
+      <ul class="text-sm text-slate-600 mt-2 space-y-2">
+        <li>· <strong>Half the Mumbai list has unverified hours.</strong> Yazdani, K. Rustom, Leopold, Shaan Juice Center, Haji Seekh Corner and Shabbir's Tawakkal Sweets came from your video and could not be checked against any listing &mdash; the network blocked them. They are well-known places and almost certainly fine; it is their <em>opening times</em> that are unknown. <strong>Settles with:</strong> a look at Google Maps on your phone the morning of.</li>
+        <li>· <strong>Britannia's Saturday hours</strong> contradict &mdash; 12:00&ndash;16:00 flat, or to 22:00. It does not affect you, since you are there Thursday.</li>
+        <li>· <strong>What Britannia costs.</strong> No sourced figure; ₹500&ndash;800 a head is plausible and unverified. Same for Sardar Pav Bhaji, where ₹150&ndash;250 is a guess.</li>
+        <li>· <strong>Whether any of them take cards.</strong> Unconfirmed almost across the board. Assume cash for anything with a counter rather than a table.</li>
+        <li>· <strong>Muhammad Ali Road in November.</strong> Its reputation is built on Ramadan; nothing I found describes the ordinary-weeknight version in detail. Expect good rather than extraordinary, and treat the three named stalls as a starting point rather than a fixed route.</li>
+      </ul>
+    </div>
+
+    <div class="bg-white rounded-2xl border border-sand-200 p-5 shadow-soft">
+      <h3 class="font-semibold text-slate-900">Getting about</h3>
+      <ul class="text-sm text-slate-600 mt-2 space-y-2">
+        <li>· <strong>Every in-city travel time in Bangalore is inferred</strong> from TomTom's city-wide congestion rate, not measured on the route &mdash; no routing service was reachable. The airport figure (38&ndash;42 km, 50&ndash;75 minutes) is the best-evidenced of them and the one the plan depends on.</li>
+        <li>· <strong>Metro Line 3's end-to-end time</strong> &mdash; 45 minutes or 69, a 24-minute spread on a flight day. Plan on the longer one; from Fort you are several stops closer than either figure assumes.</li>
+        <li>· <strong>Its operating hours</strong> (05:55&ndash;22:30) come from a secondary source; the official timetable could not be reached. Both your journeys sit comfortably inside that window either way.</li>
+        <li>· <strong>Mumbai road transfers</strong> are 60&ndash;110 minutes on an operator's own quote for the route, which is the best evidence available, but Dhanteras is outside anyone's published estimate.</li>
+      </ul>
+    </div>
+
+    <div class="bg-white rounded-2xl border border-sand-200 p-5 shadow-soft">
+      <h3 class="font-semibold text-slate-900">Weather, and the things that are simply unknowable</h3>
+      <ul class="text-sm text-slate-600 mt-2 space-y-2">
+        <li>· <strong>There is no forecast for November 2026.</strong> Everything here is climate normals. Bangalore 17&ndash;27&nbsp;°C with roughly one day in four seeing rain; Mumbai 31&ndash;34&nbsp;°C, humidity at its annual low, one or two rain days all month.</li>
+        <li>· <strong>Mumbai's November rainfall figures disagree by six times</strong> &mdash; 16 mm against 100 mm. The rain-<em>day</em> counts agree, and that is the number that affects you.</li>
+        <li>· <strong>Sunrise and sunset times were computed</strong> with a standard astronomical algorithm rather than read off a site, because the sites were blocked. Mumbai sunset 18:04 on 5 Nov, civil dusk 18:27. Cross-checks put them within a minute.</li>
+        <li>· <strong>Sea conditions.</strong> October and November are the post-monsoon cyclone window in the Arabian Sea, and one assessment finds the frequency rising. Low probability on your Thursday, not zero, and a safety advisory suspends sailings at hours' notice.</li>
+      </ul>
+    </div>
+
+    <div class="rounded-2xl bg-forest-50 border-2 border-forest-300 p-5 shadow-soft">
+      <h3 class="font-semibold text-forest-900">Three calls that close most of this</h3>
+      <ul class="text-sm text-slate-700 mt-2 space-y-1.5">
+        <li>· <strong>The Gateway of India ferry office</strong> &mdash; last outbound, fares, which jetty, and whether the 5th sails normally.</li>
+        <li>· <strong>Bangalore Palace and MTR Lalbagh</strong> &mdash; opening days and the palace's real price.</li>
+        <li>· <strong>A Mumbai tour operator</strong> &mdash; whether a carrying chair can be booked for a named date, which is the one that would turn your biggest unknown into a reservation.</li>
+      </ul>
+    </div>
+  </div>
+
+  <p class="text-xs text-slate-400 mt-6">Researched 22 September 2026. Mark anything later resolved as <strong>Settled:</strong> or <strong>Corrected:</strong> rather than deleting it &mdash; somebody may have acted on the old version.</p>
+</footer>
+
+<section id="sync" class="pane pt-8">
+  <div class="bg-white rounded-3xl border border-sand-200 p-6 shadow-soft">
+    <h2 class="font-display text-2xl sm:text-3xl text-forest-900">Sync between phones</h2>
+    <p class="text-sm text-slate-500 mt-1">The checklists live on this phone and work with no signal. Connect the phone to the trip and every phone holding the same link sees the same ticks and items &mdash; the later change wins.</p>
+
+    <div id="sync-off" class="mt-4">
+      <div class="flex gap-2 flex-wrap">
+        <button id="sync-enable" type="button" class="text-xs font-semibold bg-forest-900 text-white px-3 py-2 rounded-xl hover:bg-forest-800">Enable sync</button>
+        <button id="sync-join-toggle" type="button" class="text-xs font-semibold bg-white text-forest-900 border border-forest-900 px-3 py-2 rounded-xl hover:bg-sand-50">I have a join link</button>
+      </div>
+      <form id="sync-create" class="hidden mt-3">
+        <label for="sync-key" class="block text-[12px] text-slate-500 mb-1.5">Paste the API&rsquo;s admin key. It is used once, to create this trip on the server, and is not kept on the phone.</label>
+        <div class="flex gap-2 flex-wrap">
+          <input id="sync-key" type="password" class="flex-1 min-w-0 bg-sand-50 border border-sand-200 rounded-xl px-3 py-2 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-forest-700/30" placeholder="Admin key" autocomplete="off" spellcheck="false">
+          <button type="submit" class="text-xs font-semibold bg-forest-900 text-white px-3 py-2 rounded-xl hover:bg-forest-800 shrink-0">Create the trip</button>
+        </div>
+        <div id="sync-exists" class="hidden mt-3 rounded-xl bg-amber-50 border border-amber-200 p-3">
+          <p class="text-[12px] text-amber-800">This trip already exists on the server. Copy its join link from a phone that is connected &mdash; or make a new token here, which puts every other phone off the trip until it opens the new link.</p>
+          <button id="sync-rotate-create" type="button" class="mt-2 text-xs font-semibold bg-amber-800 text-white px-3 py-2 rounded-xl">Make a new token</button>
+        </div>
+      </form>
+      <form id="sync-join" class="hidden mt-3">
+        <label for="sync-link-in" class="block text-[12px] text-slate-500 mb-1.5">Paste the join link, or just the token from it. Opening a join link connects the phone on its own.</label>
+        <div class="flex gap-2 flex-wrap">
+          <input id="sync-link-in" type="text" class="flex-1 min-w-0 bg-sand-50 border border-sand-200 rounded-xl px-3 py-2 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-forest-700/30" placeholder="https://&hellip;/#join=&hellip;" autocomplete="off" spellcheck="false">
+          <button type="submit" class="text-xs font-semibold bg-forest-900 text-white px-3 py-2 rounded-xl hover:bg-forest-800 shrink-0">Connect</button>
+        </div>
+      </form>
+      <p id="sync-msg" class="hidden text-[12px] mt-2"></p>
+    </div>
+
+    <div id="sync-on" class="hidden mt-4">
+      <p id="sync-status" class="text-sm font-semibold text-slate-500">Syncing&hellip;</p>
+      <p class="text-[12px] text-slate-500 mt-1">Anyone who opens this link is on the trip. Send it to Prabhjot; don&rsquo;t post it anywhere public.</p>
+      <div class="mt-3 flex gap-2 flex-wrap">
+        <input id="sync-link" type="text" readonly class="flex-1 min-w-0 bg-sand-50 border border-sand-200 rounded-xl px-3 py-2 text-[12px] text-slate-600 font-mono" aria-label="Join link">
+        <button id="sync-copy" type="button" class="text-xs font-semibold bg-forest-900 text-white px-3 py-2 rounded-xl hover:bg-forest-800 shrink-0">Copy join link</button>
+        <button id="sync-share" type="button" class="hidden text-xs font-semibold bg-white text-forest-900 border border-forest-900 px-3 py-2 rounded-xl hover:bg-sand-50 shrink-0">Share&hellip;</button>
+      </div>
+      <div class="flex items-center justify-between gap-3 mt-3 flex-wrap">
+        <button id="sync-now" type="button" class="text-xs text-slate-500 hover:text-slate-700">Sync now</button>
+        <div class="flex gap-4">
+          <button id="sync-rotate-toggle" type="button" class="text-xs text-slate-400 hover:text-slate-600">Link leaked? Rotate the token</button>
+          <button id="sync-off-btn" type="button" class="text-xs text-slate-400 hover:text-red-600">Disconnect this phone</button>
+        </div>
+      </div>
+      <form id="sync-rotate" class="hidden mt-3">
+        <label for="sync-key2" class="block text-[12px] text-slate-500 mb-1.5">Rotating makes a new token. This phone keeps working; every other phone is off the trip until it opens the new link. Paste the admin key to confirm.</label>
+        <div class="flex gap-2 flex-wrap">
+          <input id="sync-key2" type="password" class="flex-1 min-w-0 bg-sand-50 border border-sand-200 rounded-xl px-3 py-2 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-forest-700/30" placeholder="Admin key" autocomplete="off" spellcheck="false">
+          <button type="submit" class="text-xs font-semibold bg-amber-800 text-white px-3 py-2 rounded-xl shrink-0">Rotate</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+</main>
+<script src="app.js?v=16"></script>
+</body>
+</html>

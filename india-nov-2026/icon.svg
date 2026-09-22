@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!-- A thali: one plate, four katoris, read at 40px as a ring of dots.
+       Flat shapes only, nothing meaningful outside the central 80%. -->
+  <rect width="512" height="512" fill="#0f3d2e"/>
+  <circle cx="256" cy="256" r="168" fill="#f3ead8"/>
+  <circle cx="256" cy="256" r="168" fill="none" stroke="#0f3d2e" stroke-width="10" opacity="0.15"/>
+  <circle cx="256" cy="150" r="46" fill="#c2541f"/>
+  <circle cx="349" cy="220" r="42" fill="#d9a12c"/>
+  <circle cx="314" cy="337" r="38" fill="#7a9e3f"/>
+  <circle cx="198" cy="337" r="38" fill="#b03a2e"/>
+  <circle cx="163" cy="220" r="42" fill="#e6c26a"/>
+  <circle cx="256" cy="262" r="44" fill="#f8f4ea" stroke="#0f3d2e" stroke-width="8" opacity="0.95"/>
+</svg>

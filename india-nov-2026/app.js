@@ -27,13 +27,13 @@
      start and guessing at a length is how the header came to announce
      'trip done' on the Friday, with two days still to run. */
   var start = new Date('2026-11-02T09:00:00+05:30');
-  var finish = new Date('2026-09-19T18:00:00+10:00');
+  var finish = new Date('2026-11-06T18:00:00+05:30');
   var now = new Date();
   var days = Math.ceil((start - now) / 86400000);
   var cd = document.getElementById('cd-num');
   var lbl = document.querySelector('#countdown div:last-child');
   if (now >= finish) { cd.textContent = '✓'; lbl.textContent = 'trip done'; }
-  else if (now >= start) { cd.textContent = '🚐'; lbl.textContent = 'on the road'; }
+  else if (now >= start) { cd.textContent = '✈️'; lbl.textContent = 'travelling'; }
   else if (days <= 1) { cd.textContent = '1'; }
   else { cd.textContent = days; }
 
